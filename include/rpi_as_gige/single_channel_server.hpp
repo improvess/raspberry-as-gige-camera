@@ -110,7 +110,6 @@ namespace rpiasgige
                     }
                     else
                     {
-
                         initialized = process_accept_error(errno);
                     }
                 }
@@ -125,6 +124,10 @@ namespace rpiasgige
         static const int DATA_SIZE_ADDRESS = 5;
         static const int KEEP_ALIVE_ADDRESS = 4;
         static const int HEADER_SIZE = STATUS_SIZE + KEEP_ALIVE_SIZE + DATA_SIZE;
+
+        const std::string &get_identifier() const {
+            return this->identifier;
+        }
 
         virtual void respond_to_client(int &client_socket, const int data_size) = 0;
 

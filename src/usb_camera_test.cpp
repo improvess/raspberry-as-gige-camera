@@ -19,11 +19,14 @@ int main(int argc, char **argv)
 
     if (usb_camera.open(camera_path))
     {
-
+/*
         usb_camera.set(cv::CAP_PROP_BUFFERSIZE, 2);
         usb_camera.set(cv::CAP_PROP_FRAME_WIDTH, 320);
         usb_camera.set(cv::CAP_PROP_FRAME_HEIGHT, 240);
         usb_camera.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
+*/
+
+        std::cout << usb_camera.get(cv::CAP_PROP_FRAME_WIDTH) << "x" << usb_camera.get(cv::CAP_PROP_FRAME_HEIGHT) << "\n";
 
         int key = 0;
 

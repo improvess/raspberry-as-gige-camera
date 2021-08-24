@@ -16,11 +16,12 @@ namespace rpiasgige
         USB_Interface() {}
 
         bool set(int propId, double value);
+        double get(int propId);
         bool open(const cv::String &camera_path);
         bool isOpened();
         bool grab();
         bool retrieve(cv::Mat &dest);
-        void release();
+        bool release();
 
         const cv::Mat &get_captured_image() const {
             return this->captured_image;
@@ -32,7 +33,7 @@ namespace rpiasgige
         cv::Mat captured_image;
 
         bool connect_to_device();
-        void disconnect_device();
+        bool disconnect_device();
 
         static const int MAX_CONSECUTIVE_MISSES = 3;
         int consecutive_misses = 0;

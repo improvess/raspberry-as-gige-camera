@@ -1,8 +1,2 @@
 /**/.vscode/
 /**/build/
-/**/cases/
-/**/*_back/
-/**/data/
-/**/libs/**/src/
-/**/libs/**/download/
-shared_memory/main_window.glade~

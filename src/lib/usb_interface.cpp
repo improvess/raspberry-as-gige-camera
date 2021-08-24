@@ -58,10 +58,10 @@ namespace rpiasgige
         return result;
     }
 
-    void USB_Interface::release()
+    bool USB_Interface::release()
     {
 
-        this->disconnect_device();
+        return this->disconnect_device();
     }
 
     bool USB_Interface::connect_to_device()
@@ -83,20 +83,31 @@ namespace rpiasgige
         return result;
     }
 
-    void USB_Interface::disconnect_device()
+    bool USB_Interface::disconnect_device()
     {
         this->capture.release();
         this->captured_image.release();
+        std::cout << "device disconnected\n";
+
+        return true;
     }
 
     bool USB_Interface::set(int propId, double value)
     {
         bool result = false;
         if (this->capture.set(propId, value)) {
+            std::cout << "SET " << propId << " to " << value << " worked\n";
             this->props[propId] = value;
             result = true;
+        } else {
+            std::cout << "SET " << propId << " to " << value << " failed\n";
         }
         return result;
+    }
+
+    double USB_Interface::get(int propId)
+    {
+        return this->capture.get(propId);
     }
 
 } // namespace rpiasgige
