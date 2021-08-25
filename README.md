@@ -1,7 +1,7 @@
 # raspberry-as-gige-camera
 Transform your USB camera in a gigE camera with Raspberry PI.
 
-## TLDR
+## TL;DR;
 
 The code in this repository allow you to retrieve images of a USB camera via ethernet or wifi on a Raspberry PI .
 
@@ -37,11 +37,11 @@ Obs. 1: the examples consider that RPI is set to use 192.168.2.2 as IP address. 
 Obs. 2: note that the examples supposes that you are running them on a remote linux machine.
 Obs. 3: the examples basically send TCP packages via `nc` linux command.
 
-Check here for more details about the package format.
+Check here (pending) for more details about the package format.
 
-### Open Device
+### Opening Device
 
-The first thing to do is opening the device in a similar form like opening a local USB camera before retrieving data:
+Usually the first thing to do is opening the device. This cab be done in a similar form like opening a local USB camera before retrieving data:
 
 ```
 $ echo -e "OPEN0\x0\x0\x0\x0" | nc 192.168.2.2 4001
@@ -53,33 +53,33 @@ $ echo -e "OPEN0\x0\x0\x0\x0" | nc 192.168.2.2 4001
 $ echo -e "SET00\xC\x0\x0\x0\x3\x0\x0\x0\x0\x0\x0\x0\x0\x0\x74\x40" | nc 192.168.2.2 4001
 ```
 
-### get width
+### Getting the frame width
 
 ```
 $ echo -e "GET00\x4\x0\x0\x0\x3\x0\x0\x0" | nc 192.168.2.2 4001
 ```
 
-### set height to 240
+### Setting the frame height to 240
 
 ```
 $ echo -e "SET00\xC\x0\x0\x0\x4\x0\x0\x0\x0\x0\x0\x0\x0\x0\x6E\x40" | nc 192.168.2.2 4001
 ```
 
-### set buffer size to 2
+### Set the size of camera buffer to 2
 
 ```
 $ echo -e "SET00\xC\x0\x0\x0\x26\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40" | nc 192.168.2.2 4001
 ```
 
-### Check if device is opened
+### Checking if the device is opened already
 
 ```
 $ echo -e "ISOP0\x0\x0\x0\x0" | nc 192.168.2.2 4001
 ```
 
-### SET autofocus ON
+### Stting the autofocus ON
 
-Note that the autofocus feature cannot be available for the model of the USB camera in use.
+Note that the autofocus feature may be unavailable for the model of the USB camera in use.
 
 ```
 $ echo -e "SET00\xC\x0\x0\x0\x27\x0\x0\x0\x0\x0\x0\x0\x0\x0\xF0\x3F" | nc 192.168.2.2 4001
@@ -103,7 +103,7 @@ $ echo -e "SET00\xC\x0\x0\x0\x1C\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0" | nc 192.168.
 $ echo -e "CLOS0\x0\x0\x0\x0" | nc 192.168.2.2 4001
 ```
 
-### Set fourcc to MJPG
+### Setting fourcc to MJPG
 
 ```
 $ echo -e "SET00\xC\x0\x0\x0\x6\x0\x0\x0\x0\x0\x40\x93\x12\xD4\xD1\x41" | nc 192.168.2.2 4001
@@ -112,4 +112,12 @@ $ echo -e "SET00\xC\x0\x0\x0\x6\x0\x0\x0\x0\x0\x40\x93\x12\xD4\xD1\x41" | nc 192
 ## Disclaimer
 
 This code is in its early stages. It is not tested neither ready for production yet at all.
+
+## Next steps
+
+- tests
+- more tests
+- test a bit more
+- remove the OpenCV dependence
+- Remote C++ API
 
