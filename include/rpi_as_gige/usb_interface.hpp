@@ -5,6 +5,8 @@
 
 #include <opencv2/opencv.hpp>
 
+#include "rpi_as_gige/dumb_logger.hpp"
+
 namespace rpiasgige
 {
 
@@ -13,7 +15,8 @@ namespace rpiasgige
 
     public:
 
-        USB_Interface() {}
+        USB_Interface() : logger("USB_Interface") {}
+        virtual ~USB_Interface() {}
 
         bool set(int propId, double value);
         double get(int propId);
@@ -39,6 +42,8 @@ namespace rpiasgige
         int consecutive_misses = 0;
 
         std::map<int, double> props;
+
+        const Logger logger;
     };
 
 } // namespace rpiasgige

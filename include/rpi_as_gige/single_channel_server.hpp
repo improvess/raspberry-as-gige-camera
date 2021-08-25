@@ -1,5 +1,5 @@
-#ifndef EXCHANGE_SERVER_HPP
-#define EXCHANGE_SERVER_HPP
+#ifndef RPIASGIGE_SINGLE_CHANNEL_SERVER_HPP
+#define RPIASGIGE_SINGLE_CHANNEL_SERVER_HPP
 
 #include <unistd.h>
 #include <stdio.h>
@@ -9,6 +9,8 @@
 
 #include <string.h>
 
+#include "rpi_as_gige/dumb_logger.hpp"
+
 namespace rpiasgige
 {
 
@@ -16,7 +18,7 @@ namespace rpiasgige
     {
 
     public:
-        Single_Channel_Server(const std::string &_identifier, int _port, int _request_buffer_size, int _response_buffer_size) : identifier(_identifier), port(_port)
+        Single_Channel_Server(const std::string &_identifier, int _port, int _request_buffer_size, int _response_buffer_size) : identifier(_identifier), port(_port), logger(_identifier)
         {
 
             if (_response_buffer_size > this->response_buffer_size)
@@ -56,13 +58,13 @@ namespace rpiasgige
                 if (!initialized)
                 {
 
-                    debug_msg("Not initialized. Initializing now.");
+                    this->logger.debug_msg("Not initialized. Initializing now.");
                     initialized = init();
                 }
                 else
                 {
 
-                    debug_msg("Waiting for client");
+                    this->logger.debug_msg("Waiting for client");
                     int client_socket = accept(this->server_socket, (struct sockaddr *)&address, (socklen_t *)&addrlen);
 
                     if (client_socket >= 0)
@@ -70,7 +72,7 @@ namespace rpiasgige
 
                         this->set_client_timeout(client_socket);
 
-                        debug_msg("Client just arrived. Processing its request.");
+                        this->logger.debug_msg("Client just arrived. Processing its request.");
 
                         int client_timeout_count = 0;
                         const int client_max_timeout_count = 0;
@@ -91,7 +93,7 @@ namespace rpiasgige
                                 {
                                     shutdown(client_socket, SHUT_RDWR);
                                     this->keep_alive = false;
-                                    debug_msg("Closing client socket due to keep alive was set false");
+                                    this->logger.debug_msg("Closing client socket due to keep alive was set false");
                                     keep = false;
                                 }
                             }
@@ -102,7 +104,7 @@ namespace rpiasgige
                                 {
                                     close(client_socket);
                                     this->keep_alive = false;
-                                    debug_msg("Client stop to responding. Closing and wating for a new connection.");
+                                    this->logger.debug_msg("Client stop to responding. Closing and wating for a new connection.");
                                     keep = false;
                                 }
                             }
@@ -249,7 +251,7 @@ namespace rpiasgige
             {
                 result = false;
                 const std::string msg = this->identifier + " - Failed to create socket: " + std::string(strerror(errno));
-                error_msg(msg);
+                this->logger.error_msg(msg);
             }
 
             if (result && setsockopt(this->server_socket, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
@@ -257,7 +259,7 @@ namespace rpiasgige
             {
                 result = false;
                 const std::string msg = "Failed to set server socket options: " + std::string(strerror(errno));
-                error_msg(msg);
+                this->logger.error_msg(msg);
             }
             address.sin_family = AF_INET;
             address.sin_addr.s_addr = INADDR_ANY;
@@ -268,13 +270,13 @@ namespace rpiasgige
             {
                 result = false;
                 const std::string msg = "Failed to bind the server socket: " + std::string(strerror(errno));
-                error_msg(msg);
+                this->logger.error_msg(msg);
             }
             if (result && listen(this->server_socket, 3) < 0)
             {
                 result = false;
                 const std::string msg = "Failed to make the server socket listen: " + std::string(strerror(errno));
-                error_msg(msg);
+                this->logger.error_msg(msg);
             }
             if (!result)
             {
@@ -282,7 +284,7 @@ namespace rpiasgige
             }
             else
             {
-                debug_msg("successfuly initialized.");
+                this->logger.debug_msg("successfuly initialized.");
             }
             return result;
         }
@@ -303,12 +305,12 @@ namespace rpiasgige
                 result = true;
 
                 const std::string msg = "Failed to accept socket: " + std::string(strerror(errno));
-                error_msg(msg);
+                this->logger.error_msg(msg);
             }
             else
             {
                 close(this->server_socket);
-                error_msg("Bad error on accepting client socket. Server socket reinitialization required.");
+                this->logger.error_msg("Bad error on accepting client socket. Server socket reinitialization required.");
             }
             return result;
         }
@@ -334,23 +336,9 @@ namespace rpiasgige
             }
         }
 
-        void log_msg(const std::string &level, const std::string &msg)
-        {
-            printf("%s - %s - %s\n", level.c_str(), this->identifier.c_str(), msg.c_str());
-        }
-
-        void error_msg(const std::string &msg)
-        {
-            log_msg("ERROR", msg);
-        }
-
-        void debug_msg(const std::string &msg)
-        {
-            log_msg("DEBUG", msg);
-        }
-
     private:
-        bool keep_alive = false;
+
+        std::string identifier;
 
         const int port;
 
@@ -360,10 +348,12 @@ namespace rpiasgige
         int response_buffer_size = HEADER_SIZE;
         char *response_buffer;
 
-        std::string identifier;
-
         int client_read_timeout_in_seconds;
         int client_write_timeout_in_seconds;
+
+        bool keep_alive = false;
+
+        const Logger logger;
 
         void set_client_timeout(int client_socket)
         {
