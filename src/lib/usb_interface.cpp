@@ -1,4 +1,4 @@
-#include "rpi_as_gige/usb_interface.hpp"
+#include "rpiasgige/usb_interface.hpp"
 
 namespace rpiasgige
 {
@@ -54,6 +54,7 @@ namespace rpiasgige
         {
             dest = this->captured_image;
             this->captured_image.release();
+            result = true;
         }
         return result;
     }
@@ -87,7 +88,7 @@ namespace rpiasgige
     {
         this->capture.release();
         this->captured_image.release();
-        std::cout << "device disconnected\n";
+        this->logger.debug_msg("device disconnected.");
 
         return true;
     }
@@ -96,11 +97,16 @@ namespace rpiasgige
     {
         bool result = false;
         if (this->capture.set(propId, value)) {
-            std::cout << "SET " << propId << " to " << value << " worked\n";
+
             this->props[propId] = value;
             result = true;
+
+            std::string msg = "SET " + std::to_string(propId) + " to " + std::to_string(value) + " worked";
+            this->logger.debug_msg(msg.c_str());
+
         } else {
-            std::cout << "SET " << propId << " to " << value << " failed\n";
+            std::string msg = "SET " + std::to_string(propId) + " to " + std::to_string(value) + " failed";
+            this->logger.warn_msg(msg.c_str());
         }
         return result;
     }

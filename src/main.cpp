@@ -1,8 +1,7 @@
 #include <chrono>
 #include <thread>
 
-#include "rpi_as_gige/usb_interface.hpp"
-#include "rpi_as_gige/tcp_server.hpp"
+#include "rpiasgige/tcp_server.hpp"
 
 int main(int argc, char **argv)
 {

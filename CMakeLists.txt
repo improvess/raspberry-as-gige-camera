@@ -47,10 +47,30 @@ target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} -pthread)
 
 file(GLOB APP_SOURCES 
   ${PROJECT_SOURCE_DIR}/src/backward.cpp 
-  ${PROJECT_SOURCE_DIR}/src/usb_camera_test.cpp )
+  ${PROJECT_SOURCE_DIR}/extras/usb_camera_test.cpp )
 add_executable(usb_test_${PROJECT_NAME} ${APP_SOURCES})
 
 target_compile_options(usb_test_${PROJECT_NAME} PRIVATE -pedantic)
 target_link_libraries(usb_test_${PROJECT_NAME} ${PROJECT_NAME}_lib)
 target_link_libraries(usb_test_${PROJECT_NAME} bfd dl)
 target_link_libraries(usb_test_${PROJECT_NAME} ${OpenCV_LIBS} -pthread)
+
+option(BUILD_TESTS "Build the tests" OFF)
+
+if(BUILD_TESTS)
+
+  set(PROJECT_TEST_NAME test_${PROJECT_NAME})
+
+  include(libs/googletest/install.txt)
+
+  include_directories(${PROJECT_SOURCE_DIR}/tests/include)
+
+  file(GLOB TEST_SRC_FILES "${PROJECT_SOURCE_DIR}/tests/*.cpp")
+  add_executable(${PROJECT_TEST_NAME} ${TEST_SRC_FILES})
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
+
+  target_link_libraries(${PROJECT_TEST_NAME} ${PROJECT_NAME}_lib gtest_main ${OpenCV_LIBS} -pthread)
+
+  add_test(NAME ${PROJECT_NAME}_test COMMAND ${PROJECT_TEST_NAME})
+
+endif()
