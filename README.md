@@ -1,15 +1,26 @@
 # raspberry-as-gige-camera
+
 Transform your USB camera in a gigE camera with Raspberry PI.
 
 ## TL;DR;
 
-The code in this repository allow you to retrieve images of a USB camera via ethernet or wifi on a Raspberry PI .
+The code in this repository allows you to retrieve images from a USB camera via ethernet or wifi on a Raspberry PI at high speed for realtime applications.
+
+![image](https://user-images.githubusercontent.com/9665358/130778605-99adcd9d-6081-465c-8dde-13ddadce4a13.png)
 
 ## Why?
 
-USB cameras are great and cheap but USB cables/connectors are not so robust / reliable / long range if compared to ethernet links. GigE cameras are great but the total cost and availability of this type of cameras can be challenging for some solutions.
+USB cameras are great, powerful and cheap but USB cables/connectors are not so robust / reliable / long range if compared to ethernet links. GigE cameras are great but the total cost and availability of this type of cameras can be challenging for some solutions.
 
-## Bulding
+## Example of usage
+
+Grabbing 320x240 images from a Microsoft Lifecam Studio at 30 fps.
+
+![image](https://user-images.githubusercontent.com/9665358/130779743-b97e4d8d-5367-46c5-9202-b6bdd8eb7154.png)
+
+Note that 30 fps is the max camera model frame rate.
+
+## Building
 
 This repo uses CMake & OpenCV to build the code.
 
@@ -25,8 +36,13 @@ Obs.: So far, I have used only Raspbian OS 64 bit and GCC 10.3 for the developme
 
 ## Running
 
+Run `rpiasgige` as follows:
+
 ```
-$ ./rpiasgige -port=4001 -device=/dev/video2
+pi@raspberrypi:~/raspberry-as-gige-camera/build $ ./rpiasgige -port=4001 -device=/dev/video0
+DEBUG - /dev/video0 - Not initialized. Initializing now.
+DEBUG - /dev/video0 - successfuly initialized.
+DEBUG - /dev/video0 - Waiting for client
 ```
 
 ## Remote command examples
@@ -39,33 +55,35 @@ Obs. 3: the examples basically send TCP packages via `nc` linux command.
 
 Check here (pending) for more details about the package format.
 
+![image](https://user-images.githubusercontent.com/9665358/130778217-62a2008a-bed5-43c5-9ec5-a72e46b1fc2f.png)
+
 ### Opening Device
 
-Usually the first thing to do is opening the device. This cab be done in a similar form like opening a local USB camera before retrieving data:
+Usually the first thing to do is opening the device. This can be done in a similar form like opening a local USB camera before retrieving data:
 
 ```
 $ echo -e "OPEN0\x0\x0\x0\x0" | nc 192.168.2.2 4001
 ```
 
-### set width to 320
+### Setting resolution width to 320
 
 ```
 $ echo -e "SET00\xC\x0\x0\x0\x3\x0\x0\x0\x0\x0\x0\x0\x0\x0\x74\x40" | nc 192.168.2.2 4001
 ```
 
-### Getting the frame width
+### Getting the frame resolution width
 
 ```
 $ echo -e "GET00\x4\x0\x0\x0\x3\x0\x0\x0" | nc 192.168.2.2 4001
 ```
 
-### Setting the frame height to 240
+### Setting the resolution height to 240
 
 ```
 $ echo -e "SET00\xC\x0\x0\x0\x4\x0\x0\x0\x0\x0\x0\x0\x0\x0\x6E\x40" | nc 192.168.2.2 4001
 ```
 
-### Set the size of camera buffer to 2
+### Setting the size of camera buffer to 2
 
 ```
 $ echo -e "SET00\xC\x0\x0\x0\x26\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40" | nc 192.168.2.2 4001
@@ -77,7 +95,7 @@ $ echo -e "SET00\xC\x0\x0\x0\x26\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40" | nc 192.168
 $ echo -e "ISOP0\x0\x0\x0\x0" | nc 192.168.2.2 4001
 ```
 
-### Stting the autofocus ON
+### Setting the autofocus ON
 
 Note that the autofocus feature may be unavailable for the model of the USB camera in use.
 
@@ -85,13 +103,13 @@ Note that the autofocus feature may be unavailable for the model of the USB came
 $ echo -e "SET00\xC\x0\x0\x0\x27\x0\x0\x0\x0\x0\x0\x0\x0\x0\xF0\x3F" | nc 192.168.2.2 4001
 ```
 
-### SET autofocus OFF
+### Setting autofocus OFF
 
 ```
 $ echo -e "SET00\xC\x0\x0\x0\x27\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0" | nc 192.168.2.2 4001
 ```
 
-### SET focus to 0
+### Setting focus to 0
 
 ```
 $ echo -e "SET00\xC\x0\x0\x0\x1C\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0" | nc 192.168.2.2 4001
@@ -120,4 +138,5 @@ This code is in its early stages. It is not tested neither ready for production 
 - test a bit more
 - remove the OpenCV dependence
 - Remote C++ API
+- remote client example
 
