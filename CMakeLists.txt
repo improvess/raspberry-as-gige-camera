@@ -47,7 +47,7 @@ target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} -pthread)
 
 file(GLOB APP_SOURCES 
   ${PROJECT_SOURCE_DIR}/src/backward.cpp 
-  ${PROJECT_SOURCE_DIR}/src/usb_camera_test.cpp )
+  ${PROJECT_SOURCE_DIR}/extras/usb_camera_test.cpp )
 add_executable(usb_test_${PROJECT_NAME} ${APP_SOURCES})
 
 target_compile_options(usb_test_${PROJECT_NAME} PRIVATE -pedantic)

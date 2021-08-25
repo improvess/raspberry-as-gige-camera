@@ -1,7 +1,7 @@
 
 #include "gtest/gtest.h"
 
-#include "rpi_as_gige/usb_interface.hpp"
+#include "rpiasgige/usb_interface.hpp"
 
 class USB_InterfaceTest : public ::testing::Test
 {

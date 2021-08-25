@@ -1,7 +1,9 @@
 #ifndef RPIASGIGE_TCP_SERVER_INTERFACE_HPP
 #define RPIASGIGE_TCP_SERVER_INTERFACE_HPP
 
+#include "usb_interface.hpp"
 #include "single_channel_server.hpp"
+#include "tcp_server.hpp"
 
 namespace rpiasgige
 {

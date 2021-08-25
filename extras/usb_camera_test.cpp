@@ -1,6 +1,6 @@
 #include <chrono>
 
-#include "rpi_as_gige/usb_interface.hpp"
+#include "rpiasgige/usb_interface.hpp"
 
 int main(int argc, char **argv)
 {

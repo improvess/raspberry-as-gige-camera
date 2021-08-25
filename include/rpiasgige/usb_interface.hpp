@@ -5,7 +5,7 @@
 
 #include <opencv2/opencv.hpp>
 
-#include "rpi_as_gige/dumb_logger.hpp"
+#include "dumb_logger.hpp"
 
 namespace rpiasgige
 {

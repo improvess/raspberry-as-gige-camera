@@ -9,7 +9,7 @@
 
 #include <string.h>
 
-#include "rpi_as_gige/dumb_logger.hpp"
+#include "rpiasgige/dumb_logger.hpp"
 
 namespace rpiasgige
 {

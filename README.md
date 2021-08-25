@@ -27,12 +27,22 @@ This repo uses CMake & OpenCV to build the code.
 ```
 $ git clone https://github.com/doleron/raspberry-as-gige-camera.git
 $ cd raspberry-as-gige-camera
-$ mkdir build & cd build
+$ mkdir build
+$ cd build
 $ cmake ..
 $ make -j4
 ```
 
 Obs.: So far, I have used only Raspbian OS 64 bit and GCC 10.3 for the development. 
+
+### Building tests
+
+To tun the googletest unit test batch:
+
+```
+$ cmake -DBUILD_TESTS=ON ..
+$ ./test_rpiasgige 
+```
 
 ## Running
 
@@ -87,6 +97,12 @@ $ echo -e "SET00\xC\x0\x0\x0\x4\x0\x0\x0\x0\x0\x0\x0\x0\x0\x6E\x40" | nc 192.168
 
 ```
 $ echo -e "SET00\xC\x0\x0\x0\x26\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40" | nc 192.168.2.2 4001
+```
+
+### Ask the camera to capture at 60 FPS
+
+```
+$ echo -e "SET00\xC\x0\x0\x0\x5\x0\x0\x0\x0\x0\x0\x0\x0\x0\x4E\x40" | nc 192.168.2.2 4001
 ```
 
 ### Checking if the device is opened already

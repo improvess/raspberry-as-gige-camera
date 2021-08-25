@@ -1,4 +1,4 @@
-#include "rpi_as_gige/usb_interface.hpp"
+#include "rpiasgige/usb_interface.hpp"
 
 namespace rpiasgige
 {
