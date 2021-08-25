@@ -12,13 +12,17 @@ The code in this repository allows you to retrieve images from a USB camera via 
 
 USB cameras are great, powerful and cheap but USB cables/connectors are not so robust / reliable / long range if compared to ethernet links. GigE cameras are great but the total cost and availability of this type of cameras can be challenging for some solutions.
 
-## Example of usage
+## Examples of usage
 
-Grabbing 320x240 images from a Microsoft Lifecam Studio at 30 fps.
+Grabbing 320x240 images from a [Microsoft Lifecam Studio](https://www.microsoft.com/en-ww/accessories/products/webcams/lifecam-studio) at 30 fps.
 
 ![image](https://user-images.githubusercontent.com/9665358/130779743-b97e4d8d-5367-46c5-9202-b6bdd8eb7154.png)
 
 Note that 30 fps is the max camera model frame rate.
+
+Achieving 60 fps @ 320x240 using a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
+
+![image](https://user-images.githubusercontent.com/9665358/130841632-068dc38e-1f1d-4212-993f-d3e9ebe54040.png)
 
 ## Building
 
