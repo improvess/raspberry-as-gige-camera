@@ -12,13 +12,17 @@ The code in this repository allows you to retrieve images from a USB camera via 
 
 USB cameras are great, powerful and cheap but USB cables/connectors are not so robust / reliable / long range if compared to ethernet links. GigE cameras are great but the total cost and availability of this type of cameras can be challenging for some solutions.
 
-## Example of usage
+## Examples of usage
 
-Grabbing 320x240 images from a Microsoft Lifecam Studio at 30 fps.
+Grabbing 320x240 images from a [Microsoft Lifecam Studio](https://www.microsoft.com/en-ww/accessories/products/webcams/lifecam-studio) at 30 fps.
 
 ![image](https://user-images.githubusercontent.com/9665358/130779743-b97e4d8d-5367-46c5-9202-b6bdd8eb7154.png)
 
 Note that 30 fps is the max camera model frame rate.
+
+Achieving 60 fps @ 320x240 using a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
+
+![image](https://user-images.githubusercontent.com/9665358/130841632-068dc38e-1f1d-4212-993f-d3e9ebe54040.png)
 
 ## Building
 
@@ -99,12 +103,6 @@ $ echo -e "SET00\xC\x0\x0\x0\x4\x0\x0\x0\x0\x0\x0\x0\x0\x0\x6E\x40" | nc 192.168
 $ echo -e "SET00\xC\x0\x0\x0\x26\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40" | nc 192.168.2.2 4001
 ```
 
-### Ask the camera to capture at 60 FPS
-
-```
-$ echo -e "SET00\xC\x0\x0\x0\x5\x0\x0\x0\x0\x0\x0\x0\x0\x0\x4E\x40" | nc 192.168.2.2 4001
-```
-
 ### Checking if the device is opened already
 
 ```
@@ -131,6 +129,18 @@ $ echo -e "SET00\xC\x0\x0\x0\x27\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0" | nc 192.168.
 $ echo -e "SET00\xC\x0\x0\x0\x1C\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0" | nc 192.168.2.2 4001
 ```
 
+### Asking camera to run at 60 fps
+
+```
+$ echo -e "SET00\xC\x0\x0\x0\x5\x0\x0\x0\x0\x0\x0\x0\x0\x0\x4E\x40" | nc 192.168.2.2 4001
+```
+
+### Asking camera to run at 120 fps
+
+```
+$ echo -e "SET00\xC\x0\x0\x0\x5\x0\x0\x0\x0\x0\x0\x0\x0\x0\x5E\x40" | nc 192.168.2.2 4001
+```
+
 ### Closing the device
 
 ```
@@ -142,6 +152,10 @@ $ echo -e "CLOS0\x0\x0\x0\x0" | nc 192.168.2.2 4001
 ```
 $ echo -e "SET00\xC\x0\x0\x0\x6\x0\x0\x0\x0\x0\x40\x93\x12\xD4\xD1\x41" | nc 192.168.2.2 4001
 ```
+
+## Limitations
+
+According to [this](https://www.raspberrypi.org/documentation/computers/processors.html), the L2 shared cache of Raspberry PI 4 processor (the one I am using right now) is set to 1MB. This bottleneck can reduce the amount of traffic data/FPS sent/received. 
 
 ## Disclaimer
 

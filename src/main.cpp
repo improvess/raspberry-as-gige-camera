@@ -7,29 +7,35 @@ int main(int argc, char **argv)
 {
 
     const std::string keys =
-        "{camera-path           | /dev/video0    | camera path such as /dev/video0         }"
+        "{device           | /dev/video0    | camera path such as /dev/video0         }"
+        "{port           | 4001    | TCP port to accept connections         }"
+        "{max-width-resolution           | 640    | Max acceptable width image resolution         }"
+        "{max-heigth-resolution           | 480    | Max acceptable heigth image resolution         }"
+        "{max-number-of-channels           | 3    | Max acceptable number of image channels         }"
         ;
 
     cv::CommandLineParser parser(argc, argv, keys);
 
-    std::string identifier = parser.get<cv::String>("camera-path");
+    int port = parser.get<int>("port");
+
+    std::string device = parser.get<cv::String>("device");
+
+    int max_width = parser.get<int>("max-width-resolution");
+    int max_heigth = parser.get<int>("max-heigth-resolution");
+
+    int max_channels = parser.get<int>("max-number-of-channels");
 
     rpiasgige::USB_Interface usb_camera;
 
-    rpiasgige::TCP_Server tcp_server(identifier, 4001, usb_camera, 3*640*480 * 2);
+    int max_image_size = max_channels*max_width*max_heigth;
+
+    rpiasgige::TCP_Server tcp_server(device, port, usb_camera, max_image_size);
     std::thread tcp_server_thread([&tcp_server]()
                                     { tcp_server.run(); });
 
     if (tcp_server_thread.joinable()){
         tcp_server_thread.join();
     }
-
-        /*
-        usb_camera.set(cv::CAP_PROP_BUFFERSIZE, 2);
-        usb_camera.set(cv::CAP_PROP_FRAME_WIDTH, 320);
-        usb_camera.set(cv::CAP_PROP_FRAME_HEIGHT, 240);
-        usb_camera.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
-        */
 
     return 0;
 }
