@@ -135,6 +135,18 @@ $ echo -e "SET00\xC\x0\x0\x0\x27\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0" | nc 192.168.
 $ echo -e "SET00\xC\x0\x0\x0\x1C\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0" | nc 192.168.2.2 4001
 ```
 
+### Asking camera to run at 60 fps
+
+```
+$ echo -e "SET00\xC\x0\x0\x0\x5\x0\x0\x0\x0\x0\x0\x0\x0\x0\x4E\x40" | nc 192.168.2.2 4001
+```
+
+### Asking camera to run at 120 fps
+
+```
+$ echo -e "SET00\xC\x0\x0\x0\x5\x0\x0\x0\x0\x0\x0\x0\x0\x0\x5E\x40" | nc 192.168.2.2 4001
+```
+
 ### Closing the device
 
 ```
@@ -146,6 +158,10 @@ $ echo -e "CLOS0\x0\x0\x0\x0" | nc 192.168.2.2 4001
 ```
 $ echo -e "SET00\xC\x0\x0\x0\x6\x0\x0\x0\x0\x0\x40\x93\x12\xD4\xD1\x41" | nc 192.168.2.2 4001
 ```
+
+## Limitations
+
+According to [this](https://www.raspberrypi.org/documentation/computers/processors.html), the L2 shared cache of Raspberry PI 4 processor (the one I am using right now) is set to 1MB. This bottleneck can reduce the amount of traffic data/FPS sent/received. 
 
 ## Disclaimer
 
