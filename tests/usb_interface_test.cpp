@@ -5,7 +5,7 @@
 
 class USB_InterfaceTest : public ::testing::Test
 {
-    public: 
+public:
     const std::string device_path = "../samples/sample_1280x720.mp4";
 };
 
@@ -21,7 +21,6 @@ TEST_F(USB_InterfaceTest, OpenCloseTest)
     EXPECT_TRUE(device.isOpened());
 
     ASSERT_TRUE(device.release());
-
 }
 
 TEST_F(USB_InterfaceTest, GrabTest)
@@ -48,7 +47,6 @@ TEST_F(USB_InterfaceTest, GrabTest)
     EXPECT_EQ(size.height, 720) << "Wrong size height";
 
     ASSERT_TRUE(device.release());
-
 }
 
 TEST_F(USB_InterfaceTest, GetSetTest)
@@ -65,5 +63,4 @@ TEST_F(USB_InterfaceTest, GetSetTest)
     EXPECT_TRUE(device.set(cv::CAP_PROP_POS_FRAMES, 2));
 
     ASSERT_TRUE(device.release());
-
 }

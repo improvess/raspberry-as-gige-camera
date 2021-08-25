@@ -18,6 +18,14 @@ namespace rpiasgige
     {
 
     public:
+        static const int STATUS_SIZE = 4;
+        static const int KEEP_ALIVE_SIZE = 1;
+        static const int DATA_SIZE = 4;
+        static const int STATUS_ADDRESS = 0;
+        static const int DATA_SIZE_ADDRESS = 5;
+        static const int KEEP_ALIVE_ADDRESS = 4;
+        static const int HEADER_SIZE = STATUS_SIZE + KEEP_ALIVE_SIZE + DATA_SIZE;
+
         Single_Channel_Server(const std::string &_identifier, int _port, int _request_buffer_size, int _response_buffer_size) : identifier(_identifier), port(_port), logger(_identifier)
         {
 
@@ -119,13 +127,6 @@ namespace rpiasgige
         }
 
     protected:
-        static const int STATUS_SIZE = 4;
-        static const int KEEP_ALIVE_SIZE = 1;
-        static const int DATA_SIZE = 4;
-        static const int STATUS_ADDRESS = 0;
-        static const int DATA_SIZE_ADDRESS = 5;
-        static const int KEEP_ALIVE_ADDRESS = 4;
-        static const int HEADER_SIZE = STATUS_SIZE + KEEP_ALIVE_SIZE + DATA_SIZE;
 
         const std::string &get_identifier() const {
             return this->identifier;
@@ -315,12 +316,15 @@ namespace rpiasgige
             return result;
         }
 
-        void clean_output_buffer(const int from, const int size)
+        bool clean_output_buffer(const int from, const int size)
         {
-            if (from >= 0 && ((from + size) < response_buffer_size))
+            bool result = false;
+            if (from >= 0 && ((from + size) <= response_buffer_size))
             {
                 memset(response_buffer + from, 0, size);
+                result = true;
             }
+            return result;
         }
 
         const char *get_request_buffer() const
@@ -328,12 +332,23 @@ namespace rpiasgige
             return this->request_buffer;
         }
 
-        void set_buffer_value(int from, int size, const void *data)
+        /**
+         * read-only for test purposes
+         */
+        const char *get_response_buffer() const
         {
+            return this->response_buffer;
+        }
+
+        bool set_buffer_value(int from, int size, const void *data)
+        {
+            bool result = false;
             if (from >= 0 && ((from + size) <= response_buffer_size))
             {
                 memcpy(response_buffer + from, data, size);
+                result = true;
             }
+            return result;
         }
 
     private:
