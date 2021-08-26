@@ -10,7 +10,7 @@ The code in this repository allows you to retrieve images from a USB camera via 
 
 ## Why?
 
-USB cameras are great, powerful and cheap but USB cables/connectors are not so robust / reliable / long range if compared to ethernet links / hubs / infrastructure. On the other hand, GigE cameras are great but the total cost and availability of this type of devices can be challenging for some projets. On scenarios like this, Raspberry PI boards can be used to create ethernet interfaces for the USB camera. This is what this repository is intended to.
+USB cameras are great, powerful and cheap but USB cables/connectors are not so robust / reliable / long range if compared to ethernet infrastructure. Today's gigE cameras, cameras with gigabit ethernet interfaces are making a central role in realtime practical applications. On the other hand, the gigE cameras total cost and availability can be found as challenging for some projets. On scenarios like this, Raspberry PI boards can be used to create ethernet interfaces for the USB camera. This type of usage is exactly what this repository is intended to.
 
 ## Examples of usage
 
