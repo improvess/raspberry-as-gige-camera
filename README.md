@@ -4,7 +4,7 @@ Transform your USB camera in a camera gigE with Raspberry PI.
 
 ## TL;DR;
 
-The code in this repository allows you to retrieve images from a USB camera via the gigabyte ethernet port of Raspberry PI at high speed for realtime applications.
+The code in this repository allows you to retrieve images from a USB camera via the Raspberry PI's gigabyte ethernet port at high speed for realtime applications.
 
 ![image](https://user-images.githubusercontent.com/9665358/130778605-99adcd9d-6081-465c-8dde-13ddadce4a13.png)
 
