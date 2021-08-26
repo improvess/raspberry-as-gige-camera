@@ -60,9 +60,9 @@ DEBUG - /dev/video0 - Waiting for client
 
 Once the `rpiasgige` server is running, it is ready to respond to incoming TCP requests. There are four ways to do send reqeusts to it:
 
-- Sending command line requests using native TCP programs: see this examples.
-- Using the provided client program: see this example.
-- Using the provided client API: see this examples.
+- Sending command line requests using native TCP programs: check [the examples](https://github.com/doleron/raspberry-as-gige-camera/blob/main/command-line-examples.MD).
+- Using the provided client program: check the example.
+- Using the provided client API: check the examples.
 - Writing your own remote calls using the [rpiasgige protocol](https://github.com/doleron/raspberry-as-gige-camera/blob/main/protocol.MD)
 
 ### Building and running the tests
