@@ -86,7 +86,7 @@ That said, `rpiasgige` is a suitable alternative to retrieve frames at 30-60 fps
 
 ## Disclaimer
 
-This code is in its early stages. It is not tested neither ready for production yet at all.
+This code is in its early stages. It is not battle-tested neither ready for production yet at all.
 
 ## TODO: Next steps
 
