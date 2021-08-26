@@ -90,11 +90,13 @@ This code is in its early stages. It is not tested neither ready for production 
 
 - ~~tests~~
 - More tests
-- Test a bit more
+- Test a bit more, man!
 - C'mon tests are always welcome! More tests doleron!
 - Removing OpenCV dependence
 - Coding remote C++ API
 - Coding remote client example
-- Support big-endian clients
-- 
+- Supporting big-endian clients
+- Adding Python client API
+- Adding JavaScript client API
+- Adding Java client API
 
