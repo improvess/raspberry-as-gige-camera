@@ -58,16 +58,12 @@ DEBUG - /dev/video0 - Waiting for client
 
 ## Communication & getting images from the remote camera
 
-Once `rpiasgige` is running, it is ready to respond to incoming TCP requests on the defined port and serve images. There are three ways to do it:
+Once the `rpiasgige` server s running, it is ready to respond to incoming TCP requests on the defined port and serve images. There are four ways to do it:
 
 - Sending command line requests using native TCP programs like [Netcat](https://linuxize.com/post/netcat-nc-command-with-examples). See this examples.
 - Using the provided client program
 - Using the provided client API
 - Writing your own remote calls using the [rpiasgige protocol](https://github.com/doleron/raspberry-as-gige-camera/blob/main/protocol.MD)
-
-Examples of sending commands to the camera via command line:
-
-![image](https://user-images.githubusercontent.com/9665358/130778217-62a2008a-bed5-43c5-9ec5-a72e46b1fc2f.png)
 
 ### Building and running the tests
 
