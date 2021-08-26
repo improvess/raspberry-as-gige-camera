@@ -47,7 +47,7 @@ sudo apt install git build-essential cmake
 
 ## Running `rpiasgige`
 
-Run the `rpiasgige` server as follows:
+After building, run the `rpiasgige` server as follows:
 
 ```
 pi@raspberrypi:~/raspberry-as-gige-camera/build $ ./rpiasgige -port=4001 -device=/dev/video0
