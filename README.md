@@ -1,6 +1,6 @@
 # raspberry-as-gige-camera
 
-Transform your USB camera in a camera gigE with Raspberry PI.
+Transform your USB camera in a gigE device with Raspberry PI.
 
 ## TL;DR;
 
