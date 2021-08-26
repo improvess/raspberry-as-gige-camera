@@ -71,7 +71,7 @@ Check here (pending) for more details about the package format.
 
 ![image](https://user-images.githubusercontent.com/9665358/130778217-62a2008a-bed5-43c5-9ec5-a72e46b1fc2f.png)
 
-### Opening Device
+### Opening the device
 
 Usually the first thing to do is opening the device. This can be done in a similar form like opening a local USB camera before retrieving data:
 
@@ -152,6 +152,32 @@ $ echo -e "CLOS0\x0\x0\x0\x0" | nc 192.168.2.2 4001
 ```
 $ echo -e "SET00\xC\x0\x0\x0\x6\x0\x0\x0\x0\x0\x40\x93\x12\xD4\xD1\x41" | nc 192.168.2.2 4001
 ```
+
+## Protocol
+
+The communication obay a simple request-response protocol. The program works as a single-channel TCP server, serving only one client conversation by turn.
+
+### The server-client conversation
+
+The conversation between the client and server begins when the client connects to the server. The conversation finishes when one of the following events occurs:
+
+- The client closes the connection
+- The server closes the connection
+- A timeout occurs
+
+During a conversation, the client can send an undertermined number of requests to the server. The client must set the keep-alive byte if it wants to make more than one succesive request. The position of the keep-alive byte and other package fields are discussed below.
+
+### The packt format
+
+The packat has the following format:
+
+![image](https://user-images.githubusercontent.com/9665358/130887559-d8a3c0d9-7783-484e-a306-86e3189974f7.png)
+
+The three first fields, namely **status**, **keep-alive** and **data size**, have predefined sizes (4, 1 and 4, respectivelly). The **data** field
+
+
+
+## TCP package formaat
 
 ## Limitations
 
