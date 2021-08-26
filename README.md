@@ -4,7 +4,7 @@ Transform your USB camera in a gigE camera with Raspberry PI.
 
 ## TL;DR;
 
-The code in this repository allows you to retrieve images from a USB camera via ethernet or wifi on a Raspberry PI at high speed for realtime applications.
+The code in this repository allows you to retrieve images from a USB camera via the gigabyte ethernet port of Raspberry PI at high speed for realtime applications.
 
 ![image](https://user-images.githubusercontent.com/9665358/130778605-99adcd9d-6081-465c-8dde-13ddadce4a13.png)
 
@@ -50,7 +50,7 @@ $ ./test_rpiasgige
 
 ## Running
 
-Run `rpiasgige` as follows:
+Run the `rpiasgige` server as follows:
 
 ```
 pi@raspberrypi:~/raspberry-as-gige-camera/build $ ./rpiasgige -port=4001 -device=/dev/video0
@@ -59,6 +59,10 @@ DEBUG - /dev/video0 - successfuly initialized.
 DEBUG - /dev/video0 - Waiting for client
 ```
 
+## Communication
+
+The details of the protocol used to make requests to the camera can be found here: https://github.com/doleron/raspberry-as-gige-camera/blob/main/protocol.MD
+
 ## Remote command examples
 
 Once `rpiasgige` is running, it is ready to respond to incoming TCP requests on the defined port. Check out for some examples of request below. 
@@ -66,8 +70,6 @@ Once `rpiasgige` is running, it is ready to respond to incoming TCP requests on 
 Obs. 1: the examples consider that RPI is set to use 192.168.2.2 as IP address. Replace it with the proper IP.
 Obs. 2: note that the examples supposes that you are running them on a remote linux machine.
 Obs. 3: the examples basically send TCP packages via `nc` linux command.
-
-Check here (pending) for more details about the package format.
 
 ![image](https://user-images.githubusercontent.com/9665358/130778217-62a2008a-bed5-43c5-9ec5-a72e46b1fc2f.png)
 
