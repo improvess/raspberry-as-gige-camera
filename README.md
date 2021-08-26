@@ -76,7 +76,7 @@ $ ./test_rpiasgige
 
 ## Limitations
 
-Raspberry PI boards are revolutionary - but general purpose - devices. They are not exaclty intended to perform intensive computing/IO tasks, having significative hardware limitations which must be taken in mind when considering using them in attending to extremme demands.
+Raspberry PI boards are revolutionary - but general purpose - devices. They are not exaclty intended to perform intensive computing/IO tasks, having significative hardware limitations which must be taken in mind when considering using them to attend to extremme demands.
 
 According to [this](https://www.raspberrypi.org/documentation/computers/processors.html), the L2 shared cache of Raspberry PI 4 processor is set to 1MB whereas the same cache is constrained to only 512 KB in RPI 3 boards. This bottleneck eventually reduces the amount of traffic data/FPS sent/received.
 
