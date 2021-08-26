@@ -100,4 +100,5 @@ This code is in its early stages. It is not tested neither ready for production 
 - Adding Python client API
 - Adding JavaScript client API
 - Adding Java client API
+- Adding callback to decorate frame before send
 
