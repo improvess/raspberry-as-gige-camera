@@ -1,6 +1,6 @@
 /**/.vscode/
 /**/build/
 
-/libs/googletest/download/
-/libs/googletest/src/
-/libs/googletest/build/
+/**/libs/googletest/download/
+/**/libs/googletest/src/
+/**/libs/googletest/build/
