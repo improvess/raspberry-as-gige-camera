@@ -10,7 +10,7 @@ The code in this repository allows you to expose your USB camera as an ethernet 
 
 ## Why?
 
-USB cameras are great, powerful and cheap but USB cables/connectors are not so robust / reliable / long range if compared to ethernet infrastructure. Today's gigE cameras - cameras with gigabit ethernet interfaces - are playing a central role in realtime practical computer vision applications. On the other hand, the gigE cameras total cost and availability can be found as challenging for some projets. On scenarios like this, Raspberry PI boards can be used to create ethernet interfaces for your USB camera. This type of usage is exactly what this repository is intended to do.
+Today's gigE cameras - cameras with gigabit ethernet interfaces - are playing a central role in realtime practical computer vision applications due the long range, speed and reliability of underlying ethernet infrastructure. On the other hand, the gigE cameras total cost and availability can be challenging for some projets. On scenarios like this, Raspberry PI boards can be alternative to create ethernet interfaces for your USB camera. This type of usage is exactly what this repository is intended to allow.
 
 ## Examples of usage
 
@@ -45,9 +45,9 @@ Obs. 2: If not yet, do not forget to install `git`, `cmake` and `gcc` before bui
 sudo apt install git build-essential cmake
 ```
 
-## Running `rpiasgige`
+## Running the `rpiasgige` on Raspberry Pi
 
-After building, run the `rpiasgige` server as follows:
+After building `rpiasgige`, run the server as follows:
 
 ```
 pi@raspberrypi:~/raspberry-as-gige-camera/build $ ./rpiasgige -port=4001 -device=/dev/video0
@@ -58,16 +58,16 @@ DEBUG - /dev/video0 - Waiting for client
 
 ## Getting images from the camera remotely
 
-Once the `rpiasgige` server is running, it is ready to respond to incoming TCP requests. There are four ways to do send reqeusts to it:
+Once the `rpiasgige` server is running, it is ready to respond to incoming TCP requests. There are four ways to make reqeusts to the `rpiasgige` server:
 
-- Sending command line requests using native TCP programs: check [the examples](https://github.com/doleron/raspberry-as-gige-camera/blob/main/command-line-examples.MD).
+- Sending command-line requests using native TCP programs: check [the examples](https://github.com/doleron/raspberry-as-gige-camera/blob/main/command-line-examples.MD).
 - Using the provided client program: check the example.
 - Using the provided client API: check the examples.
 - Writing your own remote calls using the [rpiasgige protocol](https://github.com/doleron/raspberry-as-gige-camera/blob/main/protocol.MD)
 
 ### Building and running the tests
 
-`rpiasgige` is shipped with a set of unit tests. You can build it and run as follows:
+`rpiasgige` is shipped with a set of unit tests. You can build and run it as follows:
 
 ```
 $ cmake -DBUILD_TESTS=ON ..
@@ -76,11 +76,13 @@ $ ./test_rpiasgige
 
 ## Limitations
 
-Raspberry PI boards are amazing & revolutionary - but general purpose - devices. They are not exaclty intended to perform intensive computing tasks, having significative hardware limitations which must be taken in mind when considering using them to attend to high CPU/IO demands.
+Raspberry PI boards are revolutionary - but general purpose - devices. They are not exaclty intended to perform intensive computing/IO tasks, having significative hardware limitations which must be taken in mind when considering using them in attending to extremme demands.
 
 According to [this](https://www.raspberrypi.org/documentation/computers/processors.html), the L2 shared cache of Raspberry PI 4 processor is set to 1MB whereas the same cache is constrained to only 512 KB in RPI 3 boards. This bottleneck eventually reduces the amount of traffic data/FPS sent/received.
 
 Note taht some RPI boards such as model A and zero don't have a built-in ethernet interface whereas some old models do not have even a wifi interface. For narrowed boards like this you can attach a USB-to-ethernet adapter as a very last alternative but be ready to achieve a not so high data throughtput.
+
+That said, `rpiasgige` is a suitable alternative to retrieve frames at 30-60 fps at low resolutions such as 640x480 or less. If your application requires a high resolution at 80 fps or more, I would recommeded to try an actual gigE camera or even another board with a larger L2 cache.
 
 ## Disclaimer
 
