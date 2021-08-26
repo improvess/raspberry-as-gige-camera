@@ -70,7 +70,7 @@ if(BUILD_TESTS)
 
   set(PROJECT_TEST_NAME test_${PROJECT_NAME})
 
-  include(libs/googletest/install.txt)
+  include(${PROJECT_SOURCE_DIR}/../libs/googletest/install.txt)
 
   include_directories(${PROJECT_SOURCE_DIR}/tests/include)
 

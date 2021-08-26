@@ -6,7 +6,7 @@
 class USB_InterfaceTest : public ::testing::Test
 {
 public:
-    const std::string device_path = "../samples/sample_1280x720.mp4";
+    const std::string device_path = "../../samples/sample_1280x720.mp4";
 };
 
 TEST_F(USB_InterfaceTest, OpenCloseTest)
