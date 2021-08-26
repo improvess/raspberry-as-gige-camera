@@ -56,13 +56,13 @@ DEBUG - /dev/video0 - successfuly initialized.
 DEBUG - /dev/video0 - Waiting for client
 ```
 
-## Communication & getting images from the remote camera
+## Getting images from the camera remotely
 
-Once the `rpiasgige` server s running, it is ready to respond to incoming TCP requests on the defined port and serve images. There are four ways to do it:
+Once the `rpiasgige` server is running, it is ready to respond to incoming TCP requests. There are four ways to do send reqeusts to it:
 
-- Sending command line requests using native TCP programs like [Netcat](https://linuxize.com/post/netcat-nc-command-with-examples). See this examples.
-- Using the provided client program
-- Using the provided client API
+- Sending command line requests using native TCP programs: see this examples.
+- Using the provided client program: see this example.
+- Using the provided client API: see this examples.
 - Writing your own remote calls using the [rpiasgige protocol](https://github.com/doleron/raspberry-as-gige-camera/blob/main/protocol.MD)
 
 ### Building and running the tests
@@ -86,7 +86,7 @@ Note taht some RPI boards such as model A and zero don't have a built-in etherne
 
 This code is in its early stages. It is not tested neither ready for production yet at all.
 
-## Next steps
+## TODO: Next steps
 
 - tests
 - more tests
