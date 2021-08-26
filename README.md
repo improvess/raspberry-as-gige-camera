@@ -88,6 +88,7 @@ This code is in its early stages. It is not tested neither ready for production 
 
 ## TODO: Next steps
 
+- Improving protocol description
 - ~~tests~~
 - More tests
 - Test a bit more, man!
