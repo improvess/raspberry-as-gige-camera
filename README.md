@@ -10,7 +10,7 @@ The code in this repository allows you to expose your USB camera as an ethernet 
 
 ## Why?
 
-Today's gigE cameras - cameras with gigabit ethernet interfaces - are playing a central role in realtime practical computer vision applications due the long range, speed and reliability of underlying ethernet infrastructure. On the other hand, the gigE cameras total cost and availability can be challenging for some projets. On scenarios like this, Raspberry PI boards can be alternative to create ethernet interfaces for your USB camera. This type of usage is exactly what this repository is intended to allow.
+Today's gigE cameras - cameras with gigabit ethernet interfaces - are playing a central role in realtime practical computer vision applications due to the long range, speed and reliability of underlying ethernet infrastructure. On the other hand, gigE cameras total cost & availability can be challenging for some projets. On scenarios like this, Raspberry PI boards can be alternative to create ethernet interfaces for your USB camera. This type of usage is exactly what this repository is intended to allow.
 
 ## Examples of usage
 
