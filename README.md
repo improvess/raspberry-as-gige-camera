@@ -157,7 +157,7 @@ $ echo -e "SET00\xC\x0\x0\x0\x6\x0\x0\x0\x0\x0\x40\x93\x12\xD4\xD1\x41" | nc 192
 
 The communication obay a simple request-response protocol. The program works as a single-channel TCP server, serving only one client conversation by turn.
 
-### The server-client conversation
+### The conversation between server & client 
 
 The conversation between the client and server begins when the client connects to the server. The conversation finishes when one of the following events occurs:
 
@@ -173,11 +173,9 @@ The packat has the following format:
 
 ![image](https://user-images.githubusercontent.com/9665358/130887559-d8a3c0d9-7783-484e-a306-86e3189974f7.png)
 
-The three first fields, namely **status**, **keep-alive** and **data size**, have predefined sizes (4, 1 and 4, respectivelly). The **data** field
+The three first fields, namely **status**, **keep-alive** and **data size**, have predefined sizes in bytes (4, 1 and 4, respectivelly). The **data** field is the only one with an undetermined number of bytes. In a well-formed packat, the size of the data segment is set in the **data-size** field.
 
-
-
-## TCP package formaat
+Obs.: for several practical reasons, the server assumes that **data-size** is bounded to a max positive value.
 
 ## Limitations
 
