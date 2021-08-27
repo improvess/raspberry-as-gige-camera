@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 
     rpiasgige::USB_Interface usb_camera;
 
-    int max_image_size = max_channels*max_width*max_heigth;
+    int max_image_size = max_channels*max_width*max_heigth + rpiasgige::TCP_Server::HEADER_SIZE ;
 
     rpiasgige::TCP_Server tcp_server(device, port, usb_camera, max_image_size);
     std::thread tcp_server_thread([&tcp_server]()

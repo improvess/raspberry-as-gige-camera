@@ -22,7 +22,9 @@ Note that 30 fps is the max camera model frame rate.
 
 Achieving 60 fps @ 640x480 using a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
 
-![image](https://user-images.githubusercontent.com/9665358/130841632-068dc38e-1f1d-4212-993f-d3e9ebe54040.png)
+![image](https://user-images.githubusercontent.com/9665358/131152076-b6e7f95b-a7b9-400f-813a-d98e038efc9a.png)
+
+Instructions how to build and run are shown belo.
 
 ## Building
 
