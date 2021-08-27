@@ -24,9 +24,9 @@ Achieving 60 fps @ 640x480 using a [Sony Playstation 3 Eye camera](https://en.wi
 
 ![image](https://user-images.githubusercontent.com/9665358/131152076-b6e7f95b-a7b9-400f-813a-d98e038efc9a.png)
 
-## Accessing by code
+## Accessing the camera remotely by code
 
-So far, `rpiasgige` has a C++ client API allowing to access and retrieve images from the camera remotely. Check out the example below:
+`rpiasgige` has a C++ client API that allows to access and retrieve images from a camera remotely. Check out the example below:
 
 ```c++
 int main(int argc, char **argv)
@@ -134,6 +134,7 @@ This code is in its early stages. It is not battle-tested neither ready for prod
 - Test a bit more, man!
 - C'mon tests are always welcome! More tests doleron!
 - Removing OpenCV dependence
+- Resovle the cmaera paht (for ex.: /dev/video2) by the USB bus address
 - ~~Coding remote C++ API~~
 - ~~Coding remote client example~~
 - Supporting big-endian clients
