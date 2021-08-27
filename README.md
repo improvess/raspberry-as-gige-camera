@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 }
 ```
 
-Instructions how to build and run are shown belo.
+Instructions how to build and run are shown below.
 
 ## Building
 
