@@ -1,6 +1,6 @@
 # raspberry-as-gige-camera
 
-Transform your USB camera in a gigE device with Raspberry PI.
+Transform your USB camera in a gigE-like camera with Raspberry PI.
 
 ## TL;DR;
 
@@ -63,8 +63,8 @@ DEBUG - /dev/video0 - Waiting for client
 Once the `rpiasgige` server is running, it is ready to respond to incoming TCP requests. There are four ways to make reqeusts to the `rpiasgige` server:
 
 - Sending command-line requests using native SO utilities: check [the examples](https://github.com/doleron/raspberry-as-gige-camera/blob/main/command-line-examples.MD).
-- Using the provided client program: check the example.
-- Using the provided client API: check the examples.
+- Using the provided client program: check [the example](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client).
+- Using the provided client API: check [the API](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/include/rpiasgige/client_api.hpp).
 - Writing your own remote calls using the [rpiasgige protocol](https://github.com/doleron/raspberry-as-gige-camera/blob/main/protocol.MD)
 
 ### Building and running the tests
@@ -101,8 +101,8 @@ This code is in its early stages. It is not battle-tested neither ready for prod
 - Test a bit more, man!
 - C'mon tests are always welcome! More tests doleron!
 - Removing OpenCV dependence
-- Coding remote C++ API
-- Coding remote client example
+- ~~Coding remote C++ API~~
+- ~~Coding remote client example~~
 - Supporting big-endian clients
 - Adding Python client API
 - Adding JavaScript client API
