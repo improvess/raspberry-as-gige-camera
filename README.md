@@ -24,6 +24,34 @@ Achieving 60 fps @ 640x480 using a [Sony Playstation 3 Eye camera](https://en.wi
 
 ![image](https://user-images.githubusercontent.com/9665358/131152076-b6e7f95b-a7b9-400f-813a-d98e038efc9a.png)
 
+## Accessing by code
+
+```c++
+int main(int argc, char **argv)
+{
+
+    rpiasgige::client::Device camera("192.168.2.2", 4001, rpiasgige::client::HEADER_SIZE, 3 * 480 * 640 + rpiasgige::client::HEADER_SIZE);
+
+    if (!camera.open())
+    {
+        std::cerr << "Ops! Something is wrong! Failed to open the camera! Exiting ...\n";
+        exit(0);
+    }
+
+    cv::Mat mat;
+    if (!camera.grab(mat)) {
+        std::cerr << "Failed to grab the frame!\n";
+    } else {
+        int image_size = mat.total() * mat.elemSize();
+        std::cout << "The frame has " << image_size << " bytes!\n";
+    }
+    
+    camera.release();
+    
+    return 0;
+}
+```
+
 Instructions how to build and run are shown belo.
 
 ## Building
