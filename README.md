@@ -26,6 +26,8 @@ Achieving 60 fps @ 640x480 using a [Sony Playstation 3 Eye camera](https://en.wi
 
 ## Accessing by code
 
+So far, `rpiasgige` has a C++ client API to allow access the camera remotely. Check out the example below:
+
 ```c++
 int main(int argc, char **argv)
 {
@@ -34,16 +36,19 @@ int main(int argc, char **argv)
 
     if (!camera.open())
     {
-        std::cerr << "Ops! Something is wrong! Failed to open the camera! Exiting ...\n";
+        std::cerr << "Failed to open the camera! Exiting ...\n";
         exit(0);
     }
 
     cv::Mat mat;
-    if (!camera.grab(mat)) {
-        std::cerr << "Failed to grab the frame!\n";
-    } else {
+    bool success = camera.grab(mat);
+    
+    if (success) 
+    {
         int image_size = mat.total() * mat.elemSize();
         std::cout << "The frame has " << image_size << " bytes!\n";
+    } else {
+        std::cerr << "Failed to grab the frame!\n";
     }
     
     camera.release();
