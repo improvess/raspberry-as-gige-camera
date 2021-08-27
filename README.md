@@ -26,7 +26,7 @@ Achieving 60 fps @ 640x480 using a [Sony Playstation 3 Eye camera](https://en.wi
 
 ## Accessing by code
 
-So far, `rpiasgige` has a C++ client API to allow access the camera remotely. Check out the example below:
+So far, `rpiasgige` has a C++ client API allowing to access and retrieve images from the camera remotely. Check out the example below:
 
 ```c++
 int main(int argc, char **argv)
