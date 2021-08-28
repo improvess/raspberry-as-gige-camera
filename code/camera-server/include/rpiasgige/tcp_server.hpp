@@ -35,7 +35,13 @@ namespace rpiasgige
                     {
                         image_size = mat.total() * mat.elemSize();
                         const char *mat_data = (const char *)mat.data;
-                        set_buffer_value(HEADER_SIZE, image_size, mat_data);
+                        int size_int = sizeof(int);
+                        const int metada_data_size = 3*size_int;
+                        set_buffer_value(HEADER_SIZE, size_int, &mat.rows);
+                        set_buffer_value(HEADER_SIZE + size_int, size_int, &mat.cols);
+                        int type = mat.type();
+                        set_buffer_value(HEADER_SIZE + 2*size_int, size_int, &type);
+                        set_buffer_value(HEADER_SIZE + metada_data_size, image_size, mat_data);
                         send_buffer_to_client(client_socket, "0200", image_size);
                     } else {
                         send_buffer_to_client(client_socket, "NOPE", 0);
