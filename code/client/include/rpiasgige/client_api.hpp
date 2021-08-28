@@ -28,9 +28,13 @@ namespace rpiasgige
         static const int DATA_SIZE_ADDRESS = 5;
         static const int KEEP_ALIVE_ADDRESS = 4;
         static const int HEADER_SIZE = STATUS_SIZE + KEEP_ALIVE_SIZE + DATA_SIZE;
+        static const int IMAGE_META_DATA_SIZE = 3 * sizeof(int);
 
         class Device;
 
+        /**
+         * Packet is a mold to make dealing with request / response buffers easier.
+         **/
         struct Packet {
             char * status;
             bool keep_alive;
@@ -40,18 +44,24 @@ namespace rpiasgige
             Packet(char * status, bool keep_alive, int data_size, char * data) : 
                 status(status), keep_alive(keep_alive), data_size(data_size), data(data) {}
 
-            /* *
+            /**
              * return true if the packet status is equal to the parameter query
-             * */
+             **/
             bool check_if_status_is(const char * query) {
                 return strncmp(status, query, STATUS_SIZE) == 0;
             }
 
+            /**
+             * set the status code of the Packet to new_status
+             **/
             void set_status(const char * new_status) {
                 memcpy(this->status, new_status, STATUS_SIZE);
             }
 
-            std::string get_status_as_str() const {
+            /**
+             * generates a string copy of the packet's status
+             **/
+            const std::string get_status_as_str() const {
                 char data[STATUS_SIZE + 1];
                 memcpy(data, this->status, STATUS_SIZE);
                 data[STATUS_SIZE] = '\0';
@@ -59,9 +69,16 @@ namespace rpiasgige
             }
         };
 
+        /**
+         * This class represents a remote camera. It provides convenient API-level methods to allow open, close, retrieve, etc, a remote camera.
+         * Basically, the methods serializes, send, read, and deserialize data from the camera.
+         * 
+         */
         class Device
         {
         public:
+            Device(const std::string &server_address, const int server_port, const int _response_buffer_size) : Device(server_address, server_port, HEADER_SIZE + 12, _response_buffer_size) {}
+                
             Device(const std::string &server_address, const int server_port, const int _request_buffer_size, const int _response_buffer_size) : address(server_address), port(server_port){
                 
                 if (_response_buffer_size > this->response_buffer_size)
@@ -85,7 +102,7 @@ namespace rpiasgige
             double get(int propId, bool keep_alive = false);
             bool open(bool keep_alive = false);
             bool isOpened(bool keep_alive = false);
-            bool grab(cv::Mat &dest, bool keep_alive = false);
+            bool retrieve(cv::Mat &dest, bool keep_alive = false);
             bool release(bool keep_alive = false);
             std::string ping(bool keep_alive = false);
 

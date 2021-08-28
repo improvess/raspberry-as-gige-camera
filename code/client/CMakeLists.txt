@@ -27,18 +27,24 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 file(GLOB SOURCES_LIB "${PROJECT_SOURCE_DIR}/src/lib/*.cpp")
 add_library(${PROJECT_NAME}_lib ${SOURCES_LIB})
 
-# building app
+# building basic example
 
-file(GLOB APP_SOURCES 
+file(GLOB BASIC_EXAMPLE_SOURCES 
   ${PROJECT_SOURCE_DIR}/src/backward.cpp 
-  ${PROJECT_SOURCE_DIR}/src/main.cpp )
-add_executable(${PROJECT_NAME} ${APP_SOURCES})
+  ${PROJECT_SOURCE_DIR}/examples/basic.cpp )
+add_executable(basic_example ${BASIC_EXAMPLE_SOURCES})
+target_compile_options(basic_example PRIVATE -pedantic)
+target_link_libraries(basic_example ${PROJECT_NAME}_lib)
+target_link_libraries(basic_example bfd dl)
+target_link_libraries(basic_example ${OpenCV_LIBS} -pthread)
 
-target_compile_options(${PROJECT_NAME} PRIVATE -pedantic)
-target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_lib)
+# building basic example
 
-# linking stacktracing libs. See https://github.com/bombela/backward-cpp#libbfd-from-the-gnubinutils
-target_link_libraries(${PROJECT_NAME} bfd dl)
-
-# linking OpenCV
-target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} -pthread)
+file(GLOB CHECK_CAMERA_SYNC 
+  ${PROJECT_SOURCE_DIR}/src/backward.cpp 
+  ${PROJECT_SOURCE_DIR}/examples/check_camera_synchronization.cpp )
+add_executable(check_camera_synchronization ${CHECK_CAMERA_SYNC})
+target_compile_options(check_camera_synchronization PRIVATE -pedantic)
+target_link_libraries(check_camera_synchronization ${PROJECT_NAME}_lib)
+target_link_libraries(check_camera_synchronization bfd dl)
+target_link_libraries(check_camera_synchronization ${OpenCV_LIBS} -pthread)

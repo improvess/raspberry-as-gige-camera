@@ -34,6 +34,26 @@ namespace rpiasgige
             return result;
         }
 
+        std::string Device::ping(bool keep_alive)
+        {
+            std::string result = "";
+            try
+            {
+                Packet request(this->request_buffer, keep_alive, 0, this->request_buffer + HEADER_SIZE);
+                request.set_status("PING");
+                
+                Packet response(this->response_buffer, keep_alive, 0, this->response_buffer + HEADER_SIZE);
+                this->send_request(request, response);
+                result = response.get_status_as_str();
+            }
+            catch (TimeoutException &tex)
+            {
+                this->handle_timeout(tex);
+            }
+
+            return result;
+        }
+
         double Device::get(int propId, bool keep_alive)
         {
             double result = -1.0;
@@ -47,31 +67,6 @@ namespace rpiasgige
                 Packet response(this->response_buffer, keep_alive, 0, this->response_buffer + HEADER_SIZE);
                 this->send_request(request, response);
                 this->read_response_data(&result, sizeof(result), response);
-            }
-            catch (TimeoutException &tex)
-            {
-                this->handle_timeout(tex);
-            }
-            return result;
-        }
-
-        std::string Device::ping(bool keep_alive)
-        {
-            std::string result = "";
-            try
-            {
-                Packet request(this->request_buffer, keep_alive, 0, this->request_buffer + HEADER_SIZE);
-                request.set_status("PING");
-
-                Packet response(this->response_buffer, keep_alive, 0, this->response_buffer + HEADER_SIZE);
-                this->send_request(request, response);
-                if (response.data_size == 4)
-                {
-                    char data[5];
-                    this->read_response_data(data, 4, response);
-                    data[4] = '\0';
-                    result = std::string(data);
-                }
             }
             catch (TimeoutException &tex)
             {
@@ -118,7 +113,7 @@ namespace rpiasgige
             return result;
         }
 
-        bool Device::grab(cv::Mat &dest, bool keep_alive)
+        bool Device::retrieve(cv::Mat &dest, bool keep_alive)
         {
             bool result = false;
             try
@@ -131,9 +126,13 @@ namespace rpiasgige
                 result = response.check_if_status_is("0200");
                 if (result)
                 {
-                    //FIXME get size & type from data
-                    cv::Mat temp = cv::Mat::zeros(480, 640, CV_8UC3);
-                    temp.data = (unsigned char *)response.data;
+                    const char * data = response.data;
+                    int size_int = sizeof(int);
+                    const int * rows = (int *)data;
+                    const int * cols = (int *)(data + size_int);
+                    const int * type = (int *)(data + 2*size_int);
+                    cv::Mat temp = cv::Mat::zeros(*rows, *cols, *type);
+                    temp.data = (unsigned char *)response.data + 3*size_int;
                     dest = temp;
                 }
             }

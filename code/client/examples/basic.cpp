@@ -2,32 +2,54 @@
 
 #include "rpiasgige/client_api.hpp"
 
+using namespace rpiasgige::client;
+
+/**
+ * This is a basic example of rpiasgige usage 
+ * 
+ **/
 int main(int argc, char **argv)
 {
 
-    rpiasgige::client::Device camera("192.168.2.2", 4001, rpiasgige::client::HEADER_SIZE + 32, 3 * 480 * 640*2 + rpiasgige::client::HEADER_SIZE);
 
+    const int frame_width = 1280;
+    const int frame_height = 720;
+    const auto mjpg = cv::VideoWriter::fourcc('M', 'J', 'P', 'G');
+    const int fps = 30;
+
+    const int MAX_IMAGE_SIZE = frame_width * frame_height * 3; // for a 3-channel image with max resolution of 1280x720 
+
+    const std::string address = "192.168.2.2";
+    const int port = 4001;
+
+    Device camera(address, port, MAX_IMAGE_SIZE + HEADER_SIZE + IMAGE_META_DATA_SIZE);
+
+    // make the conversation persistent
     bool keep_alive = true;
+
+    // optional. Sending some packets to the camera
+
+    for (int i = 0; i < 10; i++) {
+        std::cout << "Camera replied " << camera.ping(keep_alive) << "\n";
+    }
+
+    // Checking if the camera is opened already
     if (camera.isOpened(keep_alive))
     {
         std::cout << "Nice! The camera is opened already!\n";
+
+    //opening the camera once it is not yet
     } else if (!camera.open(keep_alive))
     {
         std::cerr << "Ops! Something is wrong! Failed to open the camera! Exiting ...\n";
         exit(0);
     }
 
-    if (camera.isOpened(keep_alive))
-    {
-        std::cout << "Ok! The camera is now opened and read to grab some images!\n";
-    }
-    else
-    {
-        std::cerr << "OMG! Something is wrong! The camera should be open but it is not!\n";
-        exit(0);
-    }
+    // setting camera properties
 
-    if (camera.set(cv::CAP_PROP_FRAME_WIDTH, 640, keep_alive))
+    camera.set(cv::CAP_PROP_AUTOFOCUS, 0, keep_alive);
+
+    if (camera.set(cv::CAP_PROP_FRAME_WIDTH, frame_width, keep_alive))
     {
         std::cout << "Frame width set!\n";
     }
@@ -37,7 +59,7 @@ int main(int argc, char **argv)
         exit(0);
     }
 
-    if (camera.set(cv::CAP_PROP_FRAME_HEIGHT, 480, keep_alive))
+    if (camera.set(cv::CAP_PROP_FRAME_HEIGHT, frame_height, keep_alive))
     {
         std::cout << "Frame height set!\n";
     }
@@ -47,7 +69,7 @@ int main(int argc, char **argv)
         exit(0);
     }
 
-    if (camera.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), keep_alive))
+    if (camera.set(cv::CAP_PROP_FOURCC, mjpg, keep_alive))
     {
         std::cout << "MJPG encoding set!\n";
     }
@@ -57,7 +79,7 @@ int main(int argc, char **argv)
         exit(0);
     }
 
-    if (camera.set(cv::CAP_PROP_FPS, 60, keep_alive))
+    if (camera.set(cv::CAP_PROP_FPS, fps, keep_alive))
     {
         std::cout << "Nice! Your camera seems to support delivering at 60 fps!!!\n";
     }
@@ -69,10 +91,11 @@ int main(int argc, char **argv)
     rpiasgige::client::FPS_Counter fps_counter(120);
 
     cv::Mat mat;
-    int key = 0;
-    for(int i = 0; key != 27 && i < 1000; i++) {
 
-        if(!camera.grab(mat, keep_alive)) {
+    int key = 0;
+    for(int i = 0; key != 27; i++) {
+
+        if(!camera.retrieve(mat, keep_alive)) {
             std::cerr << "This is not good. Failed to grab the " << i << "-th frame!\n";
             break;
         } else {
@@ -80,11 +103,9 @@ int main(int argc, char **argv)
             if (fps_counter.loop(image_size)) {
                 printf("fps: %.1f mean data read size: %.1f\n" , fps_counter.get_fps(), fps_counter.get_mean_data_size());
             }
+            // note that imshow & waitKey slower fps
             cv::imshow("mat", mat);
-            // note that waitKey slower fps
-            if (i % 4 == 0) {
-                key = cv::waitKey(1);
-            }
+            key = cv::waitKey(1);
         }
     }
 
