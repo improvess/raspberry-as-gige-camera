@@ -10,19 +10,17 @@ The code in this repository allows you to expose your USB camera as an ethernet 
 
 ## Why?
 
-Today's gigE cameras - cameras with gigabit ethernet interfaces - are playing a central role in realtime practical computer vision applications. The importance of this type of camera is due to the long range, speed and reliability of the underlying ethernet infrastructure on which the camera runs. On the other hand however, the gigE cameras' total cost and they scarce availability can be challenging for some projets and schedules. On scenarios like this, Raspberry PI boards can be an alternative to create ethernet interfaces for your USB camera. This type of usage is exactly what this repository is intended to allow.
+A real gigE camera is great but not cheap and in many situations not available on stock. In scenarios like this, you can use your a Raspberry Pi as an alternative to provide an ethernet interface for your USB camera.
 
 ## Examples of usage
 
-Grabbing 320x240 images from a [Microsoft Lifecam Studio](https://www.microsoft.com/en-ww/accessories/products/webcams/lifecam-studio) at 30 fps.
+Grabbing 320x240 images at 100-150 fps from a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
 
-![image](https://user-images.githubusercontent.com/9665358/130779743-b97e4d8d-5367-46c5-9202-b6bdd8eb7154.png)
+![image](https://user-images.githubusercontent.com/9665358/131229615-f0a73265-755d-4572-8946-17fb75ca8675.png)
 
-Note that 30 fps is the max camera model frame rate.
+Achieving 14-19 fps at 1280x720 using a [Microsoft Lifecam Studio](https://www.microsoft.com/en-ww/accessories/products/webcams/lifecam-studio).
 
-Achieving 60 fps @ 640x480 using a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
-
-![image](https://user-images.githubusercontent.com/9665358/131152076-b6e7f95b-a7b9-400f-813a-d98e038efc9a.png)
+![image](https://user-images.githubusercontent.com/9665358/131230242-ea0ed8ed-9590-42cd-8247-5f0094396bc0.png)
 
 ## Accessing the camera remotely by code
 
@@ -33,10 +31,12 @@ Achieving 60 fps @ 640x480 using a [Sony Playstation 3 Eye camera](https://en.wi
 
 #include "rpiasgige/client_api.hpp"
 
+using namespace rpiasgige::client;
+
 int main(int argc, char **argv)
 {
 
-    rpiasgige::client::Device camera("192.168.2.2", 4001, rpiasgige::client::HEADER_SIZE, 3 * 480 * 640 + rpiasgige::client::HEADER_SIZE);
+    Device camera("192.168.2.2", 4001, HEADER_SIZE, 3 * 480 * 640 + HEADER_SIZE);
 
     if (!camera.open())
     {
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     }
 
     cv::Mat mat;
-    bool success = camera.grab(mat);
+    bool success = camera.retrieve(mat);
     
     if (success) 
     {

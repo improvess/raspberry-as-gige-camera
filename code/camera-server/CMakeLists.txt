@@ -55,6 +55,18 @@ target_link_libraries(usb_test_${PROJECT_NAME} ${PROJECT_NAME}_lib)
 target_link_libraries(usb_test_${PROJECT_NAME} bfd dl)
 target_link_libraries(usb_test_${PROJECT_NAME} ${OpenCV_LIBS} -pthread)
 
+# building simple-opencv app
+
+file(GLOB SIMPLE_OPENCV_SOURCES 
+  ${PROJECT_SOURCE_DIR}/src/backward.cpp 
+  ${PROJECT_SOURCE_DIR}/extras/simple_opencv_cap.cpp )
+add_executable(simple_opencv_app ${SIMPLE_OPENCV_SOURCES})
+
+target_compile_options(simple_opencv_app PRIVATE -pedantic)
+target_link_libraries(simple_opencv_app ${PROJECT_NAME}_lib)
+target_link_libraries(simple_opencv_app bfd dl)
+target_link_libraries(simple_opencv_app ${OpenCV_LIBS} -pthread)
+
 EXECUTE_PROCESS( COMMAND uname -m COMMAND tr -d '\n' OUTPUT_VARIABLE ARCHITECTURE )
 message(STATUS "Building for architecture: ${ARCHITECTURE}")
 

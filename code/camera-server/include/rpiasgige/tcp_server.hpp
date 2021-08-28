@@ -22,8 +22,6 @@ namespace rpiasgige
 
                 const char *request_buffer_ro = this->get_request_buffer();
 
-                //printf("buffer is : %s\n", request_buffer_ro);
-
                 if (strncmp("GRAB", request_buffer_ro, STATUS_SIZE) == 0)
                 {
 
@@ -37,10 +35,16 @@ namespace rpiasgige
                     {
                         image_size = mat.total() * mat.elemSize();
                         const char *mat_data = (const char *)mat.data;
-                        set_buffer_value(HEADER_SIZE, image_size, mat_data);
+                        int size_int = sizeof(int);
+                        const int metada_data_size = 3*size_int;
+                        set_buffer_value(HEADER_SIZE, size_int, &mat.rows);
+                        set_buffer_value(HEADER_SIZE + size_int, size_int, &mat.cols);
+                        int type = mat.type();
+                        set_buffer_value(HEADER_SIZE + 2*size_int, size_int, &type);
+                        set_buffer_value(HEADER_SIZE + metada_data_size, image_size, mat_data);
                         send_buffer_to_client(client_socket, "0200", image_size);
                     } else {
-                        send_buffer_to_client(client_socket, "0404", 0);
+                        send_buffer_to_client(client_socket, "NOPE", 0);
                     }
         
                 }
@@ -60,7 +64,7 @@ namespace rpiasgige
                         {
                             send_buffer_to_client(client_socket, "0200", 0);
                         } else {
-                            send_buffer_to_client(client_socket, "0404", 0);
+                            send_buffer_to_client(client_socket, "NOPE", 0);
                         }
 
                     } else {
@@ -75,7 +79,7 @@ namespace rpiasgige
                     {
                         send_buffer_to_client(client_socket, "0200", 0);
                     } else {
-                        send_buffer_to_client(client_socket, "0404", 0);
+                        send_buffer_to_client(client_socket, "NOPE", 0);
                     }
 
                 } else if (strncmp("CLOS", request_buffer_ro, STATUS_SIZE) == 0)
@@ -86,7 +90,7 @@ namespace rpiasgige
                     {
                         send_buffer_to_client(client_socket, "0200", 0);
                     } else {
-                        send_buffer_to_client(client_socket, "0404", 0);
+                        send_buffer_to_client(client_socket, "NOPE", 0);
                     }
 
                 } else if (strncmp("GET0", request_buffer_ro, STATUS_SIZE) == 0)
@@ -110,16 +114,16 @@ namespace rpiasgige
                     {
                         send_buffer_to_client(client_socket, "0200", 0);
                     } else {
-                        send_buffer_to_client(client_socket, "0404", 0);
+                        send_buffer_to_client(client_socket, "NOPE", 0);
                     }
 
-                } else if (strncmp("ping", request_buffer_ro, STATUS_SIZE) == 0)
+                } else if (strncmp("PING", request_buffer_ro, STATUS_SIZE) == 0)
                 {
-                    send_buffer_to_client(client_socket, "pong", 0);
+                    send_buffer_to_client(client_socket, "PONG", 0);
                 }
                 else
                 {
-                    // NOP
+                    send_buffer_to_client(client_socket, "0404", 0);
                 }
             }
 
