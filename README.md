@@ -1,6 +1,6 @@
 # raspberry-as-gige-camera
 
-Transform your USB camera in a gigE device with Raspberry PI.
+Transform your USB camera in a gigE-like camera with Raspberry PI.
 
 ## TL;DR;
 
@@ -10,19 +10,58 @@ The code in this repository allows you to expose your USB camera as an ethernet 
 
 ## Why?
 
-Today's gigE cameras - cameras with gigabit ethernet interfaces - are playing a central role in realtime practical computer vision applications due to the long range, speed and reliability of underlying ethernet infrastructure. On the other hand, gigE cameras total cost & availability can be challenging for some projets. On scenarios like this, Raspberry PI boards can be alternative to create ethernet interfaces for your USB camera. This type of usage is exactly what this repository is intended to allow.
+A real gigE camera is great but not cheap and in many situations not available on stock. In scenarios like this, you can use your a Raspberry Pi as an alternative to provide an ethernet interface for your USB camera.
 
 ## Examples of usage
 
-Grabbing 320x240 images from a [Microsoft Lifecam Studio](https://www.microsoft.com/en-ww/accessories/products/webcams/lifecam-studio) at 30 fps.
+Grabbing 320x240 images at 100-150 fps from a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
 
-![image](https://user-images.githubusercontent.com/9665358/130779743-b97e4d8d-5367-46c5-9202-b6bdd8eb7154.png)
+![image](https://user-images.githubusercontent.com/9665358/131229615-f0a73265-755d-4572-8946-17fb75ca8675.png)
 
-Note that 30 fps is the max camera model frame rate.
+Achieving 14-19 fps at 1280x720 using a [Microsoft Lifecam Studio](https://www.microsoft.com/en-ww/accessories/products/webcams/lifecam-studio).
 
-Achieving 60 fps @ 640x480 using a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
+![image](https://user-images.githubusercontent.com/9665358/131230242-ea0ed8ed-9590-42cd-8247-5f0094396bc0.png)
 
-![image](https://user-images.githubusercontent.com/9665358/130841632-068dc38e-1f1d-4212-993f-d3e9ebe54040.png)
+## Accessing the camera remotely by code
+
+`rpiasgige` has a C++ client API that allows to access and retrieve images from a camera remotely. Check out the example below:
+
+```c++
+#include <iostream>
+
+#include "rpiasgige/client_api.hpp"
+
+using namespace rpiasgige::client;
+
+int main(int argc, char **argv)
+{
+
+    Device camera("192.168.2.2", 4001, HEADER_SIZE, 3 * 480 * 640 + HEADER_SIZE);
+
+    if (!camera.open())
+    {
+        std::cerr << "Failed to open the camera! Exiting ...\n";
+        exit(0);
+    }
+
+    cv::Mat mat;
+    bool success = camera.retrieve(mat);
+    
+    if (success) 
+    {
+        int image_size = mat.total() * mat.elemSize();
+        std::cout << "The frame has " << image_size << " bytes!\n";
+    } else {
+        std::cerr << "Failed to grab the frame!\n";
+    }
+    
+    camera.release();
+    
+    return 0;
+}
+```
+
+Instructions how to build and run are shown below.
 
 ## Building
 
@@ -61,8 +100,8 @@ DEBUG - /dev/video0 - Waiting for client
 Once the `rpiasgige` server is running, it is ready to respond to incoming TCP requests. There are four ways to make reqeusts to the `rpiasgige` server:
 
 - Sending command-line requests using native SO utilities: check [the examples](https://github.com/doleron/raspberry-as-gige-camera/blob/main/command-line-examples.MD).
-- Using the provided client program: check the example.
-- Using the provided client API: check the examples.
+- Using the provided client program: check [the example](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client).
+- Using the provided client API: check [the API](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/include/rpiasgige/client_api.hpp).
 - Writing your own remote calls using the [rpiasgige protocol](https://github.com/doleron/raspberry-as-gige-camera/blob/main/protocol.MD)
 
 ### Building and running the tests
@@ -99,8 +138,9 @@ This code is in its early stages. It is not battle-tested neither ready for prod
 - Test a bit more, man!
 - C'mon tests are always welcome! More tests doleron!
 - Removing OpenCV dependence
-- Coding remote C++ API
-- Coding remote client example
+- Resovle the cmaera paht (for ex.: /dev/video2) by the USB bus address
+- ~~Coding remote C++ API~~
+- ~~Coding remote client example~~
 - Supporting big-endian clients
 - Adding Python client API
 - Adding JavaScript client API
