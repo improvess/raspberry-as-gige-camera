@@ -18,6 +18,10 @@ Grabbing 320x240 images at 100-150 fps from a [Sony Playstation 3 Eye camera](ht
 
 ![image](https://user-images.githubusercontent.com/9665358/131229615-f0a73265-755d-4572-8946-17fb75ca8675.png)
 
+Achieving 14-19 fps at 1280x720 using a [Microsoft Lifecam Studio](https://www.microsoft.com/en-ww/accessories/products/webcams/lifecam-studio).
+
+![image](https://user-images.githubusercontent.com/9665358/131230210-30ed799b-99f7-4ee3-99d1-7de856d21f65.png)
+
 ## Accessing the camera remotely by code
 
 `rpiasgige` has a C++ client API that allows to access and retrieve images from a camera remotely. Check out the example below:
