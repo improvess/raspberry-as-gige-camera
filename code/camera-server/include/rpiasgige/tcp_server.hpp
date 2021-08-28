@@ -22,8 +22,6 @@ namespace rpiasgige
 
                 const char *request_buffer_ro = this->get_request_buffer();
 
-                //printf("buffer is : %s\n", request_buffer_ro);
-
                 if (strncmp("GRAB", request_buffer_ro, STATUS_SIZE) == 0)
                 {
 
@@ -40,7 +38,7 @@ namespace rpiasgige
                         set_buffer_value(HEADER_SIZE, image_size, mat_data);
                         send_buffer_to_client(client_socket, "0200", image_size);
                     } else {
-                        send_buffer_to_client(client_socket, "0404", 0);
+                        send_buffer_to_client(client_socket, "NOPE", 0);
                     }
         
                 }
@@ -60,7 +58,7 @@ namespace rpiasgige
                         {
                             send_buffer_to_client(client_socket, "0200", 0);
                         } else {
-                            send_buffer_to_client(client_socket, "0404", 0);
+                            send_buffer_to_client(client_socket, "NOPE", 0);
                         }
 
                     } else {
@@ -75,7 +73,7 @@ namespace rpiasgige
                     {
                         send_buffer_to_client(client_socket, "0200", 0);
                     } else {
-                        send_buffer_to_client(client_socket, "0404", 0);
+                        send_buffer_to_client(client_socket, "NOPE", 0);
                     }
 
                 } else if (strncmp("CLOS", request_buffer_ro, STATUS_SIZE) == 0)
@@ -86,7 +84,7 @@ namespace rpiasgige
                     {
                         send_buffer_to_client(client_socket, "0200", 0);
                     } else {
-                        send_buffer_to_client(client_socket, "0404", 0);
+                        send_buffer_to_client(client_socket, "NOPE", 0);
                     }
 
                 } else if (strncmp("GET0", request_buffer_ro, STATUS_SIZE) == 0)
@@ -110,16 +108,16 @@ namespace rpiasgige
                     {
                         send_buffer_to_client(client_socket, "0200", 0);
                     } else {
-                        send_buffer_to_client(client_socket, "0404", 0);
+                        send_buffer_to_client(client_socket, "NOPE", 0);
                     }
 
-                } else if (strncmp("ping", request_buffer_ro, STATUS_SIZE) == 0)
+                } else if (strncmp("PING", request_buffer_ro, STATUS_SIZE) == 0)
                 {
-                    send_buffer_to_client(client_socket, "pong", 0);
+                    send_buffer_to_client(client_socket, "PONG", 0);
                 }
                 else
                 {
-                    // NOP
+                    send_buffer_to_client(client_socket, "0404", 0);
                 }
             }
 

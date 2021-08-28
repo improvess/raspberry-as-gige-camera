@@ -9,8 +9,8 @@ int main(int argc, char **argv)
     const std::string keys =
         "{device           | /dev/video0    | camera path such as /dev/video0         }"
         "{port           | 4001    | TCP port to accept connections         }"
-        "{max-width-resolution           | 640    | Max acceptable width image resolution         }"
-        "{max-heigth-resolution           | 480    | Max acceptable heigth image resolution         }"
+        "{max-width-resolution           | 1920    | Max acceptable width image resolution         }"
+        "{max-heigth-resolution           | 1080    | Max acceptable heigth image resolution         }"
         "{max-number-of-channels           | 3    | Max acceptable number of image channels         }"
         ;
 
