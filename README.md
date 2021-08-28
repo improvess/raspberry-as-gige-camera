@@ -14,7 +14,7 @@ A real gigE camera is great but not cheap and in many situations not available o
 
 ## Examples of usage
 
-Grabbing 320x240 images at 100-150 fps from a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
+Grabbing at 100-150 fps with resolution 320x240 from a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
 
 ![image](https://user-images.githubusercontent.com/9665358/131229615-f0a73265-755d-4572-8946-17fb75ca8675.png)
 
