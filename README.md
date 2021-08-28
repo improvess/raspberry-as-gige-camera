@@ -31,10 +31,12 @@ Achieving 14-19 fps at 1280x720 using a [Microsoft Lifecam Studio](https://www.m
 
 #include "rpiasgige/client_api.hpp"
 
+using namespace rpiasgige::client;
+
 int main(int argc, char **argv)
 {
 
-    rpiasgige::client::Device camera("192.168.2.2", 4001, rpiasgige::client::HEADER_SIZE, 3 * 480 * 640 + rpiasgige::client::HEADER_SIZE);
+    Device camera("192.168.2.2", 4001, HEADER_SIZE, 3 * 480 * 640 + HEADER_SIZE);
 
     if (!camera.open())
     {
@@ -43,7 +45,7 @@ int main(int argc, char **argv)
     }
 
     cv::Mat mat;
-    bool success = camera.grab(mat);
+    bool success = camera.retrieve(mat);
     
     if (success) 
     {
