@@ -20,7 +20,7 @@ Grabbing 320x240 images at 100-150 fps from a [Sony Playstation 3 Eye camera](ht
 
 Achieving 14-19 fps at 1280x720 using a [Microsoft Lifecam Studio](https://www.microsoft.com/en-ww/accessories/products/webcams/lifecam-studio).
 
-![image](https://user-images.githubusercontent.com/9665358/131230210-30ed799b-99f7-4ee3-99d1-7de856d21f65.png)
+![image](https://user-images.githubusercontent.com/9665358/131230242-ea0ed8ed-9590-42cd-8247-5f0094396bc0.png)
 
 ## Accessing the camera remotely by code
 
