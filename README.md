@@ -14,15 +14,9 @@ A real gigE camera is great but not cheap and in many situations not available o
 
 ## Examples of usage
 
-Grabbing 320x240 images from a [Microsoft Lifecam Studio](https://www.microsoft.com/en-ww/accessories/products/webcams/lifecam-studio) at 30 fps.
+Grabbing 320x240 images at 100-150 fps from a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
 
-![image](https://user-images.githubusercontent.com/9665358/130779743-b97e4d8d-5367-46c5-9202-b6bdd8eb7154.png)
-
-Note that 30 fps is the max camera model frame rate.
-
-Achieving roughly 60 fps @ 640x480 using a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
-
-![image](https://user-images.githubusercontent.com/9665358/131152076-b6e7f95b-a7b9-400f-813a-d98e038efc9a.png)
+![image](https://user-images.githubusercontent.com/9665358/131229615-f0a73265-755d-4572-8946-17fb75ca8675.png)
 
 ## Accessing the camera remotely by code
 
