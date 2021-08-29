@@ -90,6 +90,8 @@ namespace rpiasgige
         class Device
         {
         public:
+            Device(const std::string &server_address, const int server_port) : Device(server_address, server_port, HEADER_SIZE + 12, HEADER_SIZE + IMAGE_META_DATA_SIZE + 1920 * 1080 * 3 ) {}
+
             Device(const std::string &server_address, const int server_port, const int _response_buffer_size) : Device(server_address, server_port, HEADER_SIZE + 12, _response_buffer_size) {}
 
             Device(const std::string &server_address, const int server_port, const int _request_buffer_size, const int _response_buffer_size) : address(server_address), port(server_port)

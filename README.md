@@ -4,9 +4,29 @@ Transform your USB camera in a gigE-like camera with Raspberry PI.
 
 ## TL;DR;
 
-The code in this repository allows you to expose your USB camera as an ethernet device using Raspberry PI's gigabyte ethernet port.
+The code in this repository allows you to expose your USB camera as an ethernet device using Raspberry PI's gigabyte ethernet port. In other words, you can access your remote USB camera just like you do with a local USB camera.
 
 ![image](https://user-images.githubusercontent.com/9665358/130965792-e9bc97ef-f7de-4e65-ac04-72f85d3257f2.png)
+
+```c++
+#include "rpiasgige/client_api.hpp"
+
+int main(int argc, char **argv) {
+
+    rpiasgige::client::Device camera("192.168.2.2", 4001);
+
+    camera.open();
+
+    cv::Mat mat;
+    camera.retrieve(mat);
+
+    cv::imshow(mat);
+    
+    camera.release();
+    
+    return 0;
+}
+```
 
 ## Why?
 
@@ -14,52 +34,13 @@ A real [gigE](https://www.automate.org/a3-content/vision-standards-gige-vision) 
 
 ## Examples of usage
 
-Grabbing at 100-150 fps with resolution 320x240 from a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
+Grabbing images at 100-150 fps with resolution 320x240 from a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
 
 ![image](https://user-images.githubusercontent.com/9665358/131229615-f0a73265-755d-4572-8946-17fb75ca8675.png)
 
 Achieving 14-19 fps at 1280x720 using a [Microsoft Lifecam Studio](https://www.microsoft.com/en-ww/accessories/products/webcams/lifecam-studio).
 
 ![image](https://user-images.githubusercontent.com/9665358/131230242-ea0ed8ed-9590-42cd-8247-5f0094396bc0.png)
-
-## Accessing the camera remotely by code
-
-`rpiasgige` has a C++ client API that allows to access and retrieve images from a camera remotely. Check out the example below:
-
-```c++
-#include <iostream>
-
-#include "rpiasgige/client_api.hpp"
-
-using namespace rpiasgige::client;
-
-int main(int argc, char **argv)
-{
-
-    Device camera("192.168.2.2", 4001, HEADER_SIZE, 3 * 480 * 640 + HEADER_SIZE);
-
-    if (!camera.open())
-    {
-        std::cerr << "Failed to open the camera! Exiting ...\n";
-        exit(0);
-    }
-
-    cv::Mat mat;
-    bool success = camera.retrieve(mat);
-    
-    if (success) 
-    {
-        int image_size = mat.total() * mat.elemSize();
-        std::cout << "The frame has " << image_size << " bytes!\n";
-    } else {
-        std::cerr << "Failed to grab the frame!\n";
-    }
-    
-    camera.release();
-    
-    return 0;
-}
-```
 
 Instructions how to build and run are shown below.
 
