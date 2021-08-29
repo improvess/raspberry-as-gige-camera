@@ -6,6 +6,7 @@ Transform your USB camera in an ethernet camera with Raspberry PI.
 
 The code in this repository allows you to expose your USB camera as an ethernet device using Raspberry PI's gigabyte ethernet port. In other words, you can access your remote USB camera just like you do with a local USB camera.
 
+Using C++:
 ```c++
 #include "rpiasgige/client_api.hpp"
 
@@ -19,11 +20,26 @@ int main(int argc, char **argv) {
     camera.retrieve(image);
 
     cv::imshow(image);
-    
     camera.release();
+    cv::waitKey();
     
     return 0;
 }
+```
+Or using Python:
+```python
+from rpiasgige.client_api import Device
+
+camera = Device("192.168.2.2", 4001)
+
+camera.open()
+
+ret, frame = camera.read()
+
+cv.imshow("frame", frame)
+cv.waitKey()
+
+camera.release():
 ```
 <p align="center">
   <img  width="400" src="https://user-images.githubusercontent.com/9665358/130965792-e9bc97ef-f7de-4e65-ac04-72f85d3257f2.png">
