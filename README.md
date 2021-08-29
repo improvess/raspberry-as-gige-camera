@@ -69,7 +69,7 @@ This repo uses [CMake](https://cmake.org/) and [OpenCV](https://opencv.org/) to 
 
 ```
 $ git clone https://github.com/doleron/raspberry-as-gige-camera.git
-$ cd raspberry-as-gige-camera/code/camera-server
+$ cd raspberry-as-gige-camera/code/server
 $ mkdir build
 $ cd build
 $ cmake ..
@@ -109,7 +109,7 @@ Once the `rpiasgige` server is running, it is ready to respond to incoming TCP r
 `rpiasgige` is shipped with a set of unit tests. You can build and run it as follows:
 
 ```
-$ cd raspberry-as-gige-camera/code/camera-server/build
+$ cd raspberry-as-gige-camera/code/server/build
 $ cmake -DBUILD_TESTS=ON ..
 $ ./test_rpiasgige 
 ```
