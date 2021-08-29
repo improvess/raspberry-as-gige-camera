@@ -44,7 +44,7 @@ namespace rpiasgige
                         int type = mat.type();
                         set_buffer_value(HEADER_SIZE + 2*size_int, size_int, &type);
                         set_buffer_value(HEADER_SIZE + metada_data_size, image_size, mat_data);
-                        send_buffer_to_client(client_socket, "0200", image_size);
+                        send_buffer_to_client(client_socket, "0200", image_size + metada_data_size);
                     } else {
                         send_buffer_to_client(client_socket, "NOPE", 0);
                     }
