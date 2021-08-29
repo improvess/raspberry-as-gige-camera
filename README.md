@@ -6,7 +6,7 @@ Transform your USB camera in a gigE-like camera with Raspberry PI.
 
 The code in this repository allows you to expose your USB camera as an ethernet device using Raspberry PI's gigabyte ethernet port. In other words, you can access your remote USB camera just like you do with a local USB camera.
 
-<p align="center">
+<p align="center" width="640">
   <img src="https://user-images.githubusercontent.com/9665358/130965792-e9bc97ef-f7de-4e65-ac04-72f85d3257f2.png">
 </p>
 
@@ -101,13 +101,11 @@ Obs.: cmake will automatically donwload googletest for you.
 
 ## Limitations
 
-Raspberry PI boards are revolutionary - but general purpose - devices. They are not exaclty intended to perform intensive computing/IO tasks, having significative hardware limitations which must be taken in mind when considering using them to attend to extremme demands.
-
 According to [this](https://www.raspberrypi.org/documentation/computers/processors.html), the L2 shared cache of Raspberry PI 4 processor is set to 1MB whereas the same cache is constrained to only 512 KB in RPI 3 boards. This bottleneck eventually reduces the amount of traffic data/FPS sent/received.
 
-Note taht some RPI boards such as model A and zero don't have a built-in ethernet interface whereas some old models do not have even a wifi interface. For narrowed boards like this you can attach a USB-to-ethernet adapter as a very last alternative but be ready to achieve a not so high data throughtput.
+Note that some RPI boards - such as model A and zero - don't have a built-in ethernet interface whereas some old models do not have even a wifi interface. For narrowed boards like this you can attach a USB-to-ethernet adapter as a very last alternative. But be aware to achieve a not so high data throughtput though.
 
-That said, `rpiasgige` is a suitable alternative to retrieve frames at 30-60 fps at low resolutions such as 640x480 or less. If your application requires a high resolution at 80 fps or more, I would recommeded to try an actual gigE camera or even another board with a larger L2 cache.
+That said, `rpiasgige` is a suitable alternative to retrieve frames at at most 150 fps for low resolutions such as 640x480 or less. Of course, your camera must support the speed and resolution as well.
 
 ## Disclaimer
 
