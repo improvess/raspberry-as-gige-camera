@@ -45,7 +45,16 @@ Achieving 14-19 fps at 1280x720 using a [Microsoft Lifecam Studio](https://www.m
 
 Instructions how to build and run are shown below.
 
-## Building
+## Building & run
+
+`rpiasgige` has two code sets:
+
+- server: the application which runs on raspberry pi to expose the USB camera as an ethernet device
+- client: API and utilities to allow programs to access the camera remotely
+
+In this session it is shown how to build the server part. See the next sessions to know how to use the C++ client API and other ways to acess your camera from a remote computerw AWAa.
+
+### Building the server part
 
 This repo uses [CMake](https://cmake.org/) and [OpenCV](https://opencv.org/) to build the code on a [Raspberry PI OS](https://www.raspberrypi.org/software/) or similar operating system.
 
@@ -66,7 +75,7 @@ Obs. 2: If not yet, do not forget to install `git`, `cmake` and `gcc` before bui
 sudo apt install git build-essential cmake
 ```
 
-## Running the `rpiasgige` on Raspberry Pi
+### Running the `rpiasgige` server on Raspberry Pi
 
 After building `rpiasgige`, run the server as follows:
 
@@ -76,27 +85,36 @@ DEBUG - /dev/video0 - Not initialized. Initializing now.
 DEBUG - /dev/video0 - successfuly initialized.
 DEBUG - /dev/video0 - Waiting for client
 ```
+Once the `rpiasgige` server is running, it is ready to respond to incoming TCP requests.
 
 ## Getting images from the camera remotely
 
-Once the `rpiasgige` server is running, it is ready to respond to incoming TCP requests. There are four ways to make reqeusts to the `rpiasgige` server:
+In this session we are talking about how to access the camera from a remote computer. 
+
+There are four ways to make reqeusts to the `rpiasgige` server:
 
 - Sending command-line requests using native SO utilities: check [the examples](https://github.com/doleron/raspberry-as-gige-camera/blob/main/command-line-examples.MD).
-- Using the provided client program: check [the example](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client).
-- Using the provided client API: check [the API](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/include/rpiasgige/client_api.hpp).
+- Using the provided client C++ program: check [the example](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client).
+- Using the provided client C++ API: check [the API](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/include/rpiasgige/client_api.hpp).
 - Writing your own remote calls using the [rpiasgige protocol](https://github.com/doleron/raspberry-as-gige-camera/blob/main/protocol.MD)
 
-### Building and running the tests
+## Building and running the tests
 
 `rpiasgige` is shipped with a set of unit tests. You can build and run it as follows:
 
 ```
 $ cd raspberry-as-gige-camera/code/server/build
 $ cmake -DBUILD_TESTS=ON ..
-$ ./test_rpiasgige 
+$ make
 ```
 
-Obs.: cmake will automatically donwload googletest for you.
+Obs.: cmake will automatically donwload [googletest](https://github.com/google/googletest) for you.
+
+Once everything is build, run the tests just by:
+
+```
+$ ./test_rpiasgige 
+```
 
 ## Limitations
 

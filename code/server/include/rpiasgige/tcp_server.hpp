@@ -15,6 +15,8 @@ namespace rpiasgige
             TCP_Server(const std::string & identifier, int _port, USB_Interface &_usb_camera, const int max_image_size_in_bytes) : Single_Channel_Server(identifier, _port, HEADER_SIZE + 32, max_image_size_in_bytes), usb_camera(_usb_camera) {}
             virtual ~TCP_Server() {}
 
+            static const int IMAGE_META_DATA_SIZE = 3 * sizeof(int);
+
         protected:
 
             void respond_to_client(int &client_socket, const int data_size)
