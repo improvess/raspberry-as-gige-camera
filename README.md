@@ -15,10 +15,10 @@ int main(int argc, char **argv) {
 
     camera.open();
 
-    cv::Mat mat;
-    camera.retrieve(mat);
+    cv::Mat image;
+    camera.retrieve(image);
 
-    cv::imshow(mat);
+    cv::imshow(image);
     
     camera.release();
     
@@ -52,7 +52,7 @@ Instructions how to build and run are shown below.
 - server: the application which runs on raspberry pi to expose the USB camera as an ethernet device
 - client: API and utilities to allow programs to access the camera remotely
 
-In this session it is shown how to build the server part. See the next sessions to know how to use the C++ client API and other ways to acess your camera from a remote computerw AWAa.
+In this section it is shown how to build the server part. See the next sections to know how to use the C++ client API and other ways to acess your camera from a remote computerw AWAa.
 
 ### Building the server part
 
@@ -89,7 +89,7 @@ Once the `rpiasgige` server is running, it is ready to respond to incoming TCP r
 
 ## Getting images from the camera remotely
 
-In this session we are talking about how to access the camera from a remote computer. 
+In this section we are talking about how to access the camera from a remote computer. 
 
 There are four ways to make reqeusts to the `rpiasgige` server:
 
@@ -97,6 +97,8 @@ There are four ways to make reqeusts to the `rpiasgige` server:
 - Using the provided client C++ program: check [the example](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client).
 - Using the provided client C++ API: check [the API](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/include/rpiasgige/client_api.hpp).
 - Writing your own remote calls using the [rpiasgige protocol](https://github.com/doleron/raspberry-as-gige-camera/blob/main/protocol.MD)
+
+Obs.: Python client API is on the way!
 
 ## Building and running the tests
 

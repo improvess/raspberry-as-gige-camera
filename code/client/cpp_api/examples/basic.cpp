@@ -47,8 +47,6 @@ int main(int argc, char **argv)
 
     // setting camera properties
 
-    camera.set(cv::CAP_PROP_AUTOFOCUS, 0, keep_alive);
-
     if (camera.set(cv::CAP_PROP_FRAME_WIDTH, frame_width, keep_alive))
     {
         std::cout << "Frame width set!\n";

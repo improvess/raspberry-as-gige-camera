@@ -60,16 +60,6 @@ namespace rpiasgige
                 memcpy(this->status, new_status, STATUS_SIZE);
             }
 
-            bool check_if_status_is(const char *query)
-            {
-                return strncmp(status, query, STATUS_SIZE) == 0;
-            }
-
-            void set_status(const char *new_status)
-            {
-                memcpy(this->status, new_status, STATUS_SIZE);
-            }
-
             /**
              * generates a string copy of the packet's status
              **/
