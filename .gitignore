@@ -4,3 +4,5 @@
 /**/libs/googletest/download/
 /**/libs/googletest/src/
 /**/libs/googletest/build/
+
+/**/__pycache__/

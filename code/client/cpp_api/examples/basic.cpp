@@ -102,7 +102,10 @@ int main(int argc, char **argv)
 
     if (camera.set(cv::CAP_PROP_FPS, fps, keep_alive))
     {
-        std::cout << "Nice! Your camera seems to support delivering at 60 fps!!!\n";
+        double actual_fps_settings = camera.get(cv::CAP_PROP_FPS);
+        if (std::abs(actual_fps_settings - fps) < 0.1) {
+            std::cout << "Nice! Your camera seems to accept setting fps to " << fps << " !!!\n";
+        }
     }
     else
     {
