@@ -34,9 +34,9 @@ namespace rpiasgige
             return result;
         }
 
-        std::string Device::ping(bool keep_alive)
+        bool Device::ping(bool keep_alive)
         {
-            std::string result = "";
+            bool result = "";
             try
             {
                 Packet request(this->request_buffer, keep_alive, 0, this->request_buffer + HEADER_SIZE);
@@ -44,7 +44,7 @@ namespace rpiasgige
                 
                 Packet response(this->response_buffer, keep_alive, 0, this->response_buffer + HEADER_SIZE);
                 this->send_request(request, response);
-                result = response.get_status_as_str();
+                result = response.check_if_status_is("PONG");
             }
             catch (TimeoutException &tex)
             {
@@ -180,10 +180,8 @@ namespace rpiasgige
         bool Device::open_tcp_conversation()
         {
 
-            printf("open_tcp_conversation called\n");
             if ((this->server_socket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
             {
-                printf("\n Socket creation error \n");
                 this->server_socket = -1;
             }
 
@@ -193,14 +191,12 @@ namespace rpiasgige
 
             if (inet_pton(AF_INET, this->address.c_str(), &serv_addr.sin_addr) <= 0)
             {
-                printf("\nInvalid address/ Address not supported \n");
                 close(this->server_socket);
                 this->server_socket = -1;
             }
 
             if (connect(this->server_socket, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
             {
-                printf("\nConnection Failed \n");
                 close(this->server_socket);
                 this->server_socket = -1;
             }
@@ -276,7 +272,6 @@ namespace rpiasgige
 
         void Device::disconnect()
         {
-            printf("disconnect called \n");
             if (this->server_socket >= 0)
             {
                 close(this->server_socket);

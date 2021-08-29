@@ -14,13 +14,13 @@
  * 
  **/
 
+using namespace rpiasgige::client;
+
 int main(int argc, char **argv)
 {
 
-    const int MAX_IMAGE_SIZE = 640 * 480 * 3; // for a 3-channel image with max resolution of 640x480 
-
-    rpiasgige::client::Device camera1("192.168.2.2", 4001, MAX_IMAGE_SIZE + rpiasgige::client::HEADER_SIZE);
-    rpiasgige::client::Device camera2("192.168.2.2", 4002, MAX_IMAGE_SIZE + rpiasgige::client::HEADER_SIZE);
+    Device camera1("192.168.2.2", 4001);
+    Device camera2("192.168.2.2", 4002);
 
     // make conversation persistent
     bool keep_alive = true;
@@ -97,7 +97,7 @@ int main(int argc, char **argv)
         std::cerr << "Sorry, you cameras do not support run at 60 fps. No problem at all, keep going.\n";
     }
 
-    rpiasgige::client::FPS_Counter fps_counter(120);
+    Performance_Counter performance_counter(120);
 
     cv::Mat mat1, mat2;
 
@@ -121,8 +121,8 @@ int main(int argc, char **argv)
 
         int image_size_1 = mat1.total() * mat1.elemSize();
         int image_size_2 = mat2.total() * mat2.elemSize();
-        if (fps_counter.loop(image_size_1 + image_size_2)) {
-            printf("fps: %.1f mean data read size: %.1f\n" , fps_counter.get_fps(), fps_counter.get_mean_data_size());
+        if (performance_counter.loop(image_size_1 + image_size_2)) {
+            printf("fps: %.1f mean data read size: %.1f\n" , performance_counter.get_fps(), performance_counter.get_mean_data_size());
         }
         if (!freeze) {
             cv::imshow("mat1", mat1);

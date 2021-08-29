@@ -110,7 +110,7 @@ namespace rpiasgige
             bool isOpened(bool keep_alive = false);
             bool retrieve(cv::Mat &dest, bool keep_alive = false);
             bool release(bool keep_alive = false);
-            std::string ping(bool keep_alive = false);
+            bool ping(bool keep_alive = false);
 
         private:
             cv::String address;
@@ -160,15 +160,18 @@ namespace rpiasgige
             }
         };
 
-        class FPS_Counter
+        /**
+         * A utility to measure FPS and data-transfer easier
+         **/
+        class Performance_Counter
         {
 
         public:
-            FPS_Counter(const int max_count) : MAX_COUNT(max_count)
+            Performance_Counter(const int cycle_count) : CYCLE_COUNT(cycle_count)
             {
-                if (max_count <= 0)
+                if (cycle_count <= 0)
                 {
-                    throw std::invalid_argument("max_count must be a positive value");
+                    throw std::invalid_argument("cycle_count must be a positive value");
                 }
                 this->reset();
             }
@@ -186,7 +189,7 @@ namespace rpiasgige
                     begin_time_ref = std::chrono::high_resolution_clock::now();
                 }
 
-                if (this->count >= MAX_COUNT)
+                if (this->count >= CYCLE_COUNT)
                 {
                     end_time_ref = std::chrono::high_resolution_clock::now();
                     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_ref - begin_time_ref);
@@ -229,7 +232,7 @@ namespace rpiasgige
             }
 
         private:
-            const int MAX_COUNT;
+            const int CYCLE_COUNT;
             int count;
             double total_read;
 

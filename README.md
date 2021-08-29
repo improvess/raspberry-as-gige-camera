@@ -1,6 +1,6 @@
 # raspberry-as-gige-camera
 
-Transform your USB camera in a gigE-like camera with Raspberry PI.
+Transform your USB camera in an ethernet camera with Raspberry PI.
 
 ## TL;DR;
 
@@ -31,11 +31,11 @@ int main(int argc, char **argv) {
 
 ## Why?
 
-A real [gigE](https://www.automate.org/a3-content/vision-standards-gige-vision) camera is great but not cheap and in many situations cameras like this aren't available on stock. In scenarios like this, you can use your Raspberry Pi as an alternative to provide an ethernet interface for your USB cameras.
+A real gigabyte camera (see [gigE](https://www.automate.org/a3-content/vision-standards-gige-vision)) is great but not cheap and in many situations cameras like this aren't available at all on stock/suppliers. In scenarios like this, you can use your Raspberry Pi as an alternative to provide an ethernet interface for your USB cameras and grab images from them from long ranges via network.
 
 ## Examples of usage
 
-Grabbing images at 100-150 fps with resolution 320x240 from a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
+Grabbing images at 100-150 fps with resolution 320x240 using a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
 
 ![image](https://user-images.githubusercontent.com/9665358/131229615-f0a73265-755d-4572-8946-17fb75ca8675.png)
 
@@ -43,18 +43,20 @@ Achieving 14-19 fps at 1280x720 using a [Microsoft Lifecam Studio](https://www.m
 
 ![image](https://user-images.githubusercontent.com/9665358/131230242-ea0ed8ed-9590-42cd-8247-5f0094396bc0.png)
 
-Instructions how to build and run are shown below.
+Instructions how to build and run `rpiasgige` are shown below.
 
 ## Building & run
 
 `rpiasgige` has two code sets:
 
-- server: the application which runs on raspberry pi to expose the USB camera as an ethernet device
-- client: API and utilities to allow programs to access the camera remotely
+- **server**: the application which runs on raspberry pi to expose the USB camera as an ethernet device
+- **client**: API and utilities to allow programs to access the camera remotely
 
-In this section it is shown how to build the server part. See the next sections to know how to use the C++ client API and other ways to acess your camera from a remote computerw AWAa.
+In this section, it is shown how to build the **server** side application. Check the next sections to know how to use the program client API's and see other ways to acess your camera from a remote computer.
 
-### Building the server part
+### Building the server side
+
+The server has been written in C++11. Thus, you need a C++11 compliant compiler (like GCC) to build the `rpiasgige` server.
 
 This repo uses [CMake](https://cmake.org/) and [OpenCV](https://opencv.org/) to build the code on a [Raspberry PI OS](https://www.raspberrypi.org/software/) or similar operating system.
 
