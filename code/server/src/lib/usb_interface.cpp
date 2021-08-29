@@ -113,7 +113,15 @@ namespace rpiasgige
 
     double USB_Interface::get(int propId)
     {
-        return this->capture.get(propId);
+        double result;
+
+        if (this->props.find(propId) == this->props.end()) {
+            result = this->capture.get(propId);
+        } else {
+            result = this->props[propId];
+        }
+
+        return result;
     }
 
 } // namespace rpiasgige
