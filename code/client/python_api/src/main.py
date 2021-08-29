@@ -32,8 +32,6 @@ if not camera.set(cv.CAP_PROP_FRAME_HEIGHT, HEIGHT):
 else:
     print("Successfully set height resolution to " + str(HEIGHT))
 
-print(camera.get(cv.CAP_PROP_FRAME_WIDTH))
-
 for i in range(1000):
     ret, frame = camera.read()
     if not ret:

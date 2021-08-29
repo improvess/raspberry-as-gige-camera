@@ -71,8 +71,6 @@ In this section, it is shown how to build the **server** side application. Check
 
 ### Building the server side
 
-The server has been written in C++11. Thus, you need a C++11 compliant compiler (like GCC) to build the `rpiasgige` server.
-
 This repo uses [CMake](https://cmake.org/) and [OpenCV](https://opencv.org/) to build the code on a [Raspberry PI OS](https://www.raspberrypi.org/software/) or similar operating system.
 
 ```
@@ -104,18 +102,14 @@ DEBUG - /dev/video0 - Waiting for client
 ```
 Once the `rpiasgige` server is running, it is ready to respond to incoming TCP requests.
 
-## Getting images from the camera remotely
+## Building & running the clients
 
-In this section we are talking about how to access the camera from a remote computer. 
-
-There are four ways to make reqeusts to the `rpiasgige` server:
+There are four ways to access the `rpiasgige` server:
 
 - Sending command-line requests using native SO utilities: check [the examples](https://github.com/doleron/raspberry-as-gige-camera/blob/main/command-line-examples.MD).
-- Using the provided client C++ program: check [the example](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client).
-- Using the provided client C++ API: check [the API](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/include/rpiasgige/client_api.hpp).
+- Using the provided client programs: check [the example](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client).
+- Using the provided client API's: check [the API](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client).
 - Writing your own remote calls using the [rpiasgige protocol](https://github.com/doleron/raspberry-as-gige-camera/blob/main/protocol.MD)
-
-Obs.: Python client API is on the way!
 
 ## Building and running the tests
 
@@ -147,6 +141,10 @@ That said, `rpiasgige` is a suitable alternative to retrieve frames at at most 1
 
 This code is in its early stages. It is not battle-tested neither ready for production yet at all.
 
+## Contribute
+
+Contributions are very welcome! Check below for next steps and file an issue if you find something weird or wrong. PR's are super welcome as well!
+
 ## TODO: Next steps
 
 - Improving protocol description
@@ -155,11 +153,11 @@ This code is in its early stages. It is not battle-tested neither ready for prod
 - Test a bit more, man!
 - C'mon tests are always welcome! More tests doleron!
 - Removing OpenCV dependence
-- Resovle the cmaera paht (for ex.: /dev/video2) by the USB bus address
+- Resovle the cmaera path (for ex.: /dev/video2) by the USB bus address
 - ~~Coding remote C++ API~~
 - ~~Coding remote client example~~
 - Supporting big-endian clients
-- Adding Python client API
+- ~~Adding Python client API~~
 - Adding JavaScript client API
 - Adding Java client API
 - Adding callback to decorate frame before send
