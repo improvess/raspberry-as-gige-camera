@@ -25,8 +25,8 @@ int main(int argc, char **argv) {
     return 0;
 }
 ```
-<p align="center" width="320">
-  <img src="https://user-images.githubusercontent.com/9665358/130965792-e9bc97ef-f7de-4e65-ac04-72f85d3257f2.png">
+<p align="center">
+  <img  width="400" src="https://user-images.githubusercontent.com/9665358/130965792-e9bc97ef-f7de-4e65-ac04-72f85d3257f2.png">
 </p>
 
 ## Why?
