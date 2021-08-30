@@ -195,7 +195,7 @@ namespace rpiasgige
                     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_ref - begin_time_ref);
                     auto time_spent = ms.count();
                     this->mean_data_size = total_read / this->count;
-                    if (time_spent > 1)
+                    if (time_spent >= 1)
                     {
                         this->fps = this->count * 1000.0 / time_spent;
                         this->mean_data_size = this->total_read / this->count;

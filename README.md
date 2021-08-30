@@ -46,7 +46,7 @@ camera.release():
 
 ## Why?
 
-A real gigabyte camera (see [gigE](https://www.automate.org/a3-content/vision-standards-gige-vision)) is great but not cheap and in many situations cameras like this aren't available at all on stock/suppliers. In scenarios like this, you can use your Raspberry Pi as an alternative to provide an ethernet interface for your USB cameras and grab images from them from long ranges via network.
+A real gigabyte camera (see [gigE](https://en.wikipedia.org/wiki/GigE_Vision)) is great but not cheap and in many situations cameras like this aren't available at all on stock/suppliers. In scenarios like this, you can use your Raspberry Pi as an alternative to provide an ethernet interface for your USB cameras and grab images from them from long ranges via network.
 
 ## Examples of usage
 
@@ -140,6 +140,8 @@ That said, `rpiasgige` is a suitable alternative to retrieve frames at at most 1
 ## Disclaimer
 
 This code is in its early stages. It is not battle-tested neither ready for production yet at all.
+
+Note also that this repository does not follow the [gigE Vision](https://www.automate.org/a3-content/vision-standards-gige-vision) standard and it is not licensed as a gigE Vision device.
 
 ## Contribute
 

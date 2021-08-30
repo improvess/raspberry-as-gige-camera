@@ -129,7 +129,7 @@ int main(int argc, char **argv)
         } else {
             int image_size = mat.total() * mat.elemSize();
             if (performance_counter.loop(image_size)) {
-                printf("fps: %.1f mean data read size: %.1f\n" , performance_counter.get_fps(), performance_counter.get_mean_data_size());
+                printf("fps: %.1f, mean data read size: %.1f\n" , performance_counter.get_fps(), performance_counter.get_mean_data_size());
             }
             // note that imshow & waitKey slower fps
             cv::imshow("mat", mat);
