@@ -46,9 +46,13 @@ camera.release():
   <img  width="400" src="https://user-images.githubusercontent.com/9665358/130965792-e9bc97ef-f7de-4e65-ac04-72f85d3257f2.png">
 </p>
 
+## Getting started
+
+Check out the [Step-by-step `rpiasgige` tutorial](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/tutorial.MD).
+
 ## Why?
 
-A real gigabyte camera (see [gigE](https://en.wikipedia.org/wiki/GigE_Vision)) is great but not cheap and in many situations cameras like this aren't available at all on stock/suppliers. In scenarios like this, you can use your Raspberry Pi as an alternative to provide an ethernet interface for your USB cameras and grab images from them from long ranges via network.
+A real gigabyte camera (see [gigE](https://en.wikipedia.org/wiki/GigE_Vision)) is great but not cheap and in many situations cameras like this aren't available at all on stock/suppliers. In scenarios like this, you can use your Raspberry Pi as an alternative to provide an ethernet interface for your USB cameras and grab images them from via ethernet network even from long ranges.
 
 ## Examples of usage
 
@@ -108,7 +112,7 @@ Once the `rpiasgige` server is running, it is ready to respond to incoming TCP r
 
 There are four ways to access the `rpiasgige` server:
 
-- Sending command-line requests using native SO utilities: check [the examples](https://github.com/doleron/raspberry-as-gige-camera/blob/main/command-line-examples.MD).
+- Sending command-line requests using native SO utilities: check [the examples](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/command-line-examples.MD).
 - Using the provided client programs: check [the example](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client).
 - Using the provided client API's: check [the API](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client).
 - Writing your own remote calls using the [rpiasgige protocol](https://github.com/doleron/raspberry-as-gige-camera/blob/main/protocol.MD)
@@ -139,9 +143,17 @@ Note that some RPI boards - such as model A and zero - don't have a built-in eth
 
 That said, `rpiasgige` is a suitable alternative to retrieve frames at at most 150 fps for low resolutions such as 640x480 or less. Of course, your camera must support the speed and resolution as well.
 
+## What `rpiasgige` not is
+
+- `rpiasgige` is not a surveillance system, OS, library or so. Check [motionEyeOS](https://github.com/ccrisan/motioneyeos/wiki) if your are looking for a great surveillance tool for your Raspberry PI/home.
+
+- `rpiasgige` is not a licensed gigE vision device. See *Disclaimer* below.
+
+- `rpiasgige` is not an implementation of RTSP or NOVIF protocols.
+
 ## Disclaimer
 
-This code is in its early stages. It is not battle-tested neither ready for production yet at all.
+This code is in its early stages yet. It is not battle-tested neither ready for production yet at all.
 
 Note also that this repository does not follow the [gigE Vision](https://www.automate.org/a3-content/vision-standards-gige-vision) standard and it is not licensed as a gigE Vision device.
 
@@ -156,7 +168,7 @@ Contributions are very welcome! Check below for next steps and file an issue if 
 - More tests
 - Test a bit more, man!
 - C'mon tests are always welcome! More tests doleron!
-- Removing OpenCV dependence
+- Considering removing OpenCV dependency
 - Resovle the cmaera path (for ex.: /dev/video2) by the USB bus address
 - ~~Coding remote C++ API~~
 - ~~Coding remote client example~~
