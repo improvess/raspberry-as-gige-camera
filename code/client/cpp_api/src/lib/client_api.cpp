@@ -315,6 +315,7 @@ namespace rpiasgige
                         {
                             data_size = expected_data_size;
                             expected_response_size = HEADER_SIZE + data_size;
+                            response.data_size = data_size;
                         }
                     }
 
@@ -331,6 +332,7 @@ namespace rpiasgige
             if (result < expected_response_size)
             {
                 result = 0;
+                response.data_size = 0;
             }
             //printf("read_response result %d\n", result);
             return result;

@@ -5,7 +5,7 @@
 using namespace rpiasgige::client;
 
 /**
- * This is a basic example of rpiasgige usage 
+ * This is a basic example of C++ API rpiasgige usage
  * 
  **/
 int main(int argc, char **argv)
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     if (camera.isOpened(keep_alive))
     {
         std::cout << "Nice! The camera is opened already!\n";
-    //If the camera is not open, we can open it no!
+    // If the camera is not open, we can open it no!
     } else if (!camera.open(keep_alive))
     {
         std::cerr << "Ops! Something is wrong! Failed to open the camera! Exiting ...\n";
@@ -102,14 +102,17 @@ int main(int argc, char **argv)
 
     if (camera.set(cv::CAP_PROP_FPS, fps, keep_alive))
     {
-        std::cout << "Nice! Your camera seems to support delivering at 60 fps!!!\n";
+        double actual_fps_settings = camera.get(cv::CAP_PROP_FPS);
+        if (std::abs(actual_fps_settings - fps) < 0.1) {
+            std::cout << "Nice! Your camera seems to accept setting fps to " << fps << " !!!\n";
+        }
     }
     else
     {
         std::cerr << "Sorry, you camera seems to do not support run at 60 fps. No problem at all, keep going.\n";
     }
 
-    // Everything is set, time to grab some frames
+    // Everything is set up, time to grab some frames
     // Performance_Counter is an optional component. 
     // It is a convenient way to measure the achieved FPS speed and mean data transfered. 
 
@@ -126,7 +129,7 @@ int main(int argc, char **argv)
         } else {
             int image_size = mat.total() * mat.elemSize();
             if (performance_counter.loop(image_size)) {
-                printf("fps: %.1f mean data read size: %.1f\n" , performance_counter.get_fps(), performance_counter.get_mean_data_size());
+                printf("fps: %.1f, mean data read size: %.1f\n" , performance_counter.get_fps(), performance_counter.get_mean_data_size());
             }
             // note that imshow & waitKey slower fps
             cv::imshow("mat", mat);
