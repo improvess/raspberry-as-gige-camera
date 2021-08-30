@@ -3,6 +3,7 @@ import socket
 import struct
 import numpy as np
 import time
+import sys
 
 class Device(object):
   
@@ -10,19 +11,20 @@ class Device(object):
   DATA_SIZE_ADDRESS = STATUS_SIZE + 1
   HEADER_SIZE = STATUS_SIZE + 5
   IMAGE_META_DATA_SIZE = 12
+  RESPONSE_BUFFER_SIZE = 1024
 
   def __init__(self, address, port):
     self.address = address
     self.port = port
-    self.response_buffer_size = Device.HEADER_SIZE + Device.IMAGE_META_DATA_SIZE + 1920 * 1080 * 3
     self.server_socket = None
+    self.successive_connection_issues = 0
+    self.response_buffer = bytearray(Device.IMAGE_META_DATA_SIZE + 1920 * 1080 * 3)
 
   def ping(self, keep_alive = False):
     result = False
     if self.__checkConnection():
       request = b'PING' + (b'1' if keep_alive else b'0') + b'\0\0\0\0'
-      self.server_socket.sendall(request)
-      reply = self.server_socket.recv(self.response_buffer_size)
+      reply = self.__talk(request)
       result = reply.startswith(b'PONG')
       if not keep_alive:
         self.__disconnect()
@@ -32,8 +34,7 @@ class Device(object):
     result = False
     if self.__checkConnection():
       request = b'ISOP' + (b'1' if keep_alive else b'0') + b'\0\0\0\0'
-      self.server_socket.sendall(request)
-      reply = self.server_socket.recv(self.response_buffer_size)
+      reply = self.__talk(request)
       result = reply.startswith(b'0200')
       if not keep_alive:
         self.__disconnect()
@@ -43,8 +44,7 @@ class Device(object):
     result = False
     if self.__checkConnection():
       request = b'OPEN' + (b'1' if keep_alive else b'0') + b'\0\0\0\0'
-      self.server_socket.sendall(request)
-      reply = self.server_socket.recv(self.response_buffer_size)
+      reply = self.__talk(request)
       result = reply.startswith(b'0200')
       if not keep_alive:
         self.__disconnect()
@@ -54,8 +54,7 @@ class Device(object):
     result = False
     if self.__checkConnection():
       request = b'CLOS' + (b'1' if keep_alive else b'0') + b'\0\0\0\0'
-      self.server_socket.sendall(request)
-      reply = self.server_socket.recv(self.response_buffer_size)
+      reply = self.__talk(request)
       result = reply.startswith(b'0200')
       if not keep_alive:
         self.__disconnect()
@@ -68,8 +67,7 @@ class Device(object):
       double_value = float(value)
       double_bytes = struct.pack('<d', double_value)
       request = b'SET0' + (b'1' if keep_alive else b'0') + data_size.to_bytes(4, 'little') + propId.to_bytes(4, 'little') + double_bytes
-      self.server_socket.sendall(request)
-      reply = self.server_socket.recv(self.response_buffer_size)
+      reply = self.__talk(request)
       result = reply.startswith(b'0200')
       if not keep_alive:
         self.__disconnect()
@@ -81,8 +79,7 @@ class Device(object):
     if self.__checkConnection():
       data_size = 4
       request = b'GET0' + (b'1' if keep_alive else b'0') + data_size.to_bytes(4, 'little') + propId.to_bytes(4, 'little')
-      self.server_socket.sendall(request)
-      reply = self.server_socket.recv(self.response_buffer_size)
+      reply = self.__talk(request)
       ret = len(reply) >= (Device.HEADER_SIZE + 4) and reply.startswith(b'0200')
       if ret:
         double_in_bytes = reply[Device.HEADER_SIZE : Device.HEADER_SIZE + 8]
@@ -97,27 +94,25 @@ class Device(object):
     ret = False
     if self.__checkConnection():
       request = b'GRAB' + (b'1' if keep_alive else b'0') + b'\0\0\0\0'
-      self.server_socket.sendall(request)
-      self.server_socket.sendall(request)
-      header_part = self.server_socket.recv(Device.HEADER_SIZE)
+      header_part = self.__talk(request, Device.HEADER_SIZE)
       ret = len(header_part) >= (Device.HEADER_SIZE) and header_part.startswith(b'0200')
       if ret:
         data_size = int.from_bytes(header_part[Device.DATA_SIZE_ADDRESS : Device.DATA_SIZE_ADDRESS + 4], "little") 
         ret = False
 
         if data_size > Device.IMAGE_META_DATA_SIZE:
-          reply = self.__load_frame_data(data_size)
-          if reply:
+          data_read = self.__load_frame_data(data_size)
+          if data_read == data_size:
             offset = 0
-            rows  = int.from_bytes(reply[offset : offset + 4], "little") 
+            rows  = int.from_bytes(self.response_buffer[offset : offset + 4], "little") 
             offset += 4
-            cols  = int.from_bytes(reply[offset : offset + 4], "little") 
+            cols  = int.from_bytes(self.response_buffer[offset : offset + 4], "little") 
             offset += 4
-            type  = int.from_bytes(reply[offset : offset + 4], "little") 
+            type  = int.from_bytes(self.response_buffer[offset : offset + 4], "little") 
             # FIXME use type variable
             result = np.zeros((rows, cols, 3), np.uint8) 
             offset += 4
-            result.data = reply[offset : offset + data_size - Device.IMAGE_META_DATA_SIZE]
+            result.data = self.response_buffer[offset : offset + data_size - Device.IMAGE_META_DATA_SIZE]
             ret = True
       if not keep_alive:
         self.__disconnect()
@@ -125,27 +120,38 @@ class Device(object):
     return ret, result
 
   def __load_frame_data(self, data_size):
-    data = bytearray()
-    while len(data) < data_size:
-        packet = self.server_socket.recv(data_size - len(data))
-        if not packet:
-            return None
-        data.extend(packet)
-    return data
+    bytes_read = 0
+    while bytes_read < data_size:
+      packet = self.server_socket.recv(data_size - bytes_read)
+      if not packet:
+          return None
+      
+      packet_size = len(packet)
+      self.response_buffer[bytes_read : bytes_read + packet_size] = packet
+      bytes_read += packet_size
+    return bytes_read
 
   def __checkConnection(self):
     if self.server_socket is None:
       self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
       try:
         self.server_socket.connect((self.address, self.port))
+        self.server_socket.settimeout(1)
       except:
-        self.server_socket = None
+        self.__disconnect()
     return not self.server_socket is None
 
   def __disconnect(self):
     if not self.server_socket is None:
-      self.server_socket.close()
-      self.server_socket = None
+      try:
+        self.server_socket.shutdown(socket.SHUT_RDWR)
+      finally:
+        self.server_socket = None
+
+  def __talk(self, request, response_size = RESPONSE_BUFFER_SIZE):
+    self.server_socket.sendall(request)
+    result = self.server_socket.recv(response_size)
+    return result
 
 class Performance_Counter(object):
 
@@ -191,3 +197,6 @@ class Performance_Counter(object):
     self.total_read = 0.0
     self.fps = -1.0
     self.mean_data_size = -1.0
+
+def printf(format, *args):
+    sys.stdout.write(format % args)
