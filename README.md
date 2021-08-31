@@ -1,12 +1,12 @@
 # raspberry-as-gige-camera
 
-Transform your USB camera in an ethernet device with Raspberry PI.
+Transform your USB or CSI camera in an ethernet device with Raspberry PI.
 
 ## TL;DR;
 
-The code in this repository allows you to expose your USB camera as an ethernet device using Raspberry PI's gigabyte ethernet port. In other words, you can access your remote USB camera just like you do with a local USB camera.
+The code in this repository allows you to expose your USB/CSI camera as an ethernet device using Raspberry PI's gigabyte ethernet port. In other words, you can access your remote USB camera just like you do with your local connected camera.
 
-`rpiasgige` has an OpenCV-style API for [C++](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client/cpp_api/examples) and [Python 3](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/python_api/src/main.py). Check out the examples below:
+`rpiasgige` has an OpenCV-style API for [C++](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client/cpp_api/examples) and [Python 3](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/python_api/src/main.py) (JavaScript & Java API's on the way). Check out the examples below:
 ```c++
 #include "rpiasgige/client_api.hpp"
 
@@ -63,6 +63,8 @@ Grabbing images at 100-150 fps with resolution 320x240 using a [Sony Playstation
 Achieving 14-19 fps at 1280x720 using a [Microsoft Lifecam Studio](https://www.microsoft.com/en-ww/accessories/products/webcams/lifecam-studio).
 
 ![image](https://user-images.githubusercontent.com/9665358/131230242-ea0ed8ed-9590-42cd-8247-5f0094396bc0.png)
+
+[Accessing Raspberry Camera Module](https://youtu.be/iQk7xLSjUHw)
 
 Instructions how to build and run `rpiasgige` are shown below.
 

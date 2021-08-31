@@ -145,6 +145,9 @@ class Device(object):
     if not self.server_socket is None:
       try:
         self.server_socket.shutdown(socket.SHUT_RDWR)
+      except:
+        # swallow the exception on closing
+        pass
       finally:
         self.server_socket = None
 
