@@ -4,7 +4,7 @@ Transform your USB or CSI camera in an ethernet device with Raspberry PI.
 
 ## TL;DR;
 
-The code in this repository allows you to expose your USB/CSI camera as an ethernet device using Raspberry PI's gigabyte ethernet port. In other words, you can access your remote USB camera just like you do with your local connected camera.
+The code in this repository allows you to expose your USB/CSI camera as an ethernet device using Raspberry PI's gigabyte ethernet port. In other words, you can access your remote camera just like you do with your local device.
 
 `rpiasgige` has an OpenCV-style API for [C++](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client/cpp_api/examples) and [Python 3](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/python_api/src/main.py) (JavaScript & Java API's on the way). Check out the examples below:
 ```c++
