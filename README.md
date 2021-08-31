@@ -64,7 +64,11 @@ Achieving 14-19 fps at 1280x720 using a [Microsoft Lifecam Studio](https://www.m
 
 ![image](https://user-images.githubusercontent.com/9665358/131230242-ea0ed8ed-9590-42cd-8247-5f0094396bc0.png)
 
-[Accessing Raspberry Camera Module](https://youtu.be/iQk7xLSjUHw)
+See also? [Accessing Raspberry Camera Module](https://youtu.be/iQk7xLSjUHw)
+
+<p align="center">
+  <a href="https://youtu.be/iQk7xLSjUHw" target="_blank"><img  width="400" src="https://user-images.githubusercontent.com/9665358/131565324-cf9e0e42-c595-4ea8-8438-47afdcf99bf5.png"></a>
+</p>
 
 Instructions how to build and run `rpiasgige` are shown below.
 
