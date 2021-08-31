@@ -1,6 +1,6 @@
 #include <chrono>
 
-#include <opencv2/opencv.hpp>
+#include "rpiasgige/usb_interface.hpp"
 
 /**
  * A basic opencv camera grabber for sanity testing
@@ -19,16 +19,16 @@ int main(int argc, char **argv)
 
     cv::String camera_path = parser.get<cv::String>("camera-path");
 
-    cv::VideoCapture usb_camera;
+    rpiasgige::USB_Interface usb_camera;
 
     if (usb_camera.open(camera_path))
     {
 
         //usb_camera.set(cv::CAP_PROP_BUFFERSIZE, 2);
-        usb_camera.set(cv::CAP_PROP_FRAME_WIDTH, 1280);
-        usb_camera.set(cv::CAP_PROP_FRAME_HEIGHT, 1024);
+        usb_camera.set(cv::CAP_PROP_FRAME_WIDTH, 320);
+        usb_camera.set(cv::CAP_PROP_FRAME_HEIGHT, 240);
         usb_camera.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
-        usb_camera.set(cv::CAP_PROP_FPS, 30);
+        usb_camera.set(cv::CAP_PROP_FPS, 180);
 
 
         std::cout << usb_camera.get(cv::CAP_PROP_FRAME_WIDTH) << "x" << usb_camera.get(cv::CAP_PROP_FRAME_HEIGHT) << "\n";
