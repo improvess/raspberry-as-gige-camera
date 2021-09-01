@@ -58,6 +58,12 @@ Check out the [Step-by-step `rpiasgige` tutorial](https://github.com/doleron/ras
 
 A real gigabyte camera (see [gigE](https://en.wikipedia.org/wiki/GigE_Vision)) is great but not cheap and in many situations cameras like this aren't available at all on stock/suppliers. In scenarios like this, you can use your Raspberry Pi as an alternative to provide an ethernet interface for your USB cameras and grab images them from via ethernet network even from long ranges.
 
+## Examples of setup
+
+<p align="center">
+  <img style="width: 100%" src="https://user-images.githubusercontent.com/9665358/131751327-5bd5f00a-0838-49e3-bfa5-e63888d0c6e8.png">
+</p>
+
 ## Examples of usage
 
 Grabbing images at 100-150 fps with resolution 320x240 using a [Sony Playstation 3 Eye camera](https://en.wikipedia.org/wiki/PlayStation_Eye):
