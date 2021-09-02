@@ -25,7 +25,7 @@ You need the following list of material to run tutorial:
 
 ## Step 2 - Getting started with Raspberry Pi
 
-Follow the Raspberry Pi's official getting started tutorial: https://projects.raspberrypi.org/en/projects/raspberry-pi-getting-started if you are **tottaly new** to Raspberry PI, 
+Follow the Raspberry Pi's official getting started tutorial: https://projects.raspberrypi.org/en/projects/raspberry-pi-getting-started if you are **totally new** to Raspberry PI, 
 
 Otherwise, if you are familiar already with Raspberry Pi already, skip to the next section!
 
