@@ -8,19 +8,29 @@ Sorry it isn't done yet!
 
 To run this tutorial, you will need of:
 
-- 1 Raspberry Pi 3 or 4
-- 1 SD Card class 10 with 16 GB or more
-- 1 SD Card to USB adapter
-- 1 USB Camera
-- 1 Power Source Unit
-- 1 Computer or Notebook with internet access
-- 1 ethernet cable
+
+<table border="0">
+  <tr>
+    <td>
+      <ul>
+        <li>1 Raspberry Pi 3 or 4</li>
+        <li>1 SD Card class 10 with 16 GB or more</li>
+        <li>1 SD Card adapter</li>
+        <li>1 USB Camera</li>
+        <li>1 Power Source Unit</li>
+        <li>1 Computer or Notebook with internet access</li>
+        <li>1 ethernet cable</li>
+      </ul>
+    </td>
+    <td valign="center"><img src="https://user-images.githubusercontent.com/9665358/131837147-8a8cbe5c-6073-40c5-b51d-68689479675c.png"></td>
+  </tr>
+ </table>
 
 ## Step 2 - Getting started with Raspberry Pi
 
-If you are tottaly new to Raspberry PI, follow the Raspberry Pi's getting started official tutorial: https://projects.raspberrypi.org/en/projects/raspberry-pi-getting-started
+Follow the Raspberry Pi's getting started official tutorial: https://projects.raspberrypi.org/en/projects/raspberry-pi-getting-started if you are **tottaly new** to Raspberry PI, 
 
-Else, move to the next section!
+Otherwise, move to the next section!
 
 ## Step 3 - Install dependences
 
