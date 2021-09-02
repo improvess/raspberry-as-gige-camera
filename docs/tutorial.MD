@@ -4,7 +4,9 @@
 
 Sorry it isn't done yet!
 
-## Material List
+## Step 1 - Check the required material list
+
+To run this tutorial, you will need of:
 
 - 1 Raspberry Pi 3 or 4
 - 1 SD Card class 10 with 16 GB or more
@@ -14,13 +16,13 @@ Sorry it isn't done yet!
 - 1 Computer or Notebook with internet access
 - 1 ethernet cable
 
-## Getting started with Raspberry Pi
+## Step 2 - Getting started with Raspberry Pi
 
 If you are tottaly new to Raspberry PI, follow the Raspberry Pi's getting started official tutorial: https://projects.raspberrypi.org/en/projects/raspberry-pi-getting-started
 
 Else, move to the next section!
 
-## Install dependences
+## Step 3 - Install dependences
 
 Open terminal and execute the following commands:
 
@@ -30,7 +32,7 @@ sudo apt upgrade
 sudo apt install python3-opencv git build-essential cmake binutils-dev
 ```
 
-## Clone & build `rpiasgige` server
+## Step 4 - Clone & build `rpiasgige` server
 
 After install dependences, execute the following commands to build `rpiasgige` server:
 
@@ -43,7 +45,7 @@ cmake ..
 make -j4
 ```
 
-## Run `rpiasgige` server
+## Step 5 - Run `rpiasgige` server
 
 Connect your USB camera to one of Raspiberry Pi' USB ports. After it, run the `rpiasgige` server by executing:
 
@@ -69,7 +71,7 @@ It is important to take attention to which port you have choosen for your server
 
 Once the server is running, it is ready to get incoming requests and reply according.
 
-## Running clients
+## Step 6 - Running clients
 
 At this point, we have the server up and running. You can TCP requests to it in different ways. More commonly, you will prefer to write your own clients to connect to the camera remotely and grab frames from it. So far, `rpiasgige` has two client API's: C++ and Python 3. Check out the following client examples below:
 
