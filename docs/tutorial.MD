@@ -69,7 +69,7 @@ DEBUG - /dev/video0 - Waiting for client
 ```
 Note: You can stop the `rpiasgige` server by pressing control+c
 
-Note that by default, `rpiasgige` uses the device `/dev/video0` and TCP port `4001`. You can use different settings, for example:
+By default, `rpiasgige` uses the device `/dev/video0` and TCP port `4001`. Of course, you can use different settings, for example:
 
 ```
 ./rpiasgige -port=5753 -device=/dev/video2
@@ -77,7 +77,7 @@ Note that by default, `rpiasgige` uses the device `/dev/video0` and TCP port `40
 
 It is important to take attention to which port you have choosen for your server. Client programs need this information to make TCP requests accurately.
 
-Once the server is running, it is ready to get incoming requests and reply according.
+Once the server is running, it is ready to reply incoming requests.
 
 ## Step 6 - (Optional) Set static IP for the ethernet interface
 
