@@ -92,4 +92,4 @@ It is likely that you end up implementing a static IP for your camera. You can d
 At this point, we have the server up and running. You can make TCP requests to it in different ways. More commonly, you will prefer to write your own clients to connect to the camera remotely. Check out the following client examples below:
 
 - Running the [C++ client](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md) example
-- Running the [Python 3 client](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/python_client_tutorial.md) example
+- Running the [Python 3 client](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/python3_client_tutorial.md) example
