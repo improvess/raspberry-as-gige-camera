@@ -35,7 +35,7 @@ sudo apt install python3-opencv git build-essential cmake binutils-dev
 After install dependences, execute the following commands to build `rpiasgige` server:
 
 ```
-git clone https://github.com/doleron/raspberry-as-gige-camera.git
+pi@raspberrypi:~ $ git clone https://github.com/doleron/raspberry-as-gige-camera.git
 cd raspberry-as-gige-camera/code/server
 mkdir build
 cd build
@@ -53,13 +53,25 @@ Connect your USB camera to one of Raspiberry Pi' USB ports. After it, run the `r
 The expected output is:
 
 ```
-
+DEBUG - /dev/video0 - Not initialized. Initializing now.
+DEBUG - /dev/video0 - successfuly initialized.
+DEBUG - /dev/video0 - Waiting for client
 ```
 Note: You can stop the `rpiasgige` server by pressing control+c
 
-By default, `rpiasgige` uses the device /dev/video0 and TCP port 4001. You can use different settings, for example:
-
+Note that by default, `rpiasgige` uses the device /dev/video0 and TCP port 4001. You can use different settings, for example:
 
 ```
-./rpiasgige
+./rpiasgige -port=5753 -device=/dev/video2
 ```
+
+It is important to take attention to which port you have choosen for your server. Client programs need this information to make TCP requests accurately.
+
+Once the server is running, it is ready to get incoming requests and reply according.
+
+## Running clients
+
+At this point, we have the server up and running. You can TCP requests to it in different ways. More commonly, you will prefer to write your own clients to connect to the camera remotely and grab frames from it. So far, `rpiasgige` has two client API's: C++ and Python 3. Check out the following client examples below:
+
+- Running the C++ client example
+- Running the Python client example
