@@ -1,8 +1,6 @@
 # Step-by-step tutorial
 
-# Status 
-
-Sorry it isn't done yet!
+Here we cover the steps to get `rpiasgige` running on Raspberry Pi
 
 ## Step 1 - Check the required material list
 
@@ -40,7 +38,7 @@ sudo apt update
 sudo apt upgrade
 sudo apt install git build-essential cmake binutils-dev libopencv-dev python3-opencv 
 ```
-Note that the version of OpenCV from libopencv-dev & python3-opencv is quite old (3.2). Check [here](https://www.pyimagesearch.com/2018/09/26/install-opencv-4-on-your-raspberry-pi/), [here](https://www.jeremymorgan.com/tutorials/raspberry-pi/how-to-install-opencv-raspberry-pi/) or [here](https://learnopencv.com/install-opencv-4-on-raspberry-pi/) if you prefer to install the most recent version of OpenCV instead.
+Note that the OpenCV version from libopencv-dev & python3-opencv is quite old (3.2). Check [here](https://www.pyimagesearch.com/2018/09/26/install-opencv-4-on-your-raspberry-pi/), [here](https://www.jeremymorgan.com/tutorials/raspberry-pi/how-to-install-opencv-raspberry-pi/) or [here](https://learnopencv.com/install-opencv-4-on-raspberry-pi/) if you prefer to install the most recent version of OpenCV instead.
 
 ## Step 4 - Clone & build `rpiasgige` server
 
