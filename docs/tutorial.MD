@@ -73,7 +73,7 @@ Once the server is running, it is ready to get incoming requests and reply accor
 
 ## Step 6 - Running clients
 
-At this point, we have the server up and running. You can TCP requests to it in different ways. More commonly, you will prefer to write your own clients to connect to the camera remotely and grab frames from it. So far, `rpiasgige` has two client API's: C++ and Python 3. Check out the following client examples below:
+At this point, we have the server up and running. You can make TCP requests to it in different ways. More commonly, you will prefer to write your own clients to connect to the camera remotely. Check out the following client examples below:
 
 - Running the C++ client example
 - Running the Python client example
