@@ -19,8 +19,8 @@ using namespace rpiasgige::client;
 int main(int argc, char **argv)
 {
 
-    Device camera1("192.168.2.2", 4001);
-    Device camera2("192.168.2.2", 4002);
+    Device camera1("192.168.2.3", 4001);
+    Device camera2("192.168.2.3", 4002);
 
     // make conversation persistent
     bool keep_alive = true;

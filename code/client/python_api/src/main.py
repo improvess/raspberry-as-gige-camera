@@ -9,7 +9,7 @@ from rpiasgige.client_api import Device, Performance_Counter, printf
 
 def main():
 
-    camera = Device("192.168.2.2", 4001)
+    camera = Device("192.168.2.3", 4001)
 
     # let's ping the camera just to check we can talk to it
     if not camera.ping():

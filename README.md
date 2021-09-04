@@ -18,7 +18,7 @@ using namespace rpiasgige::client;
 
 int main(int argc, char **argv) {
 
-    Device camera("192.168.2.2", 4001);
+    Device camera("192.168.2.3", 4001);
 
     camera.open();
 
@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
 ```python
 from rpiasgige.client_api import Device
 
-camera = Device("192.168.2.2", 4001)
+camera = Device("192.168.2.3", 4001)
 
 camera.open()
 

@@ -11,7 +11,7 @@ using namespace rpiasgige::client;
 int main(int argc, char **argv)
 {
 
-    const std::string address = "192.168.2.2";
+    const std::string address = "192.168.2.3";
     const int port = 4001;
 
     Device camera(address, port);
