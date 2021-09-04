@@ -1,8 +1,13 @@
 # Sending command-line requests to the camera
 
-Making command-line requests is a convenient way to check if your camera is running & communicating as expected.
+Sending command-line requests is a convenient way to check if your camera is running & communicating as expected.
 
-![image](https://user-images.githubusercontent.com/9665358/130778217-62a2008a-bed5-43c5-9ec5-a72e46b1fc2f.png)
+| Example of sending an OPEN command via command-line  | 
+| ------------- | 
+| ![image](https://user-images.githubusercontent.com/9665358/132090846-678ec0f4-511b-4a27-b67c-5669cb623568.png)  |
+
+
+
 
 Here you can find a handly set of command examples. It is noteworthly that:
 
