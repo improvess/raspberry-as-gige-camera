@@ -107,10 +107,10 @@ Once the server is running, it is ready to reply incoming requests.
 
 ## Step 6 - (Optional) Set static IP for the ethernet interface
 
-It is likely that you end up defining a static IP for your camera. You can achieve it by setting a static IP in the device itself or setting up a rule on your DHCP server. Here, we assume that you have set the eth0 interface with IP 192.168.2.2 and network mask 255.255.255.0:
+It is likely that you end up defining a static IP for your camera. You can achieve it by setting a static IP in the device itself or setting up a rule on your DHCP server. Here, we assume that you have set the eth0 interface with IP 192.168.2.3 and network mask 255.255.255.0:
 
 <p align="center">
-  <img  width="300" src="https://user-images.githubusercontent.com/9665358/131861401-0bf7249c-a2ad-489b-8fff-4c128654e87b.png">
+  <img  width="300" src="https://user-images.githubusercontent.com/9665358/132089837-76a3bdc7-f447-4ae5-bae7-13a317b74b38.png">
 </p>
 
 ## Step 7 - Running clients
