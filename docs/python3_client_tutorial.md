@@ -14,18 +14,24 @@ Once the server is running, you can follow this tutorial to run a Pythn 3 client
 
 ## Connecting to the camera
 
-Connect your RPI to the same network where the PC/notebook is connected. The easier way to do that is just using an ethernet cable to connect them directly. You can also connect the RPI to your local ethernet switch or router. It is up to you.
+Connect your RPI to the same network where the PC/notebook is connected. The easier way to do that is just by using an ethernet cable to connect them directly. You can also connect the RPI to your local ethernet switch or router. It is up to you.
 
 > Althought you can connect to `rpiasgige` server via wifi network, it is recommeded to use a cable connection such as ethernet.
 
 The first thing to do is checking up if your computer actually can communicate to the Raspberry Pi.
 
-Let's assume that your RPI ethernet IP board is set to use IP 192.168.2.3. Thus, the straight-forward way to check if the computer can access the PI is ping the raspberry pi from the computer:
+Let's assume that your RPI ethernet IP board is set to use IP `192.168.2.3`. Thus, the straight-forward way to check if the computer can access the PI is ping the raspberry pi from the computer:
 
 ```
 ping 192.168.2.3
 ```
 
 | Pinging your PI |
-| -------------- |
+| --------------- |
 | ![image](https://user-images.githubusercontent.com/9665358/132093049-8fcee985-01b2-49be-936d-74dacda62837.png) |
+
+> Note that your computer's ethernet port must be also set with a IP network (in this example, an address like `192.168.2.X` like `192.168.2.10`, `192.168.2.51`, etc...)
+
+> check the official Raspberry PI documentation to learn how to proper set Raspberry PI ethernet IP statically
+
+> The proper way to set your ethernet IP address depends on the type of linux distro you are using.
