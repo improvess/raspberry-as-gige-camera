@@ -163,16 +163,16 @@ camera = Device("192.168.2.3", 5753)
 ```
 ### Local camera connection issues
 
-If the local USB or CSI is not properly connected/recognized by Raspberry Pi, the client will reply with `Failed to open the camera` as shown below:
+If the local USB or CSI camera is not properly connected/recognized by Raspberry Pi, the client will reply with `Failed to open the camera` as shown below:
 
 ![image](https://user-images.githubusercontent.com/9665358/132117913-58c6e490-fff3-4660-a668-26cbdc7a18d9.png)
 
-There are some reasons for this problema:
+There are some reasons for this problem:
 
-- an unconnected camera: the USB or CSI connection is not properly attached to Raspberry Pi
-- absense of OS support (driver) for the camera: not every camera has a good or even a no good driver to run on linux. If the OS doesn't recognize the camera nothing more can happen. Check [here](https://elinux.org/RPi_USB_Webcams) to a parciallly complete list of supported cameras by Raspberry Pi.
-- a broken camera: if it is broken, the only way is to replace it by another camera
+- an unconnected camera: the USB or CSI connection is not properly plugged to Raspberry Pi's interfaces
+- absense of OS support (driver) for the camera: not every camera has a linux driver. If the OS doesn't recognize the camera nothing many things can happen. Check [here](https://elinux.org/RPi_USB_Webcams) to a parcially complete list of supported cameras by Raspberry Pi.
 - Wrong path parameter: by default, the `rpiasgige` server connects to the camera at '/dev/video0'. If the camera is not associated to this path, the communication will not happen
+- a broken camera: if it is broken, the only way is to replace it by another camera
 
 The proper debugging procedure varies depending on which device camera model you have attached to your RPI. One very first approach is listing the current recognized device list:
 ```
@@ -203,22 +203,47 @@ Once you know what is the device path of you camera, you can set up it in the `r
 
 If your camera is properly plugged/connected but keeps not showing on `/dev/video*` one possibility is a broken and returning to the supplier can be the only way to do.
 
-### The camera is opened but no frame is grabbed
+### Failed to set some camera parameter
 
-The example source at uses a set of camera configurations:
-
+The example source uses a set of camera configurations:
 ```c++
 WIDTH = 640
 HEIGHT = 480
 FPS = 30
 MJPG = cv.VideoWriter.fourcc('M', 'J', 'P', 'G')
 ```
-These configuration may not be valid for every type of camera, in particular, the type of camera you have at hand now. The easiest way to know the valid camera configurations allowed by your device is using `v4l2-ctl` utility comand `v4l2-ctl -d 0 --list-formats-ext`:
+These configuration may not be valid for every type of camera, in particular, the type of camera you have at hand. The easiest way to know the valid camera configurations allowed by your device is using the utility command `v4l2-ctl -d 0 --list-formats-ext`:
 
 ![image](https://user-images.githubusercontent.com/9665358/132128890-4fd96ecc-e190-4b6f-a1f9-fff3a506c3b7.png)
 
-Scrolling down I can find that this configuration is actually supported by my camera:
+Scrolling down, I can find that this configuration is actually supported by my camera:
 
 ![image](https://user-images.githubusercontent.com/9665358/132128917-02456f4c-42be-4280-9bd7-51f8858ec19e.png)
 
 > `v4l2-ctl` is not part of core Raspberry Pi OS. You can install it by `sudo apt-get install v4l-utils`
+
+Note that the example throws an error message if I try an invalid configuration:
+
+![image](https://user-images.githubusercontent.com/9665358/132130512-8364cbb0-c933-4262-b9b6-d3f389410b08.png)
+
+### Using test application to check up if the camera is working
+
+`rpiasfige` has an OpenCV test application handy to check up if your camera is actually recognized by the Raspberry OS. To use it, run on your server rasp:
+
+```
+./simple_opencv_app -frame-width=800 -frame-height=448
+```
+
+This is a simple OpenCV grabbing-*n*-viewer application. So, if everything is good, your camera should show up as the example below:
+
+![image](https://user-images.githubusercontent.com/9665358/132133895-5b9c8a3b-5229-41c3-a780-2cd5d24e01e7.png)
+
+More details and parameters can be seen in the [source](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/server/extras/simple_opencv_cap.cpp)
+
+### Timeouts
+
+Before finishing this long throubleshooting section, let's talk about camera timeouts.
+
+Some cameras respond really fast to OPEN commands. But it is not the general case. 
+``
+
