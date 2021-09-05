@@ -37,7 +37,7 @@ int main(int argc, char **argv)
         usb_camera.set(cv::CAP_PROP_FPS, FPS);
 
 
-        std::cout << "Resolution set to " << usb_camera.get(cv::CAP_PROP_FRAME_WIDTH) << "x" << << usb_camera.get(cv::CAP_PROP_FRAME_HEIGHT) << "\n";
+        std::cout << "Resolution set to " << usb_camera.get(cv::CAP_PROP_FRAME_WIDTH) << "x" << usb_camera.get(cv::CAP_PROP_FRAME_HEIGHT) << "\n";
 
         std::cout << "FPS set to " << usb_camera.get(cv::CAP_PROP_FPS) << "\n";
 
