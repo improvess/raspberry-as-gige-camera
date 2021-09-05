@@ -244,6 +244,18 @@ More details and parameters can be seen in the [source](https://github.com/doler
 
 Before finishing this long throubleshooting section, let's talk about camera timeouts.
 
-Some cameras respond really fast to OPEN commands. But it is not the general case. 
-``
+Some cameras respond really fast to OPEN commands. But it is not the general case.  If you get timeouts errors like these:
 
+![image](https://user-images.githubusercontent.com/9665358/132134562-0e0c5d38-f759-49da-80d4-0082b7c12207.png)
+
+it is likely that you have a lazy-to-open camera at hand. The timeout, i.e, the max amount of time the client can wait to the response, is a decision of the client. By default, the python client API uses a timeout of 1 sec. You can change this value by calling:
+
+```python3
+# settting read timeout to 10 seconds
+camera.setReadTimeout(10)
+```
+at any moment before try to open the camera.
+
+### Other issues and contributions
+
+Feel free to [file an issue](https://github.com/doleron/raspberry-as-gige-camera/issues) if you find any other problem than the ones listed here. Contributting by sending [pull requests](https://github.com/doleron/raspberry-as-gige-camera/pulls0 is also super welcome!
