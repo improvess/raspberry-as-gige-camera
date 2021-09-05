@@ -145,6 +145,9 @@ class Device(object):
   def setReadTimeout(self, newValue):
     if newValue > 0:
       self.read_timeout = newValue
+      if self.server_socket:
+        self.server_socket.settimeout(self.read_timeout)
+        print("setting the timeout to new value" + str(newValue))
 
   def __disconnect(self):
     if not self.server_socket is None:
