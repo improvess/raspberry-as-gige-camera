@@ -16,6 +16,7 @@ int main(int argc, char **argv)
         "{frame-height           | 640    | camera frame height         }"
         "{fps           | 30    | camera fps         }"
         "{codec           | mjpg    | video codec        }"
+        "{auto-focus           | off    | auto-focus on/off       }"
 
         ;
 
@@ -46,6 +47,16 @@ int main(int argc, char **argv)
         if (codec.length() >= 4) {
             if (usb_camera.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc(codec[0], codec[1], codec[2], codec[3]))) {
                 std::cout << "CODEC set to " << codec.substr(0, 5) << "\n";
+            }
+        }
+
+        cv::String autofocus = parser.get<cv::String>("auto-focus");
+
+        if (autofocus.compare("on") == 0) {
+            if (usb_camera.set(cv::CAP_PROP_AUTOFOCUS, 1)) {
+                std::cout << "AUTO FOCUS set to ON\n";
+            } else {
+                usb_camera.set(cv::CAP_PROP_AUTOFOCUS, 0);
             }
         }
 
