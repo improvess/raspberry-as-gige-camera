@@ -4,11 +4,11 @@ This tutorial shows how to remotely access a camera running `rpiasgige` using Py
 
 ## TL;DR;
 
-1 - Connect Raspberry PIi and your computer in the same ethernet/IP network
-2 - Starts the `rpiasgige` server process on Rasoberry Pi
-3 - execute the example the [basic Python 3]https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/python_api/src/examples/basic.py example.
+1. Connect your Raspberry PI and computer in the same ethernet/IP network
+2. Starts the `rpiasgige` server process on Rasoberry Pi
+3. execute the [basic Python 3 example](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/python_api/src/examples/basic.py)
 
-
+These steps are explained in details below.
 
 ## Step 1 - Pre-requisites
 
@@ -26,7 +26,7 @@ In order to follow this tutorial , you need to connect your RPI to the same netw
 
 > Although you can use your wifi network to connect to the `rpiasgige` server, it is recommeded using a cable connection such as an ethernet cable.
 
-The first thing to do is checking up if your computer actually can communicate to the Raspberry Pi. The straight-forward way to check it is pinging the raspberry pi from the computer. Assuming that your RPI ethernet IP board is set to IP `192.168.2.3`:
+Once the two hosts are physically connected and set up with the proper network settings, the first thing to do is checking up if they can actually can communicate one to each other. The straight-forward is pinging the raspberry pi from the computer. Assuming that your RPI ethernet IP board is set to IP `192.168.2.3`:
 
 ```
 ping 192.168.2.3
@@ -40,7 +40,7 @@ ping 192.168.2.3
 
 > check official Raspberry PI documentation to learn how to proper set Raspberry PI ethernet IP statically or even [this tutorial on sparkfun](https://learn.sparkfun.com/tutorials/headless-raspberry-pi-setup/ethernet-with-static-ip-address)
 
-Once you have confirmed that your machine is able to ping raspberry pi, it is time to talk to the `rpiasgige` server. Let's start off by sending a `rpiasgige`-ping as shown below:
+Once you have confirmed that your machine is able to ping raspberry pi, it is time to talk to the `rpiasgige` server. Let's start off by sending a `rpiasgiger`-ping as shown below:
 
 ```
 echo -e "PING0\x0\x0\x0\x0" | nc 192.168.2.3 4001
@@ -54,7 +54,7 @@ The `PONG0` response indicates that the `rpiasgige` server is listening and repl
 
 > If the server doesn't reply, check if the `rpiasgige` server process is actually running on raspberry pi as shown [here](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/tutorial.MD#step-5---run-rpiasgige-server).
 
-Sending command-line requests to `rpiasgige` can be handy in some cases. You can find more command-line examples here. However, as software developers we always prefer to use proper API's. Let's see how to use Python to do it. Execute the following commands on the client computer:
+Sending command-line requests to `rpiasgige` can be handy in some cases. You can find more [command-line examples here](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/command-line-examples.MD). However, as software developers, we always prefer to use API's to make our calls. Let's see how to use Python to do it. Execute the following commands on the client computer:
 
 ```
 git clone https://github.com/doleron/raspberry-as-gige-camera.git
