@@ -2,6 +2,14 @@
 
 This tutorial shows how to remotely access a camera running `rpiasgige` using Python 3.
 
+## TL;DR;
+
+1 - Connect Raspberry PIi and your computer in the same ethernet/IP network
+2 - Starts the `rpiasgige` server process on Rasoberry Pi
+3 - execute the example the [basic Python 3]https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/python_api/src/examples/basic.py example.
+
+
+
 ## Step 1 - Pre-requisites
 
 In order to following this tutorial, you need to previously setup a `rpiasgige` server as shown in [Step-by-step tutorial](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/tutorial.MD).
@@ -144,6 +152,22 @@ indicates that there is some issue to client talk to the `rpiasgige` server (sup
 
 If the two hosts are actually connected but the camera keeps not replying, it is because the `rpiasgige` server process is not running on Raspberry Pi. Check the Step-by-step tutorial how to build and run the `rpiasgige` server:
 
-![image](https://user-images.githubusercontent.com/9665358/132116965-08ae1a92-6c8f-4585-8c3b-aabb09dec4a6.png)
+![image](https://user-images.githubusercontent.com/9665358/132117764-bc5817b4-d98e-4e83-98ef-3ba43b68886d.png)
 
-If the process is running, double check if both server and client TCP port matches.
+If the process is running, double check if **both server and client TCP port matches**. Note that the `rpiasgige` server can be running in a different port the default (4001) as in the example above. The port must to match to the port defined in the client program:
+
+```c++
+camera = Device("192.168.2.3", 5753)
+```
+### Local camera connection issues
+
+If the local USB or CSI is not properly connected/recognized by Raspberry Pi, the client will reply with `Failed to open the camera` as shown below:
+
+![image](https://user-images.githubusercontent.com/9665358/132117913-58c6e490-fff3-4660-a668-26cbdc7a18d9.png)
+
+There are some reasons for this problema:
+
+- an unconnected camera: the USB or CSI connection is not properly attached to Raspberry Pi
+- absense of OS support (driver) for the camera: not every camera has a good or even a no good driver to run on linux. If the OS doesn't recognize the camera nothing more can happen. Check [here](https://elinux.org/RPi_USB_Webcams) to a parciallly complete list of supported cameras by Raspberry Pi.
+- a broken camera: if it is broken, the only way is to replace it by another camera
+- Wrong path parameter: by default, the `rpiasgige` server connects to the camera at '/dev/video0'. If the camera is not associated to this path, the communication will not happen
