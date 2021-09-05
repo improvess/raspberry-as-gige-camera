@@ -59,6 +59,9 @@ nano test.py
 Nano is a text editor found in many linux distros. Once nano is opened, copy-paste into the following code:
 
 ```python3
+import os
+import sys
+
 from rpiasgige.client_api import Device
 
 camera = Device("192.168.2.3", 4001)
@@ -78,14 +81,29 @@ python3 test.py
 
 If everything is good, `rpiasgige` replied as shown above. Obviously, it was a basic connection check-up.
 
-You can find a more interesting example in the source code: raspberry-as-gige-camera/blob/main/code/client/python_api/src/examples/basic.py
+You can find a more interesting example in the source code: [raspberry-as-gige-camera/blob/main/code/client/python_api/src/examples/basic.py](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/python_api/src/examples/basic.py)
 
 which can be run by:
 
 ```
 python3 examples/basic.py
 ```
-This example open grabs frames from the remote camera. The expected result is:
+This example open and grabs frames from the remote camera. The expected result is such as:
 
+![image](https://user-images.githubusercontent.com/9665358/132115077-495475af-6fe6-4740-bad0-6264f45666e7.png)
 
+The code set the camera parameters as follows?
 
+```
+WIDTH = 640
+HEIGHT = 480
+FPS = 30
+MJPG = cv.VideoWriter.fourcc('M', 'J', 'P', 'G')
+
+camera.set(cv.CAP_PROP_FRAME_WIDTH, WIDTH, keep_alive)
+camera.set(cv.CAP_PROP_FRAME_HEIGHT, HEIGHT, keep_alive)
+camera.set(cv.CAP_PROP_FOURCC, MJPG, keep_alive)
+camera.set(cv.CAP_PROP_FPS, FPS, keep_alive)
+```
+
+I'm using a Microsoft Lifecam Studio camera which supports these settings properly.
