@@ -148,13 +148,15 @@ indicates that there is some issue to client talk to the `rpiasgige` server (sup
     </tr>
 </table>
 
-- **The `rpiasgige` process is not running** -
+- **The `rpiasgige` process is not running**
 
 If the two hosts are actually connected but the camera keeps not replying, it is because the `rpiasgige` server process is not running on Raspberry Pi. Check the Step-by-step tutorial how to build and run the `rpiasgige` server:
 
-![image](https://user-images.githubusercontent.com/9665358/132117764-bc5817b4-d98e-4e83-98ef-3ba43b68886d.png)
+| Running `rpiasgige` server on non-default port |
+| --------------------------------------------------------------- |
+| ![image](https://user-images.githubusercontent.com/9665358/132128455-cba3319e-884b-4850-ad88-9d2697292303.png) |
 
-If the process is running, double check if **both server and client TCP port matches**. Note that the `rpiasgige` server can be running in a different port the default (4001) as in the example above. The port must to match to the port defined in the client program:
+If the process is running, double check if **both server and client TCP ports match**. Note that the `rpiasgige` server can be running in a different port than the default (4001) as in the example above. This port value must matching to the port defined in the client program:
 
 ```c++
 camera = Device("192.168.2.3", 5753)
@@ -172,11 +174,11 @@ There are some reasons for this problema:
 - a broken camera: if it is broken, the only way is to replace it by another camera
 - Wrong path parameter: by default, the `rpiasgige` server connects to the camera at '/dev/video0'. If the camera is not associated to this path, the communication will not happen
 
-The proper debugging varies depending on which device model do you have attached to your RPI. One first approach is list the current  recognized device list on raspberry pi:
+The proper debugging procedure varies depending on which device camera model you have attached to your RPI. One very first approach is listing the current recognized device list:
 ```
 ls /dev/video*
 ```
-Running this command right now in my RPI, I can see that there is no `/dev/video0` devices in the list:
+By running this command right now on my RPI, I can see that there is no a `/dev/video0` device in the list:
 
 ![image](https://user-images.githubusercontent.com/9665358/132127231-a1bc9835-37d2-429e-8bd8-dc3784b68ac6.png)
 
@@ -187,7 +189,7 @@ Great, now `/dev/video0` is in the list.
 
 > The devices `/dev/video10`-`/dev/video16` are not actually physical devices. They are fake devices created by the V4L2 library.
 
-In this case, I'm using a USB camera. So, check for malconnection issues is relatively easy. For a CSI camera it requires a little bit of more effort. The CSI cable can be ivenrted or slight slipping. The camera module cannot be enabled or your video memory setting is slow. Cover the correct connection of each camera type to Raspberry Pis is besides the objective of this tutorial. 
+In this case, I'm using a USB camera. Therefore, checking for malconnection issues is relatively easy. For a CSI camera, it requires a little bit of more effort though. The CSI cable can be invenrted or slight slipping. The camera module cannot be enabled or maybe your video memory setting is slow. Cover the correct connection of each camera type is besides the objective of this tutorial. 
 
 > Check the [official tutorial](https://projects.raspberrypi.org/en/projects/getting-started-with-picamera) to learn how to connect your CSI camera to Raspberry Pi.
 
@@ -199,4 +201,24 @@ Once you know what is the device path of you camera, you can set up it in the `r
 
 ![image](https://user-images.githubusercontent.com/9665358/132128373-64b0e905-c96a-4dea-aa3e-be96f0f79a9e.png)
 
-If your camera is properly plugged/connected but keeps not showing on `/dev/video*` one possibility is a broken
+If your camera is properly plugged/connected but keeps not showing on `/dev/video*` one possibility is a broken and returning to the supplier can be the only way to do.
+
+### The camera is opened but no frame is grabbed
+
+The example source at uses a set of camera configurations:
+
+```c++
+WIDTH = 640
+HEIGHT = 480
+FPS = 30
+MJPG = cv.VideoWriter.fourcc('M', 'J', 'P', 'G')
+```
+These configuration may not be valid for every type of camera, in particular, the type of camera you have at hand now. The easiest way to know the valid camera configurations allowed by your device is using `v4l2-ctl` utility comand `v4l2-ctl -d 0 --list-formats-ext`:
+
+![image](https://user-images.githubusercontent.com/9665358/132128890-4fd96ecc-e190-4b6f-a1f9-fff3a506c3b7.png)
+
+Scrolling down I can find that this configuration is actually supported by my camera:
+
+![image](https://user-images.githubusercontent.com/9665358/132128917-02456f4c-42be-4280-9bd7-51f8858ec19e.png)
+
+> `v4l2-ctl` is not part of core Raspberry Pi OS. You can install it by `sudo apt-get install v4l-utils`
