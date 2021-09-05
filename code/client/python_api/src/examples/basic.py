@@ -1,5 +1,7 @@
 import os
+
 import sys
+sys.path.insert(0, '..')
 
 import cv2 as cv
 
@@ -49,18 +51,21 @@ def main():
     # Rememeber that properties are model-specific features. Thus, adapt the folllowing settings 
     # to your actual camera brand and needs
 
-    WIDTH = 1280
-    HEIGHT = 720
+    WIDTH = 640
+    HEIGHT = 480
     FPS = 30
     MJPG = cv.VideoWriter.fourcc('M', 'J', 'P', 'G')
 
-    if not camera.set(cv.CAP_PROP_FRAME_WIDTH, WIDTH, keep_alive):
+    camera.set(cv.CAP_PROP_FRAME_WIDTH, WIDTH, keep_alive)
+    camera.set(cv.CAP_PROP_FRAME_HEIGHT, HEIGHT, keep_alive)
+
+    if not camera.get(cv.CAP_PROP_FRAME_WIDTH, keep_alive):
         print("Failed to set width resolution to " + str(WIDTH), file=sys.stderr)
         os._exit(0)
     else:
         print("Successfully set width resolution to " + str(WIDTH))
 
-    if not camera.set(cv.CAP_PROP_FRAME_HEIGHT, HEIGHT, keep_alive):
+    if not camera.get(cv.CAP_PROP_FRAME_HEIGHT, keep_alive):
         print("Failed to set height resolution to " + str(HEIGHT), file=sys.stderr)
         os._exit(0)
     else:
