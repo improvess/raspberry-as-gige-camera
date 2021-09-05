@@ -124,7 +124,7 @@ camera.set(cv.CAP_PROP_FPS, FPS, keep_alive)
 
 I'm using a Microsoft Lifecam Studio camera which supports these settings properly. A camera which doesn't support the configuration is only one of the problems one can find when trying to connect to the remote camera. The following section talk about it.
 
-## Throubleshotting
+## Troubleshotting
 
 Roughtly speaking, there are threee types of problems you can face on when attempting to connect to you remote camera: 
 - connection issues between the client computer and the raspberry host
@@ -242,7 +242,7 @@ More details and parameters can be seen in the [source](https://github.com/doler
 
 ### Timeouts
 
-Before finishing this long throubleshooting section, let's talk about camera timeouts.
+Before finishing this long troubleshooting section, let's talk about camera timeouts.
 
 Some cameras respond really fast to OPEN commands. But it is not the general case.  If you get timeouts errors like these:
 
