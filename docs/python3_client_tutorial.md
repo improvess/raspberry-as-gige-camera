@@ -258,4 +258,4 @@ at any moment before try to open the camera.
 
 ### Other issues and contributions
 
-Feel free to [file an issue](https://github.com/doleron/raspberry-as-gige-camera/issues) if you find any other problem than the ones listed here. Contributting by sending [pull requests](https://github.com/doleron/raspberry-as-gige-camera/pulls0 is also super welcome!
+Feel free to [file an issue](https://github.com/doleron/raspberry-as-gige-camera/issues) if you find any other problem than the ones listed here. Contributting by sending [pull requests](https://github.com/doleron/raspberry-as-gige-camera/pulls) is also super welcome!
