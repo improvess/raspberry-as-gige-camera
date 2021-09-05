@@ -171,3 +171,32 @@ There are some reasons for this problema:
 - absense of OS support (driver) for the camera: not every camera has a good or even a no good driver to run on linux. If the OS doesn't recognize the camera nothing more can happen. Check [here](https://elinux.org/RPi_USB_Webcams) to a parciallly complete list of supported cameras by Raspberry Pi.
 - a broken camera: if it is broken, the only way is to replace it by another camera
 - Wrong path parameter: by default, the `rpiasgige` server connects to the camera at '/dev/video0'. If the camera is not associated to this path, the communication will not happen
+
+The proper debugging varies depending on which device model do you have attached to your RPI. One first approach is list the current  recognized device list on raspberry pi:
+```
+ls /dev/video*
+```
+Running this command right now in my RPI, I can see that there is no `/dev/video0` devices in the list:
+
+![image](https://user-images.githubusercontent.com/9665358/132127231-a1bc9835-37d2-429e-8bd8-dc3784b68ac6.png)
+
+This is because the camera USB plug is actually unconnected. Let me plug it and check again:
+![image](https://user-images.githubusercontent.com/9665358/132127350-0cd68cba-a488-48a0-8548-9909c0e3817a.png)
+
+Great, now `/dev/video0` is in the list.
+
+> The devices `/dev/video10`-`/dev/video16` are not actually physical devices. They are fake devices created by the V4L2 library.
+
+In this case, I'm using a USB camera. So, check for malconnection issues is relatively easy. For a CSI camera it requires a little bit of more effort. The CSI cable can be ivenrted or slight slipping. The camera module cannot be enabled or your video memory setting is slow. Cover the correct connection of each camera type to Raspberry Pis is besides the objective of this tutorial. 
+
+> Check the [official tutorial](https://projects.raspberrypi.org/en/projects/getting-started-with-picamera) to learn how to connect your CSI camera to Raspberry Pi.
+
+Note that `/dev/video0` is not the only path your camera can be represented by the OS. Raspbian can also set it as `/dev/video1`, `/dev/video2`, etc... Indeed, the way as devices are converted to paths is annoying. I wrote a simple C++ header handy to convert static USB bus address in device paths: https://github.com/doleron/v4l2-list-devices . This repo is not the only one solution. You can also check it by using utilities such as `usb-devices` or a simple `ls`:
+
+![image](https://user-images.githubusercontent.com/9665358/132128264-512ea3f8-931b-4923-8bfe-675b3d162b4c.png)
+
+Once you know what is the device path of you camera, you can set up it in the `rpiasgige` server initialization:
+
+![image](https://user-images.githubusercontent.com/9665358/132128373-64b0e905-c96a-4dea-aa3e-be96f0f79a9e.png)
+
+If your camera is properly plugged/connected but keeps not showing on `/dev/video*` one possibility is a broken
