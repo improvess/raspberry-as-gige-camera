@@ -76,7 +76,7 @@ int main(int argc, char **argv)
             if (!mat.empty())
             {
                 cv::imshow("mat", mat);
-                key = cv::waitKey(1);
+                key = cv::waitKey(10);
             }
 
             if (frames_count == 1)
