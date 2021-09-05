@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 
         if (codec.length >= 4) {
             if (usb_camera.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc(codec[0], codec[1], codec[2], codec[3]))) {
-                std::cout << "CODEC set to " << codec.substring(0, 5) << "\n";
+                std::cout << "CODEC set to " << codec.substr(0, 5) << "\n";
             }
         }
 
