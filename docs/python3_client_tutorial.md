@@ -92,9 +92,17 @@ This example open and grabs frames from the remote camera. The expected result i
 
 ![image](https://user-images.githubusercontent.com/9665358/132115077-495475af-6fe6-4740-bad0-6264f45666e7.png)
 
-The code set the camera parameters as follows?
+This example tries to connect to a remote camera at `192.168.2.3` and port `4001`:
 
+```c++
+camera = Device("192.168.2.3", 4001)
 ```
+
+> Change the file `examples/basic.py` if you are using different network settings.
+
+The code sets the camera parameters as follows:
+
+```c++
 WIDTH = 640
 HEIGHT = 480
 FPS = 30
@@ -106,4 +114,36 @@ camera.set(cv.CAP_PROP_FOURCC, MJPG, keep_alive)
 camera.set(cv.CAP_PROP_FPS, FPS, keep_alive)
 ```
 
-I'm using a Microsoft Lifecam Studio camera which supports these settings properly.
+I'm using a Microsoft Lifecam Studio camera which supports these settings properly. A camera which doesn't support the configuration is only one of the problems one can find when trying to connect to the remote camera. The following section talk about it.
+
+## Throubleshotting
+
+Roughtly speaking, there are threee types of problems you can face on when attempting to connect to you remote camera: 
+- connection issues between the client computer and the raspberry host
+- connection issues between the raspberry pi and the camera
+- wrong parameters / settings
+
+### Network connection issues
+
+An error like this:
+
+![image](https://user-images.githubusercontent.com/9665358/132116553-1438c336-cdff-4ee1-8acc-be2e5bcec6ac.png)
+
+indicates that there is some issue to client talk to the `rpiasgige` server (supposedly) running on the Raspberry Pi. There are two probable causes:
+
+- **The two hosts are not connected at all**: we cannot cover here everything you can do to debug your network. Maybe it is just an unconnected cable or maybe you need to fix a network address setup. Usually, the `ping` utility - available in every operating system - is the first step to help you on this.
+
+<table>
+    <tr>
+        <td>Raspberry PI's ethernet port has two LEDs to indicating TX & RT communication. It is not good news if one or two of these LEDs are not blinking.</td>
+        <td><img src="https://user-images.githubusercontent.com/9665358/132116790-4a9423c7-13e2-4923-a734-f3e0988ca927.png"></td>
+    </tr>
+</table>
+
+- **The `rpiasgige` process is not running** -
+
+If the two hosts are actually connected but the camera keeps not replying, it is because the `rpiasgige` server process is not running on Raspberry Pi. Check the Step-by-step tutorial how to build and run the `rpiasgige` server:
+
+![image](https://user-images.githubusercontent.com/9665358/132116965-08ae1a92-6c8f-4585-8c3b-aabb09dec4a6.png)
+
+If the process is running, double check if both server and client TCP port matches.
