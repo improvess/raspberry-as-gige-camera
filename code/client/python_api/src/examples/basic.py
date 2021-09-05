@@ -58,20 +58,23 @@ def main():
 
     camera.set(cv.CAP_PROP_FRAME_WIDTH, WIDTH, keep_alive)
     camera.set(cv.CAP_PROP_FRAME_HEIGHT, HEIGHT, keep_alive)
+    camera.set(cv.CAP_PROP_FOURCC, MJPG, keep_alive)
+    camera.set(cv.CAP_PROP_FPS, FPS, keep_alive)
 
-    if not camera.get(cv.CAP_PROP_FRAME_WIDTH, keep_alive):
+
+    if camera.get(cv.CAP_PROP_FRAME_WIDTH, keep_alive) != WIDTH:
         print("Failed to set width resolution to " + str(WIDTH), file=sys.stderr)
         os._exit(0)
     else:
         print("Successfully set width resolution to " + str(WIDTH))
 
-    if not camera.get(cv.CAP_PROP_FRAME_HEIGHT, keep_alive):
+    if camera.get(cv.CAP_PROP_FRAME_HEIGHT, keep_alive) != HEIGHT:
         print("Failed to set height resolution to " + str(HEIGHT), file=sys.stderr)
         os._exit(0)
     else:
         print("Successfully set height resolution to " + str(HEIGHT))
 
-    if not camera.set(cv.CAP_PROP_FOURCC, MJPG, keep_alive):
+    if camera.get(cv.CAP_PROP_FOURCC, keep_alive) != MJPG:
         print("Failed to set MJPG", file=sys.stderr)
         os._exit(0)
     else:
@@ -85,7 +88,7 @@ def main():
     # Note that AUTO FOCUS is not a mandatory feature for every camera. So the previous call can return false
     # Now, let's ask the camera to run at our predefined FPS rate
 
-    if camera.set(cv.CAP_PROP_FPS, FPS, keep_alive):
+    if camera.get(cv.CAP_PROP_FPS, keep_alive) != FPS:
         printf("Nice! Your camera seems to accept setting fps to %d !!!\n", FPS)
     else:
         printf("Sorry, you camera seems to do not support run at %d fps. No problem at all, keep going.\n", FPS)
