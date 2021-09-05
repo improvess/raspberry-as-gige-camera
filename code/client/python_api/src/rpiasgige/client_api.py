@@ -19,6 +19,7 @@ class Device(object):
     self.server_socket = None
     self.successive_connection_issues = 0
     self.response_buffer = bytearray(Device.IMAGE_META_DATA_SIZE + 1920 * 1080 * 3)
+    self.read_timeout = 1
 
   def ping(self, keep_alive = False):
     result = False
@@ -136,10 +137,14 @@ class Device(object):
       self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
       try:
         self.server_socket.connect((self.address, self.port))
-        self.server_socket.settimeout(1)
+        self.server_socket.settimeout(self.read_timeout)
       except:
         self.__disconnect()
     return not self.server_socket is None
+
+  def setReadTimeout(self, newValue):
+    if newValue > 0:
+      self.read_timeout = newValue
 
   def __disconnect(self):
     if not self.server_socket is None:
