@@ -12,6 +12,10 @@ int main(int argc, char **argv)
     const std::string keys =
 
         "{camera-path           | /dev/video0    | camera path such as /dev/video0         }"
+        "{frame-width           | 640    | camera frame width         }"
+        "{frame-height           | 640    | camera frame height         }"
+        "{fps           | 30    | camera fps         }"
+        "{codec           | mjpg    | video codec        }"
 
         ;
 
@@ -24,14 +28,26 @@ int main(int argc, char **argv)
     if (usb_camera.open(camera_path))
     {
 
-        //usb_camera.set(cv::CAP_PROP_BUFFERSIZE, 2);
-        usb_camera.set(cv::CAP_PROP_FRAME_WIDTH, 320);
-        usb_camera.set(cv::CAP_PROP_FRAME_HEIGHT, 240);
-        usb_camera.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
-        usb_camera.set(cv::CAP_PROP_FPS, 180);
+        double WIDTH = parser.get<double>("frame-width");
+        double HEIGHT = parser.get<double>("frame-height");
+        double FPS = parser.get<double>("fps");
+
+        usb_camera.set(cv::CAP_PROP_FRAME_WIDTH, WIDTH);
+        usb_camera.set(cv::CAP_PROP_FRAME_HEIGHT, HEIGHT);
+        usb_camera.set(cv::CAP_PROP_FPS, FPS);
 
 
-        std::cout << usb_camera.get(cv::CAP_PROP_FRAME_WIDTH) << "x" << usb_camera.get(cv::CAP_PROP_FRAME_HEIGHT) << "\n";
+        std::cout << "Resolution set to " << usb_camera.get(cv::CAP_PROP_FRAME_WIDTH) << "x" << << usb_camera.get(cv::CAP_PROP_FRAME_HEIGHT) << "\n";
+
+        std::cout << "FPS set to " << usb_camera.get(cv::CAP_PROP_FPS) << "\n";
+
+        cv::String codec = parser.get<cv::String>("codec");
+
+        if (codec.lenght >= 4) {
+            if (usb_camera.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc(codec[0], codec[1], codec[2], codec[3]))) {
+                std::cout << "CODEC set to " << codec.substring(0, 5) << "\n";
+            }
+        }
 
         int key = 0;
 
