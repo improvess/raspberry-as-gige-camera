@@ -61,20 +61,19 @@ def main():
     camera.set(cv.CAP_PROP_FOURCC, MJPG, keep_alive)
     camera.set(cv.CAP_PROP_FPS, FPS, keep_alive)
 
-
-    if camera.get(cv.CAP_PROP_FRAME_WIDTH, keep_alive) != WIDTH:
+    if camera.get(cv.CAP_PROP_FRAME_WIDTH, keep_alive)[1] != WIDTH:
         print("Failed to set width resolution to " + str(WIDTH), file=sys.stderr)
         os._exit(0)
     else:
         print("Successfully set width resolution to " + str(WIDTH))
 
-    if camera.get(cv.CAP_PROP_FRAME_HEIGHT, keep_alive) != HEIGHT:
+    if camera.get(cv.CAP_PROP_FRAME_HEIGHT, keep_alive)[1] != HEIGHT:
         print("Failed to set height resolution to " + str(HEIGHT), file=sys.stderr)
         os._exit(0)
     else:
         print("Successfully set height resolution to " + str(HEIGHT))
 
-    if camera.get(cv.CAP_PROP_FOURCC, keep_alive) != MJPG:
+    if camera.get(cv.CAP_PROP_FOURCC, keep_alive)[1] != MJPG:
         print("Failed to set MJPG", file=sys.stderr)
         os._exit(0)
     else:
