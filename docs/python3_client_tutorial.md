@@ -59,7 +59,7 @@ nano test.py
 Nano is a text editor found in many linux distros. Once nano is opened, copy-paste into the following code:
 
 ```python3
-from rpiasgige.client_api import Device, Performance_Counter, printf
+from rpiasgige.client_api import Device
 
 camera = Device("192.168.2.3", 4001)
 
