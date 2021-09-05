@@ -87,10 +87,10 @@ def main():
     # Note that AUTO FOCUS is not a mandatory feature for every camera. So the previous call can return false
     # Now, let's ask the camera to run at our predefined FPS rate
 
-    if camera.get(cv.CAP_PROP_FPS, keep_alive) != FPS:
-        printf("Nice! Your camera seems to accept setting fps to %d !!!\n", FPS)
-    else:
+    if camera.get(cv.CAP_PROP_FPS, keep_alive)[1] != FPS:
         printf("Sorry, you camera seems to do not support run at %d fps. No problem at all, keep going.\n", FPS)
+    else:
+        printf("Nice! Your camera seems to accept setting fps to %d !!!\n", FPS)
 
     # Everything is set up, time to grab some frames
     # Performance_Counter is an optional component. 
