@@ -149,7 +149,7 @@ Roughtly speaking, there are threee types of problems you can face on when attem
 
 An error like this:
 
-![image](https://user-images.githubusercontent.com/9665358/132116553-1438c336-cdff-4ee1-8acc-be2e5bcec6ac.png)
+![image](https://user-images.githubusercontent.com/9665358/132217044-fda9c48f-da55-48d4-8152-ac289985f94d.png)
 
 indicates that there is some issue to client talk to the `rpiasgige` server (supposedly) running on the Raspberry Pi. There are two probable causes:
 
@@ -164,7 +164,7 @@ indicates that there is some issue to client talk to the `rpiasgige` server (sup
 
 - **The `rpiasgige` process is not running**
 
-If the two hosts are actually connected but the camera keeps not replying, it is because the `rpiasgige` server process is not running on Raspberry Pi. Check the Step-by-step tutorial how to build and run the `rpiasgige` server:
+If the two hosts are actually connected but the camera keeps not replying, it is because the `rpiasgige` server process is not running on Raspberry Pi. Check the [Step-by-step tutorial](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/tutorial.MD) how to build and run the `rpiasgige` server:
 
 | Running `rpiasgige` server on non-default port |
 | --------------------------------------------------------------- |
@@ -182,7 +182,7 @@ Device camera(address, port);
 
 If the local USB or CSI camera is not properly connected/recognized by Raspberry Pi, the client will reply with `Failed to open the camera` as shown below:
 
-![image](https://user-images.githubusercontent.com/9665358/132117913-58c6e490-fff3-4660-a668-26cbdc7a18d9.png)
+![image](https://user-images.githubusercontent.com/9665358/132216270-b6af5999-f35f-4782-977a-26b2454b3161.png)
 
 There are some reasons for this problem:
 
@@ -224,10 +224,10 @@ If your camera is properly plugged/connected but keeps not showing on `/dev/vide
 
 The example source uses a set of camera configurations:
 ```c++
-WIDTH = 640
-HEIGHT = 480
-FPS = 30
-MJPG = cv.VideoWriter.fourcc('M', 'J', 'P', 'G')
+const double frame_width = 640;
+const double frame_height = 480;
+const double mjpg = cv::VideoWriter::fourcc('M', 'J', 'P', 'G');
+const double fps = 30;
 ```
 These configuration may not be valid for every type of camera, in particular, the type of camera you have at hand. The easiest way to know the valid camera configurations allowed by your device is using the utility command `v4l2-ctl -d 0 --list-formats-ext`:
 
@@ -263,13 +263,13 @@ Before finishing this long troubleshooting section, let's talk about camera time
 
 Some cameras respond really fast to OPEN commands. But it is not the general case.  If you get timeouts errors like these:
 
-![image](https://user-images.githubusercontent.com/9665358/132134562-0e0c5d38-f759-49da-80d4-0082b7c12207.png)
+![image](https://user-images.githubusercontent.com/9665358/132221683-cc4aa365-b623-4c36-a2b9-46014e0e0ecf.png)
 
 it is likely that you have a lazy-to-open camera at hand. The timeout, i.e, the max amount of time the client can wait to the response, is a decision of the client. By default, the python client API uses a timeout of 1 sec. You can change this value by calling:
 
-```python3
+```c++
 # settting read timeout to 10 seconds
-camera.setReadTimeout(10)
+camera.set_read_timeout(10);
 ```
 at any moment before try to open the camera.
 
