@@ -21,7 +21,7 @@ namespace rpiasgige
                 request.set_status("SET0");
                 memcpy(request.data, &propId, sizeof(int));
                 memcpy(request.data + sizeof(int), &value, sizeof(double));
-                
+
                 Packet response(this->response_buffer, keep_alive, 0, this->response_buffer + HEADER_SIZE);
                 this->send_request(request, response);
                 result = response.check_if_status_is("0200");
@@ -41,7 +41,7 @@ namespace rpiasgige
             {
                 Packet request(this->request_buffer, keep_alive, 0, this->request_buffer + HEADER_SIZE);
                 request.set_status("PING");
-                
+
                 Packet response(this->response_buffer, keep_alive, 0, this->response_buffer + HEADER_SIZE);
                 this->send_request(request, response);
                 result = response.check_if_status_is("PONG");
@@ -101,7 +101,7 @@ namespace rpiasgige
             {
                 Packet request(this->request_buffer, keep_alive, 0, this->request_buffer + HEADER_SIZE);
                 request.set_status("ISOP");
-                
+
                 Packet response(this->response_buffer, keep_alive, 0, this->response_buffer + HEADER_SIZE);
                 this->send_request(request, response);
                 result = response.check_if_status_is("0200");
@@ -120,19 +120,19 @@ namespace rpiasgige
             {
                 Packet request(this->request_buffer, keep_alive, 0, this->request_buffer + HEADER_SIZE);
                 request.set_status("GRAB");
-                
+
                 Packet response(this->response_buffer, keep_alive, 0, this->response_buffer + HEADER_SIZE);
                 this->send_request(request, response);
                 result = response.check_if_status_is("0200");
                 if (result)
                 {
-                    const char * data = response.data;
+                    const char *data = response.data;
                     int size_int = sizeof(int);
-                    const int * rows = (int *)data;
-                    const int * cols = (int *)(data + size_int);
-                    const int * type = (int *)(data + 2*size_int);
+                    const int *rows = (int *)data;
+                    const int *cols = (int *)(data + size_int);
+                    const int *type = (int *)(data + 2 * size_int);
                     cv::Mat temp = cv::Mat::zeros(*rows, *cols, *type);
-                    temp.data = (unsigned char *)response.data + 3*size_int;
+                    temp.data = (unsigned char *)response.data + 3 * size_int;
                     dest = temp;
                 }
             }
@@ -150,7 +150,7 @@ namespace rpiasgige
             {
                 Packet request(this->request_buffer, keep_alive, 0, this->request_buffer + HEADER_SIZE);
                 request.set_status("CLOS");
-                
+
                 Packet response(this->response_buffer, keep_alive, 0, this->response_buffer + HEADER_SIZE);
                 this->send_request(request, response);
                 result = response.check_if_status_is("0200");
@@ -200,6 +200,7 @@ namespace rpiasgige
                 close(this->server_socket);
                 this->server_socket = -1;
             }
+            this->update_socket_timeout();
             return this->is_connected();
         }
 
@@ -215,24 +216,31 @@ namespace rpiasgige
 
             if (this->is_connected())
             {
-                if (request.keep_alive) {
+                if (request.keep_alive)
+                {
                     request_buffer[KEEP_ALIVE_ADDRESS] = '1';
-                } else {
+                }
+                else
+                {
                     request_buffer[KEEP_ALIVE_ADDRESS] = '0';
                 }
 
                 this->set_request_data_size(request.data_size);
 
-                if (this->send_request_buffer(request.data_size + HEADER_SIZE)) {
+                if (this->send_request_buffer(request.data_size + HEADER_SIZE))
+                {
 
                     this->read_response(response);
 
-                    if (!request.keep_alive) {
+                    if (!request.keep_alive)
+                    {
                         this->disconnect();
                     }
-
-                } else {
-                    if (!request.keep_alive) {
+                }
+                else
+                {
+                    if (!request.keep_alive)
+                    {
                         this->disconnect();
                     }
                     throw TimeoutException{"Failed to send data to server."};
@@ -247,19 +255,24 @@ namespace rpiasgige
         bool Device::send_request_buffer(const int bytes_to_send)
         {
             bool result = false;
-            if (bytes_to_send <= this->request_buffer_size) {
+            if (bytes_to_send <= this->request_buffer_size)
+            {
                 int sent = 0;
                 bool keep = true;
                 int fail_count = 0;
-                while(keep && sent < bytes_to_send) {
+                while (keep && sent < bytes_to_send)
+                {
 
                     int current_packet_size = std::min(bytes_to_send - sent, 1024);
 
-                    int val_sent = send(this->server_socket, this->request_buffer + sent , current_packet_size , MSG_NOSIGNAL);
-                    if(val_sent > 0) {
+                    int val_sent = send(this->server_socket, this->request_buffer + sent, current_packet_size, MSG_NOSIGNAL);
+                    if (val_sent > 0)
+                    {
                         fail_count = 0;
                         sent += val_sent;
-                    } else {
+                    }
+                    else
+                    {
                         fail_count++;
                         keep = fail_count < 3;
                     }
@@ -334,8 +347,29 @@ namespace rpiasgige
                 result = 0;
                 response.data_size = 0;
             }
-            //printf("read_response result %d\n", result);
             return result;
+        }
+
+        void Device::set_read_timeout(int timeout_in_seconds)
+        {
+            if (this->read_timeout_in_seconds >= 0)
+            {
+                this->read_timeout_in_seconds = timeout_in_seconds;
+            }
+            this->update_socket_timeout();
+        }
+
+        void Device::update_socket_timeout()
+        {
+            if (this->server_socket >= 0 && this->read_timeout_in_seconds >= 0)
+            {
+                struct timeval tv;
+                tv.tv_sec = this->read_timeout_in_seconds;
+                // minimum acceptable timeout is 10 ms
+                tv.tv_usec = 10000;
+                setsockopt(this->server_socket, SOL_SOCKET, SO_RCVTIMEO, (const char *)&tv, sizeof tv);
+
+            }
         }
 
     }

@@ -112,17 +112,22 @@ namespace rpiasgige
             bool release(bool keep_alive = false);
             bool ping(bool keep_alive = false);
 
+            void set_read_timeout(int timeout_in_seconds);
+
         private:
             cv::String address;
             int port;
             int timeout_count = 0;
             const int MAX_TIMEOUT_COUNT = 5;
+            int read_timeout_in_seconds = 0;
 
             void handle_timeout(TimeoutException &tex);
 
             void send_request(const Packet &request, Packet &response);
 
             bool open_tcp_conversation();
+
+            void update_socket_timeout();
 
             int server_socket = -1;
 
