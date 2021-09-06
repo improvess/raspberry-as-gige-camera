@@ -241,7 +241,7 @@ Scrolling down, I can find that this configuration is actually supported by my c
 
 Note that the example throws an error message if I try an invalid configuration:
 
-![image](https://user-images.githubusercontent.com/9665358/132130512-8364cbb0-c933-4262-b9b6-d3f389410b08.png)
+![image](https://user-images.githubusercontent.com/9665358/132222511-06bc6d37-8da0-429d-90db-c30896f73bfc.png)
 
 ### Using test application to check up if the camera is working
 
