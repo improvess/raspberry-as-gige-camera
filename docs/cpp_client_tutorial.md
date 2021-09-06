@@ -102,39 +102,41 @@ which can be compiled by:
 ```
 g++ examples/basic.cpp src/lib/client_api.cpp -I include -o basic `pkg-config --cflags --libs opencv4`
 ```
-
-and run:
+and run by:
 ```
 ./basic
 ```
 
 This example open and grabs frames from the remote camera. The expected result is such as:
 
-![image](https://user-images.githubusercontent.com/9665358/132115077-495475af-6fe6-4740-bad0-6264f45666e7.png)
+![image](https://user-images.githubusercontent.com/9665358/132161085-60a8aa49-da92-412d-b0f3-3ad06cf00ad6.png)
 
-This example tries to connect to a remote camera at `192.168.2.3` and port `4001`:
+Note that the example tries to connect to a remote camera at `192.168.2.3` and port `4001`:
 
 ```c++
-camera = Device("192.168.2.3", 4001)
+const std::string address = "192.168.2.3";
+const int port = 4001;
+
+Device camera(address, port);
 ```
 
-> Change the file `examples/basic.py` if you are using different network settings.
+> Change the file `examples/basic.cpp` if you are using different network settings.
 
 The code sets the camera parameters as follows:
 
 ```c++
-WIDTH = 640
-HEIGHT = 480
-FPS = 30
-MJPG = cv.VideoWriter.fourcc('M', 'J', 'P', 'G')
+const double frame_width = 640;
+const double frame_height = 480;
+const double mjpg = cv::VideoWriter::fourcc('M', 'J', 'P', 'G');
+const double fps = 30;
 
-camera.set(cv.CAP_PROP_FRAME_WIDTH, WIDTH, keep_alive)
-camera.set(cv.CAP_PROP_FRAME_HEIGHT, HEIGHT, keep_alive)
-camera.set(cv.CAP_PROP_FOURCC, MJPG, keep_alive)
-camera.set(cv.CAP_PROP_FPS, FPS, keep_alive)
+camera.set(cv::CAP_PROP_FRAME_WIDTH, frame_width, keep_alive);
+camera.set(cv::CAP_PROP_FRAME_HEIGHT, frame_height, keep_alive);
+camera.set(cv::CAP_PROP_FOURCC, mjpg, keep_alive);
+camera.set(cv::CAP_PROP_FPS, fps, keep_alive);
 ```
 
-I'm using a Microsoft Lifecam Studio camera which supports these settings properly. A camera which doesn't support the configuration is only one of the problems one can find when trying to connect to the remote camera. The following section talk about it.
+I'm using a Microsoft Lifecam Studio camera which supports these settings properly. A camara without support for the settings is only one of several problems one can find when trying to connect to the remote camera. The following section talks about it.
 
 ## Troubleshotting
 
@@ -171,7 +173,10 @@ If the two hosts are actually connected but the camera keeps not replying, it is
 If the process is running, double check if **both server and client TCP ports match**. Note that the `rpiasgige` server can be running in a different port than the default (4001) as in the example above. This port value must matching to the port defined in the client program:
 
 ```c++
-camera = Device("192.168.2.3", 5753)
+const std::string address = "192.168.2.3";
+const int port = 4001;
+
+Device camera(address, port);
 ```
 ### Local camera connection issues
 
