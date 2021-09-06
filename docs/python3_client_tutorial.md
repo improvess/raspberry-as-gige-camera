@@ -14,7 +14,7 @@ These steps are explained in details below.
 
 - [Step 1 - Pre-requisites](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/python3_client_tutorial.md#step-1---pre-requisites)
 - [Step 2 - Connecting computer and Raspberry Pi](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/python3_client_tutorial.md#step-2---connecting-computer-and-raspberry-pi)
-- [Step 3 - Coding the first `rpiasgige` client with C++](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/python3_client_tutorial.md#step-3---coding-the-first-rpiasgige-client-with-python-3)
+- [Step 3 - Coding the first `rpiasgige` client with Python 3](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/python3_client_tutorial.md#step-3---coding-the-first-rpiasgige-client-with-python-3)
 - [Step 4 - Running the Python 3 client example](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/python3_client_tutorial.md#step-4---running-the-python-3-client-example)
 - [Step 5 - Troubleshotting](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/python3_client_tutorial.md#step-5---troubleshotting)
 
@@ -120,7 +120,7 @@ This example open and grabs frames from the remote camera. The expected result i
 
 This example tries to connect to a remote camera at `192.168.2.3` and port `4001`:
 
-```c++
+```python3
 camera = Device("192.168.2.3", 4001)
 ```
 
@@ -128,7 +128,7 @@ camera = Device("192.168.2.3", 4001)
 
 The code sets the camera parameters as follows:
 
-```c++
+```python3
 WIDTH = 640
 HEIGHT = 480
 FPS = 30
@@ -176,7 +176,7 @@ If the two hosts are actually connected but the camera keeps not replying, it is
 
 If the process is running, double check if **both server and client TCP ports match**. Note that the `rpiasgige` server can be running in a different port than the default (4001) as in the example above. This port value must matching to the port defined in the client program:
 
-```c++
+```python3
 camera = Device("192.168.2.3", 5753)
 ```
 ### Local camera connection issues
@@ -223,8 +223,8 @@ If your camera is properly plugged/connected but keeps not showing on `/dev/vide
 
 ### Failed to set some camera parameter
 
-The example source uses a set of camera configurations:
-```c++
+The example source code uses a set of camera configurations:
+```python3
 WIDTH = 640
 HEIGHT = 480
 FPS = 30
