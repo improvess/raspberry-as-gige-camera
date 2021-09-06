@@ -10,13 +10,13 @@ This tutorial shows how to remotely access a camera running `rpiasgige` using Py
 
 These steps are explained in details below.
 
-## Roudmap
+## Roadmap
 
-1. [Step 1 - Pre-requisites]()
-2. [Step 2 - Connecting computer and Raspberry Pi]()
-3. [Step 3 - Coding the first `rpiasgige` client with C++]()
-4. [Step 4 - Running the C++ client example]()
-5. [Step 5 - Troubleshotting]()
+1. [Step 1 - Pre-requisites](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-1---pre-requisites)
+2. [Step 2 - Connecting computer and Raspberry Pi](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-2---connecting-computer-and-raspberry-pi)
+3. [Step 3 - Coding the first `rpiasgige` client with C++](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-3---coding-the-first-rpiasgige-client-with-c)
+4. [Step 4 - Running the C++ client example](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-4---running-the-c-client-example)
+5. [Step 5 - Troubleshotting](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-5---troubleshotting)
 
 ## Step 1 - Pre-requisites
 
