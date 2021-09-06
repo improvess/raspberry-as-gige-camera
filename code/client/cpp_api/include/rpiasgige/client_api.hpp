@@ -119,7 +119,7 @@ namespace rpiasgige
             int port;
             int timeout_count = 0;
             const int MAX_TIMEOUT_COUNT = 5;
-            int read_timeout_in_seconds = 0;
+            int read_timeout_in_seconds = 1;
 
             void handle_timeout(TimeoutException &tex);
 
