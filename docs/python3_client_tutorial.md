@@ -22,7 +22,7 @@ Once the server is running, you can follow this tutorial to run a Pythn 3 client
 
 ## Connecting computer and Raspberry Pi
 
-In order to follow this tutorial , you need to connect your RPI to the same network where the PC/notebook is connected. The easiest way to do that is just by using an ethernet cable. Of course, you can also connect the RPI to your local ethernet switch or router. It is up to you.
+In order to follow this tutorial, you need to connect your RPI to the same network where the PC/notebook is connected. The easiest way to do that is just by using an ethernet cable. Of course, you can also connect the RPI to your local ethernet switch or router. It is up to you.
 
 > Although you can use your wifi network to connect to the `rpiasgige` server, it is recommeded using a cable connection such as an ethernet cable.
 
