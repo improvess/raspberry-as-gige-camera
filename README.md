@@ -49,9 +49,7 @@ cv.waitKey()
 
 camera.release():
 ```
-<p align="center">
-  <img  width="400" src="https://user-images.githubusercontent.com/9665358/132226000-60041ff4-3b6d-439e-8206-e36d5de4475a.png">
-</p>
+![image](https://user-images.githubusercontent.com/9665358/132226000-60041ff4-3b6d-439e-8206-e36d5de4475a.png)
 
 ## Getting started
 
