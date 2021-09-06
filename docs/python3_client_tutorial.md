@@ -28,7 +28,7 @@ Once the server is running, you can follow this tutorial to run a Pythn 3 client
 
 | Physical setup |
 | -------------- |
-| ![image](https://user-images.githubusercontent.com/9665358/132092835-a558e28c-7f03-47cd-951c-5a8969b183aa.png) |
+| ![image](https://user-images.githubusercontent.com/9665358/132226000-60041ff4-3b6d-439e-8206-e36d5de4475a.png) |
 
 ## Step 2 - Connecting computer and Raspberry Pi
 
