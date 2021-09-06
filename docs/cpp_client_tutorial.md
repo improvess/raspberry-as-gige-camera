@@ -10,6 +10,14 @@ This tutorial shows how to remotely access a camera running `rpiasgige` using Py
 
 These steps are explained in details below.
 
+## Roudmap
+
+1. [Step 1 - Pre-requisites]()
+2. [Step 2 - Connecting computer and Raspberry Pi]()
+3. [Step 3 - Coding the first `rpiasgige` client with C++]()
+4. [Step 4 - Running the C++ client example]()
+5. [Step 5 - Troubleshotting]()
+
 ## Step 1 - Pre-requisites
 
 In order to following this tutorial, you need to previously setup a `rpiasgige` server as shown in [Step-by-step tutorial](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/tutorial.MD).
@@ -20,7 +28,7 @@ Once the server is running, you can follow this tutorial to run a C++ client on 
 | -------------- |
 | ![image](https://user-images.githubusercontent.com/9665358/132092835-a558e28c-7f03-47cd-951c-5a8969b183aa.png) |
 
-## Connecting computer and Raspberry Pi
+## Step 2 - Connecting computer and Raspberry Pi
 
 In order to follow this tutorial, you need to connect your RPI to the same network where the PC/notebook is connected. The easiest way to do that is just by using an ethernet cable. Of course, you can also connect the RPI to your local ethernet switch or router. It is up to you.
 
@@ -53,6 +61,8 @@ echo -e "PING0\x0\x0\x0\x0" | nc 192.168.2.3 4001
 The `PONG0` response indicates that the `rpiasgige` server is listening and replying properly.
 
 > If the server doesn't reply, check if the `rpiasgige` server process is actually running on raspberry pi as shown [here](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/tutorial.MD#step-5---run-rpiasgige-server).
+
+## Step 3 - Coding the first `rpiasgige` client with C++
 
 Sending command-line requests to `rpiasgige` can be handy in some cases. You can find more [command-line examples here](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/command-line-examples.MD). However, as software developers, we always prefer to use API's to make our calls. Let's see how to use C++ to do it. Execute the following commands on the client computer:
 
@@ -94,6 +104,8 @@ Finally, run `./test`:
 ![image](https://user-images.githubusercontent.com/9665358/132158551-c41dc310-ab36-4982-8dd9-9fce28a763f0.png)
 
 If everything is good, `rpiasgige` replied as shown above. Obviously, it was a basic connection check-up.
+
+## Step 4 - Running the C++ client example
 
 You can find a more motivating example in the source code: [raspberry-as-gige-camera/blob/main/code/client/cpp_api/examples/basic.cp](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/cpp_api/examples/basic.cpp)
 
@@ -138,7 +150,7 @@ camera.set(cv::CAP_PROP_FPS, fps, keep_alive);
 
 I'm using a Microsoft Lifecam Studio camera which supports these settings properly. A camara without support for the settings is only one of several problems one can find when trying to connect to the remote camera. The following section talks about it.
 
-## Troubleshotting
+## Step 5 - Troubleshotting
 
 Roughtly speaking, there are threee types of problems you can face on when attempting to connect to you remote camera: 
 - connection issues between the client computer and the raspberry host
