@@ -56,12 +56,17 @@ int main(int argc, char **argv)
     // Rememeber that properties are model-specific features. Thus, adapt the folllowing settings 
     // to your actual camera brand and needs
 
-    const int frame_width = 1280;
-    const int frame_height = 720;
-    const auto mjpg = cv::VideoWriter::fourcc('M', 'J', 'P', 'G');
-    const int fps = 30;
+    const double frame_width = 640;
+    const double frame_height = 480;
+    const double mjpg = cv::VideoWriter::fourcc('M', 'J', 'P', 'G');
+    const double fps = 30;
 
-    if (camera.set(cv::CAP_PROP_FRAME_WIDTH, frame_width, keep_alive))
+    camera.set(cv::CAP_PROP_FRAME_WIDTH, frame_width, keep_alive);
+    camera.set(cv::CAP_PROP_FRAME_HEIGHT, frame_height, keep_alive);
+    camera.set(cv::CAP_PROP_FOURCC, mjpg, keep_alive);
+    camera.set(cv::CAP_PROP_FPS, fps, keep_alive);
+
+    if (camera.get(cv::CAP_PROP_FRAME_WIDTH, keep_alive) == frame_width)
     {
         std::cout << "Frame width set!\n";
     }
@@ -71,7 +76,7 @@ int main(int argc, char **argv)
         exit(0);
     }
 
-    if (camera.set(cv::CAP_PROP_FRAME_HEIGHT, frame_height, keep_alive))
+    if (camera.get(cv::CAP_PROP_FRAME_HEIGHT, keep_alive) == frame_height)
     {
         std::cout << "Frame height set!\n";
     }
@@ -81,7 +86,7 @@ int main(int argc, char **argv)
         exit(0);
     }
 
-    if (camera.set(cv::CAP_PROP_FOURCC, mjpg, keep_alive))
+    if (camera.get(cv::CAP_PROP_FOURCC, keep_alive) == mjpg)
     {
         std::cout << "MJPG encoding set!\n";
     }
@@ -100,7 +105,7 @@ int main(int argc, char **argv)
     // Note that AUTO FOCUS is not a mandatory feature for every camera. So the previous call can return false
     // Now, let's ask the camera to run at our predefined FPS rate
 
-    if (camera.set(cv::CAP_PROP_FPS, fps, keep_alive))
+    if (camera.get(cv::CAP_PROP_FPS, keep_alive) == fps)
     {
         double actual_fps_settings = camera.get(cv::CAP_PROP_FPS);
         if (std::abs(actual_fps_settings - fps) < 0.1) {
