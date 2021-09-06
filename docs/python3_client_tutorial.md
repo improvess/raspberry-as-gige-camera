@@ -30,7 +30,7 @@ Once the server is running, you can follow this tutorial to run a Pythn 3 client
 | -------------- |
 | ![image](https://user-images.githubusercontent.com/9665358/132092835-a558e28c-7f03-47cd-951c-5a8969b183aa.png) |
 
-## Step 3 - Connecting computer and Raspberry Pi
+## Step 2 - Connecting computer and Raspberry Pi
 
 In order to follow this tutorial, you need to connect your RPI to the same network where the PC/notebook is connected. The easiest way to do that is just by using an ethernet cable. Of course, you can also connect the RPI to your local ethernet switch or router. It is up to you.
 
