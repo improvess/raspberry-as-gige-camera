@@ -66,7 +66,7 @@ The `PONG0` response indicates that the `rpiasgige` server is listening and repl
 
 
 
-Step 3 - Coding the first rpiasgige client with Python 3
+## Step 3 - Coding the first `rpiasgige` client with Python 3
 
 Sending command-line requests to `rpiasgige` can be handy in some cases. You can find more [command-line examples here](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/command-line-examples.MD). However, as software developers, we always prefer to use API's to make our calls. Let's see how to use Python to do it. Execute the following commands on the client computer:
 
@@ -105,7 +105,7 @@ If everything is good, `rpiasgige` replied as shown above. Obviously, it was a b
 
 
 
-Step 4 - Running the Python 3 client example
+## Step 4 - Running the Python 3 client example
 
 You can find a more interesting example in the source code: [raspberry-as-gige-camera/blob/main/code/client/python_api/src/examples/basic.py](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/python_api/src/examples/basic.py)
 
