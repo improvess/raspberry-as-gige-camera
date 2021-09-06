@@ -12,11 +12,11 @@ These steps are explained in details below.
 
 ## Roadmap
 
-1. [Step 1 - Pre-requisites](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-1---pre-requisites)
-2. [Step 2 - Connecting computer and Raspberry Pi](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-2---connecting-computer-and-raspberry-pi)
-3. [Step 3 - Coding the first `rpiasgige` client with C++](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-3---coding-the-first-rpiasgige-client-with-c)
-4. [Step 4 - Running the C++ client example](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-4---running-the-c-client-example)
-5. [Step 5 - Troubleshotting](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-5---troubleshotting)
+- [Step 1 - Pre-requisites](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-1---pre-requisites)
+- [Step 2 - Connecting computer and Raspberry Pi](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-2---connecting-computer-and-raspberry-pi)
+- [Step 3 - Coding the first `rpiasgige` client with C++](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-3---coding-the-first-rpiasgige-client-with-c)
+- [Step 4 - Running the C++ client example](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-4---running-the-c-client-example)
+- [Step 5 - Troubleshotting](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/cpp_client_tutorial.md#step-5---troubleshotting)
 
 ## Step 1 - Pre-requisites
 
@@ -27,6 +27,8 @@ Once the server is running, you can follow this tutorial to run a C++ client on 
 | Physical setup |
 | -------------- |
 | ![image](https://user-images.githubusercontent.com/9665358/132092835-a558e28c-7f03-47cd-951c-5a8969b183aa.png) |
+
+
 
 ## Step 2 - Connecting computer and Raspberry Pi
 
@@ -61,6 +63,8 @@ echo -e "PING0\x0\x0\x0\x0" | nc 192.168.2.3 4001
 The `PONG0` response indicates that the `rpiasgige` server is listening and replying properly.
 
 > If the server doesn't reply, check if the `rpiasgige` server process is actually running on raspberry pi as shown [here](https://github.com/doleron/raspberry-as-gige-camera/blob/main/docs/tutorial.MD#step-5---run-rpiasgige-server).
+
+
 
 ## Step 3 - Coding the first `rpiasgige` client with C++
 
@@ -104,6 +108,8 @@ Finally, run `./test`:
 ![image](https://user-images.githubusercontent.com/9665358/132158551-c41dc310-ab36-4982-8dd9-9fce28a763f0.png)
 
 If everything is good, `rpiasgige` replied as shown above. Obviously, it was a basic connection check-up.
+
+
 
 ## Step 4 - Running the C++ client example
 
@@ -149,6 +155,8 @@ camera.set(cv::CAP_PROP_FPS, fps, keep_alive);
 ```
 
 I'm using a Microsoft Lifecam Studio camera which supports these settings properly. A camara without support for the settings is only one of several problems one can find when trying to connect to the remote camera. The following section talks about it.
+
+
 
 ## Step 5 - Troubleshotting
 
