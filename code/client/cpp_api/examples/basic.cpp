@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 
     if (camera.get(cv::CAP_PROP_FRAME_WIDTH, keep_alive) == frame_width)
     {
-        std::cout << "Frame width set!\n";
+        std::cout << "Frame width set to " << frame_width << "!\n";
     }
     else
     {
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 
     if (camera.get(cv::CAP_PROP_FRAME_HEIGHT, keep_alive) == frame_height)
     {
-        std::cout << "Frame height set!\n";
+        std::cout << "Frame height set to " << frame_height << "!\n";
     }
     else
     {
