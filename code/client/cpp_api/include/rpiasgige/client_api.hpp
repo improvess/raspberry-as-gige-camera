@@ -49,7 +49,7 @@ namespace rpiasgige
             int data_size;
             char *data;
 
-            Packet(char *status, bool keep_alive, int data_size, char *data) : status(status), keep_alive(keep_alive = false), data_size(data_size), data(data) {}
+            Packet(char *status, bool keep_alive, int data_size, char *data) : status(status), keep_alive(keep_alive), data_size(data_size), data(data) {}
 
             /**
              * return true if the packet status is equal to the parameter query

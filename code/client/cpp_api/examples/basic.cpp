@@ -1,11 +1,26 @@
+#include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 #include <iostream>
 
 #include "rpiasgige/client_api.hpp"
 
 using namespace rpiasgige::client;
 
+Device * camera_ptr = nullptr;
+
+void release_resources(int s){
+
+    if (camera_ptr != nullptr) {
+        printf("Releasing camera\n");
+        camera_ptr->release();
+    }
+    exit(0); 
+}
+
 /**
- * This is a basic example of C++ API rpiasgige usage
+ * This is a basic example of rpiasgige C++ API usage
  * 
  **/
 int main(int argc, char **argv)
@@ -19,6 +34,7 @@ int main(int argc, char **argv)
         "{frame-width           | 640    | camera frame width         }"
         "{frame-height           | 480    | camera frame height         }"
         "{fps           | 30    | camera fps         }"
+        "{max-iterations           | 1000    | maximum number of iterations       }"
 
         ;
         
@@ -28,6 +44,14 @@ int main(int argc, char **argv)
     const int port = parser.get<int>("port");
 
     Device camera(address, port);
+
+    // catching cntl+c to release camera before closing
+    camera_ptr = &camera;
+    struct sigaction sigIntHandler;
+    sigIntHandler.sa_handler = release_resources;
+    sigemptyset(&sigIntHandler.sa_mask);
+    sigIntHandler.sa_flags = 0;
+    sigaction(SIGINT, &sigIntHandler, NULL);
 
     // let's ping the camera just to check we can talk to it
 
@@ -139,8 +163,13 @@ int main(int argc, char **argv)
     cv::Mat mat;
 
     int key = 0;
-    bool show_images = parser.get<bool>("show-images");
-    for(int i = 0; key != 27 && i < 1000; /*i++*/) {
+    const bool show_images = parser.get<bool>("show-images");
+    const int max_iterations = std::max(1, parser.get<int>("max-iterations"));
+    int inc = (max_iterations > 1)?1:0;
+
+    std::string window_title = address + ":" + std::to_string(port);
+
+    for(int i = 0; key != 27 && i < max_iterations; i += inc) {
 
         if(!camera.retrieve(mat, keep_alive)) {
             std::cerr << "This is not good. Failed to grab the " << i << "-th frame!\n";
@@ -152,7 +181,7 @@ int main(int argc, char **argv)
             }
             if (show_images) {
                 // note that imshow & waitKey slower fps
-                cv::imshow("mat", mat);
+                cv::imshow(window_title, mat);
                 key = cv::waitKey(1);
             }
         }
