@@ -310,7 +310,7 @@ namespace rpiasgige
             }
             else
             {
-                shutdown(this->server_socket);
+                shutdown(this->server_socket, SHUT_RDWR);
                 std::string error_desc = strerror(errno);
                 this->logger.error_msg("Bad error on accepting client socket: " + error_desc + " . Server socket reinitialization required.");
             }
