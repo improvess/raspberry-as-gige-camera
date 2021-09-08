@@ -22,11 +22,6 @@ include_directories(/usr/include/)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-# building library
-
-file(GLOB SOURCES_LIB "${PROJECT_SOURCE_DIR}/src/lib/*.cpp")
-add_library(${PROJECT_NAME}_lib ${SOURCES_LIB})
-
 # building basic example
 
 file(GLOB BASIC_EXAMPLE_SOURCES 
@@ -34,7 +29,6 @@ file(GLOB BASIC_EXAMPLE_SOURCES
   ${PROJECT_SOURCE_DIR}/examples/basic.cpp )
 add_executable(basic_example ${BASIC_EXAMPLE_SOURCES})
 target_compile_options(basic_example PRIVATE -pedantic)
-target_link_libraries(basic_example ${PROJECT_NAME}_lib)
 target_link_libraries(basic_example bfd dl)
 target_link_libraries(basic_example ${OpenCV_LIBS} -pthread)
 
@@ -45,6 +39,5 @@ file(GLOB CHECK_CAMERA_SYNC
   ${PROJECT_SOURCE_DIR}/examples/check_camera_synchronization.cpp )
 add_executable(check_camera_synchronization ${CHECK_CAMERA_SYNC})
 target_compile_options(check_camera_synchronization PRIVATE -pedantic)
-target_link_libraries(check_camera_synchronization ${PROJECT_NAME}_lib)
 target_link_libraries(check_camera_synchronization bfd dl)
 target_link_libraries(check_camera_synchronization ${OpenCV_LIBS} -pthread)

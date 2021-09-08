@@ -11,8 +11,21 @@ using namespace rpiasgige::client;
 int main(int argc, char **argv)
 {
 
-    const std::string address = "192.168.2.3";
-    const int port = 4001;
+    const std::string keys =
+
+        "{address           | 192.168.2.2    | remote server ip such as 192.168.2.2         }"
+        "{port           | 4001    | remote server port         }"
+        "{show-images           | true    | show camera image         }"
+        "{frame-width           | 640    | camera frame width         }"
+        "{frame-height           | 480    | camera frame height         }"
+        "{fps           | 30    | camera fps         }"
+
+        ;
+        
+    cv::CommandLineParser parser(argc, argv, keys);
+
+    const std::string address = parser.get<cv::String>("address");
+    const int port = parser.get<int>("port");
 
     Device camera(address, port);
 
@@ -56,10 +69,10 @@ int main(int argc, char **argv)
     // Rememeber that properties are model-specific features. Thus, adapt the folllowing settings 
     // to your actual camera brand and needs
 
-    const double frame_width = 640;
-    const double frame_height = 480;
+    const double frame_width = parser.get<int>("frame-width");
+    const double frame_height = parser.get<int>("frame-height");
     const double mjpg = cv::VideoWriter::fourcc('M', 'J', 'P', 'G');
-    const double fps = 30;
+    const double fps = parser.get<int>("fps");
 
     camera.set(cv::CAP_PROP_FRAME_WIDTH, frame_width, keep_alive);
     camera.set(cv::CAP_PROP_FRAME_HEIGHT, frame_height, keep_alive);
@@ -126,7 +139,8 @@ int main(int argc, char **argv)
     cv::Mat mat;
 
     int key = 0;
-    for(int i = 0; key != 27 && i < 1000; i++) {
+    bool show_images = parser.get<bool>("show-images");
+    for(int i = 0; key != 27 && i < 1000; /*i++*/) {
 
         if(!camera.retrieve(mat, keep_alive)) {
             std::cerr << "This is not good. Failed to grab the " << i << "-th frame!\n";
@@ -136,9 +150,11 @@ int main(int argc, char **argv)
             if (performance_counter.loop(image_size)) {
                 printf("fps: %.1f, mean data read size: %.1f\n" , performance_counter.get_fps(), performance_counter.get_mean_data_size());
             }
-            // note that imshow & waitKey slower fps
-            cv::imshow("mat", mat);
-            key = cv::waitKey(1);
+            if (show_images) {
+                // note that imshow & waitKey slower fps
+                cv::imshow("mat", mat);
+                key = cv::waitKey(1);
+            }
         }
     }
 
