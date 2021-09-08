@@ -56,7 +56,6 @@ file(GLOB SIMPLE_OPENCV_SOURCES
 add_executable(simple_opencv_app ${SIMPLE_OPENCV_SOURCES})
 
 target_compile_options(simple_opencv_app PRIVATE -pedantic)
-target_link_libraries(simple_opencv_app ${PROJECT_NAME}_lib)
 target_link_libraries(simple_opencv_app bfd dl)
 target_link_libraries(simple_opencv_app ${OpenCV_LIBS} -pthread)
 
