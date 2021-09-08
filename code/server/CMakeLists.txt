@@ -22,11 +22,6 @@ include_directories(/usr/include/)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-# building library
-
-file(GLOB SOURCES_LIB "${PROJECT_SOURCE_DIR}/src/lib/*.cpp")
-add_library(${PROJECT_NAME}_lib ${SOURCES_LIB})
-
 # building app
 
 file(GLOB APP_SOURCES 
@@ -35,7 +30,6 @@ file(GLOB APP_SOURCES
 add_executable(${PROJECT_NAME} ${APP_SOURCES})
 
 target_compile_options(${PROJECT_NAME} PRIVATE -pedantic)
-target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_lib)
 
 # linking stacktracing libs. See https://github.com/bombela/backward-cpp#libbfd-from-the-gnubinutils
 target_link_libraries(${PROJECT_NAME} bfd dl)
@@ -51,7 +45,6 @@ file(GLOB APP_SOURCES
 add_executable(usb_test_${PROJECT_NAME} ${APP_SOURCES})
 
 target_compile_options(usb_test_${PROJECT_NAME} PRIVATE -pedantic)
-target_link_libraries(usb_test_${PROJECT_NAME} ${PROJECT_NAME}_lib)
 target_link_libraries(usb_test_${PROJECT_NAME} bfd dl)
 target_link_libraries(usb_test_${PROJECT_NAME} ${OpenCV_LIBS} -pthread)
 
@@ -70,12 +63,6 @@ target_link_libraries(simple_opencv_app ${OpenCV_LIBS} -pthread)
 EXECUTE_PROCESS( COMMAND uname -m COMMAND tr -d '\n' OUTPUT_VARIABLE ARCHITECTURE )
 message(STATUS "Building for architecture: ${ARCHITECTURE}")
 
-# specific libs for raspberry pi 64 bits and GCC 10
-if( ${ARCHITECTURE} STREQUAL "aarch64" )
-  target_link_libraries(${PROJECT_NAME} 
-    /home/pi/gcc-10.2.0/obj/stage1-aarch64-unknown-linux-gnu/libstdc++-v3/src/.libs/libstdc++.a)
-endif()
-
 option(BUILD_TESTS "Build the tests" OFF)
 
 if(BUILD_TESTS)
@@ -90,13 +77,7 @@ if(BUILD_TESTS)
   add_executable(${PROJECT_TEST_NAME} ${TEST_SRC_FILES})
   target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
 
-  # specific libs for raspberry pi 64 bits and GCC 10
-  if( ${ARCHITECTURE} STREQUAL "aarch64" )
-  target_link_libraries(${PROJECT_TEST_NAME}
-    /home/pi/gcc-10.2.0/obj/stage1-aarch64-unknown-linux-gnu/libstdc++-v3/src/.libs/libstdc++.a)
-  endif()
-
-  target_link_libraries(${PROJECT_TEST_NAME} ${PROJECT_NAME}_lib gtest_main ${OpenCV_LIBS} -pthread)
+  target_link_libraries(${PROJECT_TEST_NAME} gtest_main ${OpenCV_LIBS} -pthread)
 
   add_test(NAME ${PROJECT_NAME}_test COMMAND ${PROJECT_TEST_NAME})
 
