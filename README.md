@@ -60,23 +60,16 @@ Due to caches, buffers and other video streaming features, sychronizing multi IP
 
 In the example above, 6 USB cameras are attached to 2 Raspberry Pis and frames are grabbed at 30 FPS. As the image shows, the max time difference between the images is of 30 ms.
 
-<p align="center">
-  <table>
-    <tr>
-      <td>
-  <img style="width: 100%" src="https://github.com/doleron/raspberry-as-gige-camera/blob/main/images/6_cameras.jpg?raw=true">
-      </td>
-      <td>
-  <img style="width: 100%" src="https://github.com/doleron/raspberry-as-gige-camera/blob/main/images/2_rpis.jpg?raw=true">
-      </td>
-    </tr>
-</p>
-
-A single Raspberry Pi runs 3 `rpiasgige` diferent process. Each process use a different TCp port:
-
-<p align="center">
-  <img style="width: 100%" src="https://github.com/doleron/raspberry-as-gige-camera/blob/main/images/6_cameras.jpg?raw=true">
-</p>
+<table>
+  <tr>
+    <td>
+<img style="width: 100%" src="https://github.com/doleron/raspberry-as-gige-camera/blob/main/images/6_cameras.jpg?raw=true">
+    </td>
+    <td>
+<img style="width: 100%" src="https://github.com/doleron/raspberry-as-gige-camera/blob/main/images/2_rpis_2.jpg?raw=true">
+    </td>
+  </tr>
+</table>
 
 ![image](https://user-images.githubusercontent.com/9665358/132226000-60041ff4-3b6d-439e-8206-e36d5de4475a.png)
 
