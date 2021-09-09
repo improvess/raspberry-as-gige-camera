@@ -196,9 +196,9 @@ This code is in its early stages yet. It is not battle-tested neither ready for 
 
 Note also that this repository does not follow the [gigE Vision](https://www.automate.org/a3-content/vision-standards-gige-vision) standard and it is not licensed as a gigE Vision device.
 
-## Contribute
+## How to Contribute
 
-Contributions are very welcome! Check below for next steps and file an issue if you find something weird or wrong. PR's are super welcome as well!
+Contributions are very welcome! Check below for next steps. Reviews are also useful. Do not hesitate to file an issue if you find something weird or wrong. PR's are super welcome as well!
 
 ## TODO: Next steps
 
