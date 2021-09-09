@@ -58,7 +58,7 @@ Due to caches, buffers and other video streaming features, sychronizing multi IP
   <img style="width: 100%" src="https://github.com/doleron/raspberry-as-gige-camera/blob/main/images/synchronization_test.PNG?raw=true">
 </p>
 
-In the example above, 6 USB cameras are attached to 2 Raspberry Pis and frames are grabbed at 30 FPS. As the image shows, the max time difference between the images is about ±30 ms.
+In the example above, 6 USB cameras are attached to 2 Raspberry Pis and frames are grabbed at 30 FPS. The clock in the image is a millisecond precision clock. As the image shows, the max time difference between the images is about ±30 ms.
 
 <table>
   <tr>
