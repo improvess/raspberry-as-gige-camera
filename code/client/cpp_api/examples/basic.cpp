@@ -35,6 +35,7 @@ int main(int argc, char **argv)
         "{frame-height           | 480    | camera frame height         }"
         "{fps           | 30    | camera fps         }"
         "{max-iterations           | 1000    | maximum number of iterations       }"
+        "{auto-focus           | default    | enable auto-focus 'on' or 'off'        }"
 
         ;
         
@@ -137,7 +138,13 @@ int main(int argc, char **argv)
     // like resolution, ambient light / exposure settings, network bandwidth, CPU consume, etc
     // For example, some cameras only achieve high FPS when AUTO FOCUS is disabled
 
-    camera.set(cv::CAP_PROP_AUTOFOCUS, 0, keep_alive);
+    if (parser.get<cv::String>("auto-focus") == "on")
+    {
+        camera.set(cv::CAP_PROP_AUTOFOCUS, 1, keep_alive);
+    } else if (parser.get<cv::String>("auto-focus") == "off")
+    {
+        camera.set(cv::CAP_PROP_AUTOFOCUS, 0, keep_alive);
+    }
 
     // Note that AUTO FOCUS is not a mandatory feature for every camera. So the previous call can return false
     // Now, let's ask the camera to run at our predefined FPS rate
