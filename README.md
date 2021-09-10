@@ -4,11 +4,11 @@
   <img style="width: 100%" src="https://user-images.githubusercontent.com/9665358/131604597-bb869280-3ca3-47e2-89c4-efb248f1ce04.png">
 </p>
 
-Transform your USB or CSI camera in an ethernet device with Raspberry PI.
+Transform your Raspberry PI in an ethernet multicamera device for machine vision systems using USB / CSI cameras.
 
 ## TL;DR;
 
-Expose your USB/CSI camera as an ethernet device using Raspberry PI's gigabyte ethernet port. In other words, you can access your remote camera just like you do with your local device.
+Expose your USB/CSI cameras as an ethernet device using Raspberry PI's gigabyte ethernet port. In other words, you can access your remote cameras just like you do with your local devices.
 
 `rpiasgige` has an OpenCV-style API for [C++](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client/cpp_api/examples) and [Python 3](https://github.com/doleron/raspberry-as-gige-camera/blob/main/code/client/python_api/src/main.py) (JavaScript & Java API's on the way). Check out the examples below:
 
@@ -49,6 +49,28 @@ cv.waitKey()
 
 camera.release():
 ```
+
+## Multicamera synchronization for machine vision
+
+Due to caches, buffers and other video streaming features, sychronizing multi IP camera systems is not easy (see [OpenCV VideoCapture lag due to the capture buffer](https://stackoverflow.com/questions/30032063/opencv-videocapture-lag-due-to-the-capture-buffer) for example). This is easier to achieve with `rpiasgige`:
+
+<p align="center">
+  <img style="width: 100%" src="https://github.com/doleron/raspberry-as-gige-camera/blob/main/images/synchronization_test.PNG?raw=true">
+</p>
+
+In the example above, 6 USB cameras are attached to 2 Raspberry Pis and frames are grabbed at 30 FPS. The clock in the image is a millisecond precision clock. As the image shows, the max time difference between the images is about ±30 ms.
+
+<table>
+  <tr>
+    <td>
+<img style="width: 100%" src="https://github.com/doleron/raspberry-as-gige-camera/blob/main/images/6_cameras.jpg?raw=true">
+    </td>
+    <td>
+<img style="width: 100%" src="https://github.com/doleron/raspberry-as-gige-camera/blob/main/images/2_rpis_2.jpg?raw=true">
+    </td>
+  </tr>
+</table>
+
 ![image](https://user-images.githubusercontent.com/9665358/132226000-60041ff4-3b6d-439e-8206-e36d5de4475a.png)
 
 ## Getting started
@@ -174,9 +196,9 @@ This code is in its early stages yet. It is not battle-tested neither ready for 
 
 Note also that this repository does not follow the [gigE Vision](https://www.automate.org/a3-content/vision-standards-gige-vision) standard and it is not licensed as a gigE Vision device.
 
-## Contribute
+## How to Contribute
 
-Contributions are very welcome! Check below for next steps and file an issue if you find something weird or wrong. PR's are super welcome as well!
+Contributions are very welcome! Check below for next steps. Reviews are also useful. Do not hesitate to file an issue if you find something weird or wrong. PR's are super welcome as well!
 
 ## TODO: Next steps
 
