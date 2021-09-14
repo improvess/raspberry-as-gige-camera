@@ -75,7 +75,7 @@ namespace rpiasgige
 
                 } else if (strncmp("OPEN", request_buffer_ro, STATUS_SIZE) == 0)
                 {
-                    bool result = this->usb_camera.open(this->get_identifier());
+                    bool result = this->usb_camera.open_camera();
 
                     if (result)
                     {
