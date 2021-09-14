@@ -200,7 +200,8 @@ namespace rpiasgige
             struct dirent *ent;
             if ((dir = opendir(dev_folder.c_str())) != NULL)
             {
-                while (result.empty() && (ent = readdir(dir)) != NULL)
+                //duplicate entries for the same path requires full loop
+                while ((ent = readdir(dir)) != NULL)
                 {
                     std::string file = dev_folder + ent->d_name;
 
@@ -230,7 +231,15 @@ namespace rpiasgige
                             if (!bus_info.empty())
                             {   
                                 if (bus_info.compare(target_usb_bus_id) == 0) {
-                                    result = file;
+
+                                    if (!result.empty()) {
+                                        // take the first lexographically
+                                        if (result.compare(file) > 0) {
+                                            result = file;
+                                        }
+                                    } else {
+                                        result = file;
+                                    }
                                 }
                             }
                         }
