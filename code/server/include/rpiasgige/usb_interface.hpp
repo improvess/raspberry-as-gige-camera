@@ -46,6 +46,8 @@ namespace rpiasgige
 
             if (!this->capture.isOpened()) {
                 result = this->connect_to_device();
+            } else {
+                result = true;
             }
             return result;
         }
