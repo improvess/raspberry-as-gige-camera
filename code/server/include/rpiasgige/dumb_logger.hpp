@@ -15,6 +15,7 @@ public:
     void log_msg(const std::string &level, const std::string &msg) const
     {
         printf("%s - %s - %s\n", level.c_str(), this->identifier.c_str(), msg.c_str());
+        fflush(stdout);
     }
 
     void error_msg(const std::string &msg) const
