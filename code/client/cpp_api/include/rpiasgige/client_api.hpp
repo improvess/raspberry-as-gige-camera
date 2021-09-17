@@ -21,6 +21,7 @@ namespace rpiasgige
         struct TimeoutException : std::runtime_error
         {
             TimeoutException(const std::string &msg) : std::runtime_error(msg) {}
+            std::string origin;
         };
 
         struct RemoteException : std::runtime_error
@@ -113,7 +114,7 @@ namespace rpiasgige
 
             bool ping(bool keep_alive = false)
             {
-                bool result = "";
+                bool result = false;
                 try
                 {
                     Packet request(this->request_buffer, keep_alive, 0, this->request_buffer + HEADER_SIZE);
@@ -125,7 +126,7 @@ namespace rpiasgige
                 }
                 catch (TimeoutException &tex)
                 {
-                    this->handle_timeout(tex);
+                    this->handle_timeout("ping", tex);
                 }
 
                 return result;
@@ -147,7 +148,7 @@ namespace rpiasgige
                 }
                 catch (TimeoutException &tex)
                 {
-                    this->handle_timeout(tex);
+                    this->handle_timeout("get", tex);
                 }
                 return result;
             }
@@ -169,7 +170,7 @@ namespace rpiasgige
                 }
                 catch (TimeoutException &tex)
                 {
-                    this->handle_timeout(tex);
+                    this->handle_timeout("set", tex);
                 }
 
                 return result;
@@ -189,7 +190,7 @@ namespace rpiasgige
                 }
                 catch (TimeoutException &tex)
                 {
-                    this->handle_timeout(tex);
+                    this->handle_timeout("open", tex);
                 }
                 return result;
             }
@@ -208,7 +209,7 @@ namespace rpiasgige
                 }
                 catch (TimeoutException &tex)
                 {
-                    this->handle_timeout(tex);
+                    this->handle_timeout("isOpened", tex);
                 }
                 return result;
             }
@@ -238,7 +239,7 @@ namespace rpiasgige
                 }
                 catch (TimeoutException &tex)
                 {
-                    this->handle_timeout(tex);
+                    this->handle_timeout("retrieve", tex);
                 }
                 return result;
             }
@@ -257,7 +258,7 @@ namespace rpiasgige
                 }
                 catch (TimeoutException &tex)
                 {
-                    this->handle_timeout(tex);
+                    this->handle_timeout("release", tex);
                 }
                 return result;
             }
@@ -275,12 +276,12 @@ namespace rpiasgige
             cv::String address;
             int port;
             int timeout_count = 0;
-            const int MAX_TIMEOUT_COUNT = 5;
+            const int MAX_TIMEOUT_COUNT = 2;
             int read_timeout_in_seconds = 1;
 
-            void handle_timeout(TimeoutException &tex)
+            void handle_timeout(const std::string &origin, TimeoutException &tex)
             {
-                std::cout << tex.what() << "\n";
+                //std::cout << "TimeoutException: " << tex.what() << "\n";
 
                 if (timeout_count < MAX_TIMEOUT_COUNT)
                 {
@@ -289,7 +290,10 @@ namespace rpiasgige
                 else
                 {
                     timeout_count = 0;
+                    //std::cout << "disconnect after TimeoutException: " << tex.what() << "\n";
                     this->disconnect();
+                    tex.origin = origin;
+                    throw tex;
                 }
             }
 
@@ -328,11 +332,12 @@ namespace rpiasgige
                     }
                     else
                     {
+                        std::string last_error = std::string(strerror(errno));
                         if (!request.keep_alive)
                         {
                             this->disconnect();
                         }
-                        throw TimeoutException{"Failed to send data to server."};
+                        throw TimeoutException{"Failed to send data to server: " + last_error};
                     }
                 }
                 else
