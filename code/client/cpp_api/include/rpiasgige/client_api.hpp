@@ -110,7 +110,19 @@ namespace rpiasgige
                 this->request_buffer = new char[this->request_buffer_size];
             }
 
-            virtual ~Device() {}
+            virtual ~Device() {
+
+                if (this->response_buffer != nullptr) {
+                    delete [] this->response_buffer;
+                    this->response_buffer = nullptr;
+                }
+
+                if (this->request_buffer != nullptr) {
+                    delete [] this->request_buffer;
+                    this->request_buffer = nullptr;
+                }
+
+            }
 
             bool ping(bool keep_alive = false)
             {
@@ -389,10 +401,10 @@ namespace rpiasgige
             int server_socket = -1;
 
             int response_buffer_size = HEADER_SIZE;
-            char *response_buffer;
+            char *response_buffer = nullptr;
 
             int request_buffer_size = HEADER_SIZE;
-            char *request_buffer;
+            char *request_buffer = nullptr;
 
             inline bool is_connected() const
             {
