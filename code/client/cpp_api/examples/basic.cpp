@@ -86,11 +86,15 @@ bool open_camera(Device &camera, bool keep_alive, cv::CommandLineParser &parser)
         // like resolution, ambient light / exposure settings, network bandwidth, CPU consume, etc
         // For example, some cameras only achieve high FPS when AUTO FOCUS is disabled
 
-        if (parser.get<cv::String>("auto-focus") == "on")
+        std::string auto_focus = parser.get<cv::String>("auto-focus");
+
+        if (auto_focus.compare("on") == 0)
         {
+            std::cout << "Setting auto focus ON!\n";
             camera.set(cv::CAP_PROP_AUTOFOCUS, 1, keep_alive);
-        } else if (parser.get<cv::String>("auto-focus") == "off")
+        } else if (auto_focus.compare("off") == 0)
         {
+            std::cout << "Setting auto focus OFF!\n";
             camera.set(cv::CAP_PROP_AUTOFOCUS, 0, keep_alive);
         }
 
