@@ -21,7 +21,9 @@ int main(int argc, char **argv)
 
     rpiasgige::USB_Interface usb_camera;
 
-    if (usb_camera.open(camera_path))
+    usb_camera.set_camera_path(camera_path);
+
+    if (usb_camera.open_camera())
     {
 
         //usb_camera.set(cv::CAP_PROP_BUFFERSIZE, 2);

@@ -21,6 +21,7 @@ namespace rpiasgige
         struct TimeoutException : std::runtime_error
         {
             TimeoutException(const std::string &msg) : std::runtime_error(msg) {}
+            std::string origin;
         };
 
         struct RemoteException : std::runtime_error
@@ -109,11 +110,23 @@ namespace rpiasgige
                 this->request_buffer = new char[this->request_buffer_size];
             }
 
-            virtual ~Device() {}
+            virtual ~Device() {
+
+                if (this->response_buffer != nullptr) {
+                    delete [] this->response_buffer;
+                    this->response_buffer = nullptr;
+                }
+
+                if (this->request_buffer != nullptr) {
+                    delete [] this->request_buffer;
+                    this->request_buffer = nullptr;
+                }
+
+            }
 
             bool ping(bool keep_alive = false)
             {
-                bool result = "";
+                bool result = false;
                 try
                 {
                     Packet request(this->request_buffer, keep_alive, 0, this->request_buffer + HEADER_SIZE);
@@ -125,7 +138,7 @@ namespace rpiasgige
                 }
                 catch (TimeoutException &tex)
                 {
-                    this->handle_timeout(tex);
+                    this->handle_timeout("ping", tex);
                 }
 
                 return result;
@@ -147,7 +160,7 @@ namespace rpiasgige
                 }
                 catch (TimeoutException &tex)
                 {
-                    this->handle_timeout(tex);
+                    this->handle_timeout("get", tex);
                 }
                 return result;
             }
@@ -169,7 +182,7 @@ namespace rpiasgige
                 }
                 catch (TimeoutException &tex)
                 {
-                    this->handle_timeout(tex);
+                    this->handle_timeout("set", tex);
                 }
 
                 return result;
@@ -189,7 +202,7 @@ namespace rpiasgige
                 }
                 catch (TimeoutException &tex)
                 {
-                    this->handle_timeout(tex);
+                    this->handle_timeout("open", tex);
                 }
                 return result;
             }
@@ -208,7 +221,7 @@ namespace rpiasgige
                 }
                 catch (TimeoutException &tex)
                 {
-                    this->handle_timeout(tex);
+                    this->handle_timeout("isOpened", tex);
                 }
                 return result;
             }
@@ -238,7 +251,7 @@ namespace rpiasgige
                 }
                 catch (TimeoutException &tex)
                 {
-                    this->handle_timeout(tex);
+                    this->handle_timeout("retrieve", tex);
                 }
                 return result;
             }
@@ -257,7 +270,7 @@ namespace rpiasgige
                 }
                 catch (TimeoutException &tex)
                 {
-                    this->handle_timeout(tex);
+                    this->handle_timeout("release", tex);
                 }
                 return result;
             }
@@ -275,12 +288,12 @@ namespace rpiasgige
             cv::String address;
             int port;
             int timeout_count = 0;
-            const int MAX_TIMEOUT_COUNT = 5;
+            const int MAX_TIMEOUT_COUNT = 2;
             int read_timeout_in_seconds = 1;
 
-            void handle_timeout(TimeoutException &tex)
+            void handle_timeout(const std::string &origin, TimeoutException &tex)
             {
-                std::cout << tex.what() << "\n";
+                //std::cout << "TimeoutException: " << tex.what() << "\n";
 
                 if (timeout_count < MAX_TIMEOUT_COUNT)
                 {
@@ -289,7 +302,10 @@ namespace rpiasgige
                 else
                 {
                     timeout_count = 0;
+                    //std::cout << "disconnect after TimeoutException: " << tex.what() << "\n";
                     this->disconnect();
+                    tex.origin = origin;
+                    throw tex;
                 }
             }
 
@@ -328,11 +344,12 @@ namespace rpiasgige
                     }
                     else
                     {
+                        std::string last_error = std::string(strerror(errno));
                         if (!request.keep_alive)
                         {
                             this->disconnect();
                         }
-                        throw TimeoutException{"Failed to send data to server."};
+                        throw TimeoutException{"Failed to send data to server: " + last_error};
                     }
                 }
                 else
@@ -384,10 +401,10 @@ namespace rpiasgige
             int server_socket = -1;
 
             int response_buffer_size = HEADER_SIZE;
-            char *response_buffer;
+            char *response_buffer = nullptr;
 
             int request_buffer_size = HEADER_SIZE;
-            char *request_buffer;
+            char *request_buffer = nullptr;
 
             inline bool is_connected() const
             {
