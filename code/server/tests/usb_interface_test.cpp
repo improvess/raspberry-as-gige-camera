@@ -14,9 +14,11 @@ TEST_F(USB_InterfaceTest, OpenCloseTest)
 
     rpiasgige::USB_Interface device;
 
+    device.set_camera_path(USB_InterfaceTest::device_path);
+
     ASSERT_FALSE(device.isOpened());
 
-    EXPECT_TRUE(device.open(USB_InterfaceTest::device_path));
+    EXPECT_TRUE(device.open_camera());
 
     EXPECT_TRUE(device.isOpened());
 
@@ -28,7 +30,9 @@ TEST_F(USB_InterfaceTest, GrabTest)
 
     rpiasgige::USB_Interface device;
 
-    ASSERT_TRUE(device.open(USB_InterfaceTest::device_path));
+    device.set_camera_path(USB_InterfaceTest::device_path);
+
+    ASSERT_TRUE(device.open_camera());
 
     ASSERT_TRUE(device.isOpened());
 
@@ -54,11 +58,13 @@ TEST_F(USB_InterfaceTest, GetSetTest)
 
     rpiasgige::USB_Interface device;
 
+    device.set_camera_path(USB_InterfaceTest::device_path);
+
     ASSERT_FALSE(device.isOpened());
 
     ASSERT_FALSE(device.set(cv::CAP_PROP_POS_FRAMES, 2));
 
-    ASSERT_TRUE(device.open(USB_InterfaceTest::device_path));
+    ASSERT_TRUE(device.open_camera());
 
     EXPECT_TRUE(device.set(cv::CAP_PROP_POS_FRAMES, 2));
 

@@ -3,6 +3,20 @@
 
 #include <map>
 
+#include <linux/types.h>
+#include <linux/v4l2-common.h>
+#include <linux/v4l2-controls.h>
+#include <linux/videodev2.h>
+#include <linux/media.h>
+#include <sys/ioctl.h>
+
+#include <dirent.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+
 #include <opencv2/opencv.hpp>
 
 #include "dumb_logger.hpp"
@@ -18,13 +32,22 @@ namespace rpiasgige
         USB_Interface() : logger("USB_Interface") {}
         virtual ~USB_Interface() {}
 
-        bool open(const cv::String &camera_path)
+        void set_camera_path(const std::string &camera_path) {
+            this->camera_path = camera_path;
+        }
+
+        void set_usb_bus_id(const std::string &usb_bus_id) {
+            this->usb_bus_id = usb_bus_id;
+        }
+
+        bool open_camera()
         {
             bool result = false;
 
             if (!this->capture.isOpened()) {
-                this->camera_path = camera_path;
                 result = this->connect_to_device();
+            } else {
+                result = true;
             }
             return result;
         }
@@ -116,14 +139,25 @@ namespace rpiasgige
         }
 
     private:
-        cv::String camera_path;
+        std::string camera_path;
+        std::string usb_bus_id;
+
         cv::VideoCapture capture;
         cv::Mat captured_image;
 
         bool connect_to_device()
         {
 
-            this->capture.open(this->camera_path);
+            if (!this->camera_path.empty()) {
+                this->capture.open(this->camera_path);
+            } else if (!this->usb_bus_id.empty()) {
+                auto path = this->resolve_usb_interface(this->usb_bus_id);
+                if (!path.empty()) {
+                    this->capture.open(path);
+                }
+            } else {
+                return false;
+            }
 
             bool result = this->capture.isOpened();
 
@@ -154,6 +188,75 @@ namespace rpiasgige
         std::map<int, double> props;
 
         const Logger logger;
+
+        inline std::string resolve_usb_interface(const std::string & target_usb_bus_id)
+        {
+
+            std::string result = "";
+
+            std::vector<std::string> files;
+
+            const std::string dev_folder = "/dev/";
+
+            DIR *dir;
+            struct dirent *ent;
+            if ((dir = opendir(dev_folder.c_str())) != NULL)
+            {
+                //duplicate entries for the same path requires full loop
+                while ((ent = readdir(dir)) != NULL)
+                {
+                    std::string file = dev_folder + ent->d_name;
+
+                    const int fd = open(file.c_str(), O_RDWR);
+                    v4l2_capability capability;
+                    if (fd >= 0)
+                    {
+                        int err = ioctl(fd, VIDIOC_QUERYCAP, &capability);
+                        if (err >= 0)
+                        {
+                            std::string bus_info;
+                            struct media_device_info mdi;
+
+                            err = ioctl(fd, MEDIA_IOC_DEVICE_INFO, &mdi);
+                            if (!err)
+                            {
+                                if (mdi.bus_info[0])
+                                    bus_info = mdi.bus_info;
+                                else
+                                    bus_info = std::string("platform:") + mdi.driver;
+                            }
+                            else
+                            {
+                                bus_info = reinterpret_cast<const char *>(capability.bus_info);
+                            }
+
+                            if (!bus_info.empty())
+                            {   
+                                if (bus_info.compare(target_usb_bus_id) == 0) {
+
+                                    if (!result.empty()) {
+                                        // take the first lexographically
+                                        if (result.compare(file) > 0) {
+                                            result = file;
+                                        }
+                                    } else {
+                                        result = file;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    close(fd);
+                }
+                closedir(dir);
+            }
+            else
+            {
+                std::string msg = "Cannot list " + dev_folder + " contents!";
+                throw std::runtime_error(msg);
+            }
+            return result;
+        }
     };
 
 } // namespace rpiasgige
