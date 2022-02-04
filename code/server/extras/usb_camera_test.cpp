@@ -27,10 +27,10 @@ int main(int argc, char **argv)
     {
 
         //usb_camera.set(cv::CAP_PROP_BUFFERSIZE, 2);
-        usb_camera.set(cv::CAP_PROP_FRAME_WIDTH, 320);
-        usb_camera.set(cv::CAP_PROP_FRAME_HEIGHT, 240);
+        usb_camera.set(cv::CAP_PROP_FRAME_WIDTH, 640);
+        usb_camera.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
         usb_camera.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
-        usb_camera.set(cv::CAP_PROP_FPS, 180);
+        usb_camera.set(cv::CAP_PROP_FPS, 30);
 
 
         std::cout << usb_camera.get(cv::CAP_PROP_FRAME_WIDTH) << "x" << usb_camera.get(cv::CAP_PROP_FRAME_HEIGHT) << "\n";

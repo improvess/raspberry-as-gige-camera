@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 
         "{camera-path           | /dev/video0    | camera path such as /dev/video0         }"
         "{frame-width           | 640    | camera frame width         }"
-        "{frame-height           | 640    | camera frame height         }"
+        "{frame-height           | 480    | camera frame height         }"
         "{fps           | 30    | camera fps         }"
         "{codec           | mjpg    | video codec        }"
         "{auto-focus           | off    | auto-focus on/off       }"
