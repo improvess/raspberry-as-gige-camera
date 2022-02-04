@@ -11,7 +11,7 @@ from rpiasgige.ws_client_api import Device, Performance_Counter, printf
 
 def main():
 
-    camera = Device("127.0.0.1", 4001)
+    camera = Device("192.168.2.2", 4001)
 
     # let's ping the camera just to check we can talk to it
     if not camera.ping():
@@ -51,8 +51,8 @@ def main():
     # Rememeber that properties are model-specific features. Thus, adapt the folllowing settings 
     # to your actual camera brand and needs
 
-    WIDTH = 640
-    HEIGHT = 480
+    WIDTH = 320
+    HEIGHT = 240
     FPS = 30
     MJPG = cv.VideoWriter.fourcc('M', 'J', 'P', 'G')
 
@@ -95,19 +95,19 @@ def main():
     # Everything is set up, time to grab some frames
     # Firstly, let's grab a single frame
 
-    ret, frame = camera.read(keep_alive)
-    if not ret:
-        print("failed to grab frame", file=sys.stderr)
-    else:
-        cv.imshow("frame", frame)
-        cv.waitKey()
+    # ret, frame = camera.read(keep_alive)
+    # if not ret:
+    #     print("failed to grab frame", file=sys.stderr)
+    # else:
+    #     cv.imshow("frame", frame)
+    #     cv.waitKey()
 
     # Performance_Counter is an optional component. 
     # It is a convenient way to measure the achieved FPS speed and mean data transfered. 
 
         performance_counter = Performance_Counter(120)
 
-        for i in range(1000):
+        for i in range(10000):
             ret, frame = camera.read(keep_alive)
             if not ret:
                 print("failed to grab frame", file=sys.stderr)
