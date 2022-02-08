@@ -35,7 +35,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE -pedantic)
 target_link_libraries(${PROJECT_NAME} bfd dl)
 
 # linking OpenCV
-target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} -pthread)
+target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} -pthread -lboost_system)
 
 # building usb-test app
 
