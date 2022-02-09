@@ -1,13 +1,19 @@
 #include <chrono>
 #include <thread>
 
-#include "rpiasgige/tcp_server.hpp"
+#include <opencv2/opencv.hpp>
+
+#include "rpiasgige/machine_vision_server.hpp"
+#include "rpiasgige/usb_interface.hpp"
+
+#include "rpiasgige/constants.hpp"
 
 int main(int argc, char **argv)
 {
 
     const std::string keys =
         "{device           | /dev/video0    | camera path such as /dev/video0         }"
+        "{address           | 0.0.0.0    | server address name or ip       }"
         "{usb_bus_id           |     | usb bus id like:  usb-0000:00:14.0-1        }"
         "{port           | 4001    | TCP port to accept connections         }"
         "{max-width-resolution           | 1920    | Max acceptable width image resolution         }"
@@ -18,6 +24,7 @@ int main(int argc, char **argv)
     cv::CommandLineParser parser(argc, argv, keys);
 
     int port = parser.get<int>("port");
+    std::string address = parser.get<std::string>("address");
 
     std::string device = parser.get<cv::String>("device");
 
@@ -40,14 +47,15 @@ int main(int argc, char **argv)
     }
 
     int max_image_size = max_channels * max_width * max_heigth;
-    int max_response_buffer_size = max_image_size + rpiasgige::TCP_Server::HEADER_SIZE + rpiasgige::TCP_Server::IMAGE_META_DATA_SIZE;
+    int max_response_buffer_size = max_image_size + rpiasgige::HEADER_SIZE + rpiasgige::IMAGE_META_DATA_SIZE;
 
-    rpiasgige::TCP_Server tcp_server(identifier, port, usb_camera, max_response_buffer_size);
-    std::thread tcp_server_thread([&tcp_server]()
-                                    { tcp_server.run(); });
+    rpiasgige::Server server(identifier, address, port, usb_camera, max_response_buffer_size);
+        
+    std::thread server_thread([&server]()
+                                    { server.run(); });
 
-    if (tcp_server_thread.joinable()){
-        tcp_server_thread.join();
+    if (server_thread.joinable()){
+        server_thread.join();
     }
 
     return 0;

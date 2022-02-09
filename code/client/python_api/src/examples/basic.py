@@ -5,13 +5,15 @@ sys.path.insert(0, '.')
 
 import cv2 as cv
 
-from rpiasgige.client_api import Device, Performance_Counter, printf
+from rpiasgige.ws_client_api import Device, Performance_Counter, printf
 
 # This is a basic example of C++ API rpiasgige usage
 
-def main():
+def main(address, port):
 
-    camera = Device("192.168.2.3", 4001)
+    camera = Device(address, port)
+
+    print("Trying to connect to camera at " + address + ":" + str(port))
 
     # let's ping the camera just to check we can talk to it
     if not camera.ping():
@@ -51,8 +53,8 @@ def main():
     # Rememeber that properties are model-specific features. Thus, adapt the folllowing settings 
     # to your actual camera brand and needs
 
-    WIDTH = 640
-    HEIGHT = 480
+    WIDTH = 320
+    HEIGHT = 240
     FPS = 30
     MJPG = cv.VideoWriter.fourcc('M', 'J', 'P', 'G')
 
@@ -87,31 +89,41 @@ def main():
     # Note that AUTO FOCUS is not a mandatory feature for every camera. So the previous call can return false
     # Now, let's ask the camera to run at our predefined FPS rate
 
+    import time
+
     if camera.get(cv.CAP_PROP_FPS, keep_alive)[1] != FPS:
         printf("Sorry, you camera seems to do not support run at %d fps. No problem at all, keep going.\n", FPS)
     else:
         printf("Nice! Your camera seems to accept setting fps to %d !!!\n", FPS)
 
     # Everything is set up, time to grab some frames
+
     # Performance_Counter is an optional component. 
     # It is a convenient way to measure the achieved FPS speed and mean data transfered. 
 
-    performance_counter = Performance_Counter(120)
+        performance_counter = Performance_Counter(120)
 
-    for i in range(1000):
-        ret, frame = camera.read(keep_alive)
-        if not ret:
-            print("failed to grab frame", file=sys.stderr)
-            break
-        image_size = frame.size
-        if performance_counter.loop(image_size):
-            printf("fps: %.1f, mean data read size: %.1f\n" , performance_counter.get_fps(), performance_counter.get_mean_data_size())
+        title = address + ":" + str(port)
+        while True:
+            begin_time_ref = time.monotonic() 
+            ret, frame = camera.read(keep_alive)
+            end_time_ref = time.monotonic() 
+            time_spent = (end_time_ref - begin_time_ref) * 1000
+            if time_spent > 500:
+                print(title + " - took " + str(int(time_spent)) + " milliseconds to read a frame")
 
-        # note that imshow & waitKey slower fps
-        cv.imshow("frame", frame)
-        k = cv.waitKey(1)
-        if k % 256 == 27:
-            break
+            if not ret:
+                print(title + " - failed to grab frame", file=sys.stderr)
+                break
+            image_size = frame.size
+            if performance_counter.loop(image_size):
+                printf(title + " - fps: %.1f, mean data read size: %.1f\n" , performance_counter.get_fps(), performance_counter.get_mean_data_size())
+
+            # note that imshow & waitKey slower fps
+            cv.imshow(title, frame)
+            k = cv.waitKey(1)
+            if k % 256 == 27:
+                break
 
     # The next call closes the camera, a reasonable good practice
     # Since it is the last call, let's close the network conversation as well by setting keep-alive to false
@@ -121,5 +133,16 @@ def main():
     else:
         print("Failed to release the camera", file=sys.stderr)
 
+address = "192.168.2.2"
+port = 4001
+
+if len(sys.argv) > 1:
+    address = sys.argv[1]
+    print("using address " + address)
+
+if len(sys.argv) > 2:
+    port = int(sys.argv[2])
+    print("using port " + str(port))
+
 if __name__ == "__main__":
-    main()
+    main(address, port)

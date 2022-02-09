@@ -1,5 +1,5 @@
 
-import socket
+import websocket
 import struct
 import numpy as np
 import time
@@ -95,73 +95,52 @@ class Device(object):
     ret = False
     if self.__checkConnection():
       request = b'GRAB' + (b'1' if keep_alive else b'0') + b'\0\0\0\0'
-      header_part = self.__talk(request, Device.HEADER_SIZE)
-      ret = len(header_part) >= (Device.HEADER_SIZE) and header_part.startswith(b'0200')
+      package = self.__talk(request)
+      ret = len(package) >= (Device.HEADER_SIZE) and package.startswith(b'0200')
       if ret:
-        data_size = int.from_bytes(header_part[Device.DATA_SIZE_ADDRESS : Device.DATA_SIZE_ADDRESS + 4], "little") 
+        data_size = int.from_bytes(package[Device.DATA_SIZE_ADDRESS : Device.DATA_SIZE_ADDRESS + 4], "little") 
         ret = False
-
         if data_size > Device.IMAGE_META_DATA_SIZE:
-          data_read = self.__load_frame_data(data_size)
-          if data_read == data_size:
-            offset = 0
-            rows  = int.from_bytes(self.response_buffer[offset : offset + 4], "little") 
-            offset += 4
-            cols  = int.from_bytes(self.response_buffer[offset : offset + 4], "little") 
-            offset += 4
-            type  = int.from_bytes(self.response_buffer[offset : offset + 4], "little") 
-            # FIXME use type variable
-            result = np.zeros((rows, cols, 3), np.uint8) 
-            offset += 4
-            result.data = self.response_buffer[offset : offset + data_size - Device.IMAGE_META_DATA_SIZE]
-            ret = True
+          offset = Device.DATA_SIZE_ADDRESS + 4
+          rows  = int.from_bytes(package[offset : offset + 4], "little") 
+          offset += 4
+          cols  = int.from_bytes(package[offset : offset + 4], "little") 
+          offset += 4
+          type  = int.from_bytes(package[offset : offset + 4], "little") 
+          # FIXME use type variable
+          result = np.zeros((rows, cols, 3), np.uint8) 
+          offset += 4
+          result.data = package[offset : offset + data_size - Device.IMAGE_META_DATA_SIZE]
+          ret = True
       if not keep_alive:
         self.__disconnect()
       
     return ret, result
 
-  def __load_frame_data(self, data_size):
-    bytes_read = 0
-    while bytes_read < data_size:
-      packet = self.server_socket.recv(data_size - bytes_read)
-      if not packet:
-          return None
-      
-      packet_size = len(packet)
-      self.response_buffer[bytes_read : bytes_read + packet_size] = packet
-      bytes_read += packet_size
-    return bytes_read
-
   def __checkConnection(self):
     if self.server_socket is None:
-      self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
       try:
-        self.server_socket.connect((self.address, self.port))
-        self.server_socket.settimeout(self.read_timeout)
+        self.server_socket = websocket.create_connection('ws://' + self.address + ':' + str(self.port))
       except:
         self.__disconnect()
     return not self.server_socket is None
 
   def setReadTimeout(self, newValue):
-    if newValue > 0:
-      self.read_timeout = newValue
-      if self.server_socket:
-        self.server_socket.settimeout(self.read_timeout)
-        print("setting the timeout to new value" + str(newValue))
+    pass
 
   def __disconnect(self):
     if not self.server_socket is None:
       try:
-        self.server_socket.shutdown(socket.SHUT_RDWR)
+        self.server_socket.close()
       except:
         # swallow the exception on closing
         pass
       finally:
         self.server_socket = None
 
-  def __talk(self, request, response_size = RESPONSE_BUFFER_SIZE):
-    self.server_socket.sendall(request)
-    result = self.server_socket.recv(response_size)
+  def __talk(self, request):
+    self.server_socket.send_binary(request)
+    result = self.server_socket.recv()
     return result
 
 class Performance_Counter(object):

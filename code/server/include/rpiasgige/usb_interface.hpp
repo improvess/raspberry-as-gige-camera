@@ -62,7 +62,14 @@ namespace rpiasgige
             bool success = false;
             if (this->capture.isOpened())
             {
+                auto begin_time_ref = std::chrono::high_resolution_clock::now();
                 success = this->capture.grab() && this->capture.retrieve(this->captured_image);
+                auto end_time_ref = std::chrono::high_resolution_clock::now();
+                auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_ref - begin_time_ref);
+                auto time_spent = ms.count();
+                if (time_spent > 500) {
+                    std::cerr << "grab took " << time_spent << " milliseconds\n";
+                }
             }
 
             if (!success)
