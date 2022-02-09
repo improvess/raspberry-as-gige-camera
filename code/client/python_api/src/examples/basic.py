@@ -13,6 +13,8 @@ def main(address, port):
 
     camera = Device(address, port)
 
+    print("Trying to connect to camera at " + address + ":" + str(port))
+
     # let's ping the camera just to check we can talk to it
     if not camera.ping():
         print("Ops! Camera didn't reply. Exiting...", file=sys.stderr)
