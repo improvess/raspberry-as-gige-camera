@@ -131,8 +131,8 @@ int main(int argc, char **argv)
         "{address           | 192.168.2.2    | remote server ip such as 192.168.2.2         }"
         "{port           | 4001    | remote server port         }"
         "{show-images           | true    | show camera image         }"
-        "{frame-width           | 640    | camera frame width         }"
-        "{frame-height           | 480    | camera frame height         }"
+        "{frame-width           | 320    | camera frame width         }"
+        "{frame-height           | 240    | camera frame height         }"
         "{fps           | 30    | camera fps         }"
         "{max-iterations           | 1000    | maximum number of iterations       }"
         "{auto-focus           | default    | enable auto-focus 'on' or 'off'        }"
@@ -155,7 +155,7 @@ int main(int argc, char **argv)
     sigaction(SIGINT, &sigIntHandler, NULL);
 
     // let's ping the camera just to check we can talk to it
-/*
+
     if (!camera.ping()) {
         std::cerr << "Ops! Camera didn't reply. Exiting...\n";
         exit(0);
@@ -166,19 +166,16 @@ int main(int argc, char **argv)
     // The previous call was done in non-keep-alive mode.
     // This is not good for long conversations because each call will perform a open-close TCP cycle
     // To make calls faster, it is recommended to keep-alive the conversation as done below
-*/
+
     bool keep_alive = true;
 
     // Sending some packets to the camera
-/*
-    for (int i = 0; i < 10; ) {
+    for (int i = 0; i < 10; ++i) {
         if (camera.ping(keep_alive)) {
             std::cout << "Camera successfully replied to the " << ++i << "-th ping!\n";
         }
     }
-*/
     int open_camera_attempt = 1;
-
 
     bool success = false;
 
@@ -198,7 +195,7 @@ int main(int argc, char **argv)
     // Performance_Counter is an optional component. 
     // It is a convenient way to measure the achieved FPS speed and mean data transfered. 
 
-    Performance_Counter performance_counter(120);
+    Performance_Counter performance_counter(300);
 
     cv::Mat mat;
 

@@ -1,12 +1,15 @@
 #ifndef RPIASGIGE_CLIENT_API_HPP
 #define RPIASGIGE_CLIENT_API_HPP
 
-#include <unistd.h>
-#include <stdio.h>
-#include <sys/socket.h>
-#include <stdlib.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+#include <boost/beast/core.hpp>
+#include <boost/beast/websocket.hpp>
+#include <boost/asio/ip/tcp.hpp>
+
+namespace beast = boost::beast;        
+namespace http = beast::http;
+namespace websocket = beast::websocket; 
+namespace net = boost::asio;          
+using tcp = boost::asio::ip::tcp; 
 
 #include <chrono>
 
@@ -28,6 +31,15 @@ namespace rpiasgige
         {
             RemoteException(const std::string &msg) : std::runtime_error(msg) {}
         };
+
+        static const int STATUS_SIZE = 4;
+        static const int KEEP_ALIVE_SIZE = 1;
+        static const int DATA_SIZE = 4;
+        static const int STATUS_ADDRESS = 0;
+        static const int DATA_SIZE_ADDRESS = 5;
+        static const int KEEP_ALIVE_ADDRESS = 4;
+        static const int HEADER_SIZE = STATUS_SIZE + KEEP_ALIVE_SIZE + DATA_SIZE;
+        static const int IMAGE_META_DATA_SIZE = 3 * sizeof(int);
 
         class Device;
 
@@ -148,6 +160,7 @@ namespace rpiasgige
                     Packet response(this->response_buffer, keep_alive, 0, this->response_buffer + HEADER_SIZE);
                     this->send_request(request, response);
                     this->read_response_data(&result, sizeof(result), response);
+
                 }
                 catch (TimeoutException &tex)
                 {
@@ -278,13 +291,15 @@ namespace rpiasgige
         private:
             cv::String address;
             int port;
+            websocket::stream<tcp::socket> *ws = nullptr;
+            net::io_context ioc;
+
             int timeout_count = 0;
             const int MAX_TIMEOUT_COUNT = 2;
             int read_timeout_in_seconds = 1;
 
             void handle_timeout(const std::string &origin, TimeoutException &tex)
             {
-                //std::cout << "TimeoutException: " << tex.what() << "\n";
 
                 if (timeout_count < MAX_TIMEOUT_COUNT)
                 {
@@ -293,7 +308,6 @@ namespace rpiasgige
                 else
                 {
                     timeout_count = 0;
-                    //std::cout << "disconnect after TimeoutException: " << tex.what() << "\n";
                     this->disconnect();
                     tex.origin = origin;
                     throw tex;
@@ -352,44 +366,44 @@ namespace rpiasgige
             bool open_tcp_conversation()
             {
 
-                if ((this->server_socket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-                {
-                    this->server_socket = -1;
+                bool test = true;
+                if (this->is_connected()) {
+                    test = this->disconnect();
                 }
 
-                struct sockaddr_in serv_addr;
-                serv_addr.sin_family = AF_INET;
-                serv_addr.sin_port = htons(this->port);
-
-                if (inet_pton(AF_INET, this->address.c_str(), &serv_addr.sin_addr) <= 0)
-                {
-                    close(this->server_socket);
-                    this->server_socket = -1;
+                if (!test) {
+                    return false;
                 }
 
-                if (connect(this->server_socket, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
-                {
-                    close(this->server_socket);
-                    this->server_socket = -1;
+                tcp::resolver resolver{ioc};
+                if (this->ws == nullptr) {
+                    this->ws = new websocket::stream<tcp::socket>{ioc};
                 }
-                this->update_socket_timeout();
+
+                auto host = this->address.c_str();
+                auto s_port = std::to_string(this->port).c_str();
+
+                auto const results = resolver.resolve(host, s_port);
+
+                net::connect(ws->next_layer(), results.begin(), results.end());
+
+                ws->set_option(websocket::stream_base::decorator(
+                    [](websocket::request_type& req)
+                    {
+                        req.set(http::field::user_agent,
+                            std::string(BOOST_BEAST_VERSION_STRING) +
+                                " websocket-client-coro");
+                    }));
+
+                ws->handshake(host, "/");
+
                 return this->is_connected();
             }
 
             void update_socket_timeout()
             {
-                if (this->server_socket >= 0 && this->read_timeout_in_seconds >= 0)
-                {
-                    struct timeval tv;
-                    tv.tv_sec = this->read_timeout_in_seconds;
-                    // minimum acceptable timeout is 10 ms
-                    tv.tv_usec = 10000;
-                    setsockopt(this->server_socket, SOL_SOCKET, SO_RCVTIMEO, (const char *)&tv, sizeof tv);
-
-                }
+                
             }
-
-            int server_socket = -1;
 
             int response_buffer_size = HEADER_SIZE;
             char *response_buffer = nullptr;
@@ -399,16 +413,23 @@ namespace rpiasgige
 
             inline bool is_connected() const
             {
-                return server_socket >= 0;
+                return this->ws != nullptr && this->ws->is_open();
             }
 
-            void disconnect()
+            bool disconnect()
             {
-                if (this->server_socket >= 0)
+                bool result = true;
+                if (this->ws != nullptr)
                 {
-                    close(this->server_socket);
-                    this->server_socket = -1;
+                    try {
+                        this->ws->close(websocket::close_code::normal);
+                    } catch(std::exception const& e) {
+                        result = false;
+                        std::cerr << "Failed to close websocket: " << e.what() << "\n";
+                    }
+                    
                 }
+                return result;
             }
 
             /* *
@@ -417,50 +438,28 @@ namespace rpiasgige
             bool read_response(Packet &response)
             {
 
-                int total_read = 0;
-                bool keep = true;
-                int no_response_count = 0;
-                const int max_no_response_count = 3;
-                int expected_response_size = HEADER_SIZE;
+                beast::flat_buffer buffer;
 
-                int data_size = 0;
-                while (keep)
+                int bytes_read = this->ws->read(buffer);
+
+                const char* response_data = boost::asio::buffer_cast<const char*>(buffer.data());
+
+                memcpy(this->response_buffer, response_data, std::min(bytes_read, this->response_buffer_size));
+
+                int expected_data_size;
+                int expected_data_size_sz = sizeof(expected_data_size);
+                bool result = false;
+                response.data_size = 0;
+                if (bytes_read >= (DATA_SIZE_ADDRESS + expected_data_size_sz))
                 {
-                    int packt_size = std::min(1024, this->response_buffer_size - total_read);
-                    int valread = recv(this->server_socket, response_buffer + total_read, packt_size, 0);
-                    if (valread > 0)
-                    {
-                        total_read += valread;
-                        no_response_count = 0;
-
-                        if (data_size == 0 && total_read >= HEADER_SIZE)
-                        {
-                            int expected_data_size;
-                            memcpy(&expected_data_size, response_buffer + DATA_SIZE_ADDRESS, sizeof(expected_data_size));
-
-                            if (expected_data_size > 0 && (HEADER_SIZE + expected_data_size) <= response_buffer_size)
-                            {
-                                data_size = expected_data_size;
-                                expected_response_size = HEADER_SIZE + data_size;
-                                response.data_size = data_size;
-                            }
-                        }
-
-                        keep = total_read < expected_response_size;
-                    }
-                    else
-                    {
-                        no_response_count++;
-                        keep = no_response_count < max_no_response_count;
-                    }
-                }
-
-                int result = std::min(total_read, HEADER_SIZE + data_size);
-                if (result < expected_response_size)
-                {
-                    result = 0;
                     response.data_size = 0;
+                    memcpy(&expected_data_size, this->response_buffer + DATA_SIZE_ADDRESS, expected_data_size_sz);
+                    if (bytes_read - HEADER_SIZE >= expected_data_size)
+                    {
+                        response.data_size = expected_data_size;
+                    }
                 }
+                
                 return result;
             }
 
@@ -480,33 +479,13 @@ namespace rpiasgige
              * */
             bool send_request_buffer(const int bytes_to_send)
             {
-                bool result = false;
-                if (bytes_to_send <= this->request_buffer_size)
-                {
-                    int sent = 0;
-                    bool keep = true;
-                    int fail_count = 0;
-                    while (keep && sent < bytes_to_send)
-                    {
 
-                        int current_packet_size = std::min(bytes_to_send - sent, 1024);
+                this->ws->binary(true);
+                this->ws->text(false);
 
-                        int val_sent = send(this->server_socket, this->request_buffer + sent, current_packet_size, MSG_NOSIGNAL);
-                        if (val_sent > 0)
-                        {
-                            fail_count = 0;
-                            sent += val_sent;
-                        }
-                        else
-                        {
-                            fail_count++;
-                            keep = fail_count < 3;
-                        }
-                    }
-                    result = sent == bytes_to_send;
-                }
+                this->ws->write(net::buffer(this->request_buffer, bytes_to_send));
 
-                return result;
+                return true;
             }
 
             void set_request_data_size(int size)
