@@ -104,6 +104,8 @@ namespace rpiasgige
 
                     this->set_buffer_value(response_buffer, HEADER_SIZE, SIZE_OF_DOUBLE, &value);
 
+                    this->set_response_data_size(response_buffer, SIZE_OF_DOUBLE);
+
                     response_size = HEADER_SIZE + sizeof(double);
                     this->set_status(response_buffer, "0200");
 
