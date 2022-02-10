@@ -26,14 +26,6 @@ void do_session(tcp::socket& socket, rpiasgige::Server &server)
     {
         websocket::stream<tcp::socket> ws{std::move(socket)};
 
-        ws.set_option(websocket::stream_base::decorator(
-            [](websocket::response_type& res)
-            {
-                res.set(http::field::server,
-                    std::string(BOOST_BEAST_VERSION_STRING) +
-                        " rpiasgige-server");
-            }));
-
         ws.accept();
 
         response_buffer = new char[server.get_max_response_buffer_size()];
