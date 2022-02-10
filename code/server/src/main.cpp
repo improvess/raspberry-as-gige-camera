@@ -118,9 +118,12 @@ int main(int argc, char **argv)
         auto const address = net::ip::make_address(server_address);
         tcp::acceptor acceptor{ioc, {address, server_port}};
 
+        std::cout << "Server initialized on address " << server_address << ":" << server_port <<"\n";
+
         while(server.is_online())
         {
             tcp::socket socket{ioc};
+            std::cout << "Server waiting for connection\n";
             acceptor.accept(socket);
 
             std::thread{std::bind(
