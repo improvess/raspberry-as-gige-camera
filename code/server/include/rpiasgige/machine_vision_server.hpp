@@ -5,7 +5,7 @@
 #include <chrono>
 
 #include "usb_interface.hpp"
-#include "websocket_server.hpp"
+#include "generic_server.hpp"
 
 namespace rpiasgige
 {
@@ -14,8 +14,8 @@ namespace rpiasgige
         {
 
         public:
-            Server(const std::string & identifier, const std::string &server_address, int _port, USB_Interface &_usb_camera, const int max_image_size_in_bytes) : 
-            Websocket_Server(identifier, server_address , _port, max_image_size_in_bytes), usb_camera(_usb_camera) {}
+            Server(const std::string & identifier, USB_Interface &_usb_camera, const int max_image_size_in_bytes) : 
+            Websocket_Server(identifier, max_image_size_in_bytes), usb_camera(_usb_camera) {}
             virtual ~Server() {}
 
             static const int IMAGE_META_DATA_SIZE = 3 * sizeof(int);
