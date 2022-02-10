@@ -29,6 +29,15 @@ namespace rpiasgige
                 return result;
             }
 
+            bool set_camera_open_timeout_in_milliseconds(const int val) {
+                bool result = false;
+                if (val > 0) {
+                    this->usb_camera_open_mutex_timeout = std::chrono::milliseconds(val);
+                    result = true;
+                }
+                return result;
+            }
+
         protected:
 
             virtual void prepare_response(const char * request_buffer, const int request_size, char * response_buffer, int &response_size)
@@ -99,7 +108,7 @@ namespace rpiasgige
 
                 } else if (strncmp("OPEN", request_buffer, STATUS_SIZE) == 0) {
                     bool result = false;
-                    if(usb_camera_mutex.try_lock_for(this->usb_camera_mutex_timeout)) {
+                    if(usb_camera_mutex.try_lock_for(this->usb_camera_open_mutex_timeout)) {
                         result = this->usb_camera.open_camera();
                     } else {
                         camera_timeout = true;
@@ -181,6 +190,7 @@ namespace rpiasgige
             USB_Interface &usb_camera;
             std::timed_mutex usb_camera_mutex;
             std::chrono::milliseconds usb_camera_mutex_timeout = std::chrono::milliseconds(200);
+            std::chrono::milliseconds usb_camera_open_mutex_timeout = std::chrono::milliseconds(1000);
             static const int SIZE_OF_DOUBLE = sizeof(double);
             static const int SET_DATA_SIZE = sizeof(int) + SIZE_OF_DOUBLE;
         };
