@@ -118,6 +118,13 @@ In this section, it is shown how to build the **server** side application. Check
 
 This repo uses [CMake](https://cmake.org/) and [OpenCV](https://opencv.org/) to build the code on a [Raspberry PI OS](https://www.raspberrypi.org/software/) or similar operating system.
 
+Install pre-requisites:
+
+```
+$ sudo apt-get install binutils-dev -y
+$ sudo apt-get install libboost-all-dev -y
+```
+
 ```
 $ git clone https://github.com/doleron/raspberry-as-gige-camera.git
 $ cd raspberry-as-gige-camera/code/server
