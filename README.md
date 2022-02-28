@@ -163,6 +163,11 @@ There are four ways to access the `rpiasgige` server:
 - Using the provided client API's: check [the API](https://github.com/doleron/raspberry-as-gige-camera/tree/main/code/client).
 - Writing your own remote calls using the [rpiasgige protocol](https://github.com/doleron/raspberry-as-gige-camera/blob/main/protocol.MD)
 
+Note that the python client requires websocket-client
+```
+pip3 install websocket-client
+```
+
 ## Building and running the tests
 
 `rpiasgige` is shipped with a set of unit tests. You can build and run it as follows:
